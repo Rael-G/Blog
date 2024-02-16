@@ -1,6 +1,6 @@
 ﻿namespace Blog.Domain.Entities;
 
-public class BaseEntity
+public abstract class BaseEntity(Guid? id)
 {
-    public Guid Id { get; set; }
+    public Guid Id { get; set; } = id??= Guid.NewGuid();
 }

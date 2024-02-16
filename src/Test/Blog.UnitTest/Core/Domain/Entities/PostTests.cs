@@ -1,11 +1,11 @@
 using Blog.Domain.Entities;
 
-namespace Blog.UnitTest;
+namespace Blog.UnitTest.Core.Domain.Entities;
 
 public class PostTests
 {
     [Fact]
-    public void Post_Initialization()
+    public void Post_Initialization_Without_GUID()
     {
         var title = "My Post";
         var content = "Post content";
@@ -19,6 +19,25 @@ public class PostTests
         Assert.Equal(title, post.Title);
         Assert.Equal(content, post.Content);
         Assert.Equal(comments, post.Comments);
+    }
+
+    [Fact]
+    public void Post_Initialization_With_GUID()
+    {
+        var guid = Guid.NewGuid();
+        var title = "My Post";
+        var content = "Post content";
+        var author = "John Doe";
+        var commentContent = "Test comment";
+        var comment = new Comment(author, commentContent);
+        var comments = new List<Comment> { comment };
+
+        var post = new Post(title, content, comments);
+
+        Assert.Equal(title, post.Title);
+        Assert.Equal(content, post.Content);
+        Assert.Equal(comments, post.Comments);
+        Assert.NotEqual(Guid.Empty, post.Id);
     }
 
     [Fact]
@@ -53,17 +72,5 @@ public class PostTests
         post.Content = newContent;
 
         Assert.Equal(newContent, post.Content);
-    }
-
-    [Fact]
-    public void Post_Adding_Comment()
-    {
-        var post = new Post("Test Title", "Test Content", new List<Comment>());
-        var comment = new Comment("Test Author", "Test Comment");
-
-        post.Comments = new List<Comment> { comment };
-
-        Assert.Single(post.Comments);
-        Assert.Contains(comment, post.Comments);
     }
 }

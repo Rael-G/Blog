@@ -1,10 +1,25 @@
 ﻿namespace Blog.Domain.Entities;
 
-public class Post
-    (string title, string content, IEnumerable<Comment>? comments) : BaseEntity
+public class Post : BaseEntity
 {
-    public string Title { get; set; } = title;
-    public string Content { get; set; } = content;
-    public IEnumerable<Comment> Comments { get; set; } = comments??= [];
+    public string Title { get; set; }
+    public string Content { get; set; }
+    public IEnumerable<Comment> Comments { get; private set; }
+
+    public Post(string title, string content, IEnumerable<Comment>? comments) 
+        : base(null)
+    {
+        Title = title;
+        Content = content;
+        Comments = comments?? [];
+    }
+
+    public Post(Guid id, string title, string content, IEnumerable<Comment>? comments) 
+        : base(id)
+    {
+        Title = title;
+        Content = content;
+        Comments = comments?? [];
+    }
 
 }
