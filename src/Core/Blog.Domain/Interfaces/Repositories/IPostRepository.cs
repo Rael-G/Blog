@@ -1,7 +1,4 @@
-﻿using Blog.Domain.Entities;
-using Blog.Domain.Interfaces.Repositories;
-
-namespace Blog.Domain;
+﻿namespace Blog.Domain;
 
 public interface IPostRepository : IBaseRepository<Post>
 {

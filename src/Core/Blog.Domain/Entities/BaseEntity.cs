@@ -1,4 +1,4 @@
-﻿namespace Blog.Domain.Entities;
+﻿namespace Blog.Domain;
 
 public abstract class BaseEntity(Guid? id)
 {

@@ -1,4 +1,4 @@
-﻿using Blog.Domain.Entities;
+﻿using Blog.Domain;
 
 namespace Blog.UnitTest.Core.Domain.Entities;
 

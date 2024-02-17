@@ -2,8 +2,6 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Blog.Domain;
-using Blog.Domain.Entities;
-
 
 namespace Blog.Infrastructure.Persistance;
 

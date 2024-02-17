@@ -1,5 +1,4 @@
 ﻿using Blog.Domain;
-using Blog.Domain.Entities;
 
 namespace Blog.Infrastructure.Persistance;
 

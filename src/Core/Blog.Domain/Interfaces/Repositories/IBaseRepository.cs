@@ -1,6 +1,4 @@
-﻿using Blog.Domain.Entities;
-
-namespace Blog.Domain.Interfaces.Repositories;
+﻿namespace Blog.Domain;
 
 public interface IBaseRepository<T> where T : BaseEntity
 {
