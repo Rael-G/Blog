@@ -13,13 +13,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{7338D674-F
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blog.UnitTest", "src\Test\Blog.UnitTest\Blog.UnitTest.csproj", "{388B4289-E3CC-4162-B960-5C0042B2B624}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{B71AC51E-5307-418C-9526-C0F2360488A5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blog.Infrastructure.Persistance", "src\Infrastructure\Blog.Infrastructure.Persistance\Blog.Infrastructure.Persistance.csproj", "{E1F29BF4-2F0E-4F62-93BF-5E4B39059D61}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{B109602B-BE8C-4E29-885B-B70844E4FD4E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -30,11 +31,20 @@ Global
 		{388B4289-E3CC-4162-B960-5C0042B2B624}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{388B4289-E3CC-4162-B960-5C0042B2B624}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{388B4289-E3CC-4162-B960-5C0042B2B624}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E1F29BF4-2F0E-4F62-93BF-5E4B39059D61}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1F29BF4-2F0E-4F62-93BF-5E4B39059D61}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1F29BF4-2F0E-4F62-93BF-5E4B39059D61}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1F29BF4-2F0E-4F62-93BF-5E4B39059D61}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{B1BAEE46-69EF-4686-A692-729CA1414FEE} = {86CD1393-786D-4676-B96D-DCA5D88E32C6}
 		{B109602B-BE8C-4E29-885B-B70844E4FD4E} = {B1BAEE46-69EF-4686-A692-729CA1414FEE}
 		{7338D674-F37F-46AE-B6CE-F38FC5AD9F6C} = {86CD1393-786D-4676-B96D-DCA5D88E32C6}
 		{388B4289-E3CC-4162-B960-5C0042B2B624} = {7338D674-F37F-46AE-B6CE-F38FC5AD9F6C}
+		{B71AC51E-5307-418C-9526-C0F2360488A5} = {86CD1393-786D-4676-B96D-DCA5D88E32C6}
+		{E1F29BF4-2F0E-4F62-93BF-5E4B39059D61} = {B71AC51E-5307-418C-9526-C0F2360488A5}
 	EndGlobalSection
 EndGlobal
