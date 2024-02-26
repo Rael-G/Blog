@@ -5,7 +5,7 @@ namespace Blog.UnitTest.Core.Domain.Entities;
 public class PostTests
 {
     [Fact]
-    public void Post_Initialization_Without_GUID()
+    public void Post_Initialization_WithoutGUID()
     {
         var title = "My Post";
         var content = "Post content";
@@ -22,7 +22,7 @@ public class PostTests
     }
 
     [Fact]
-    public void Post_Initialization_With_GUID()
+    public void Post_Initialization_WithGUID()
     {
         var guid = Guid.NewGuid();
         var title = "My Post";
@@ -32,16 +32,16 @@ public class PostTests
         var comment = new Comment(author, commentContent);
         var comments = new List<Comment> { comment };
 
-        var post = new Post(title, content, comments);
+        var post = new Post(guid, title, content, comments);
 
+        Assert.Equal(guid, post.Id);
         Assert.Equal(title, post.Title);
         Assert.Equal(content, post.Content);
         Assert.Equal(comments, post.Comments);
-        Assert.NotEqual(Guid.Empty, post.Id);
     }
 
     [Fact]
-    public void Post_Initialization_With_Null_Comments()
+    public void Post_Initialization_WithNullComments()
     {
         string title = "Test Title";
         string content = "Test Content";
@@ -52,25 +52,37 @@ public class PostTests
         Assert.Empty(post.Comments);
     }
 
-    [Fact]
-    public void Post_Editing_Title()
+    [Theory]
+    [InlineData(null)]
+    [InlineData("")]
+    [InlineData(" ")]
+    public void Post_TitleNullOrEmpty_ThrowsArgumentException(string title)
     {
-        var post = new Post("Initial Title", "Initial Content", new List<Comment>());
-        string newTitle = "New Title";
+        string content = "Content";
+        IEnumerable<Comment> comments = [];
 
-        post.Title = newTitle;
-
-        Assert.Equal(newTitle, post.Title);
+        Assert.Throws<ArgumentException>(() => new Post(title, content, comments));
     }
 
     [Fact]
-    public void Post_Editing_Content()
+    public void Post_TitleExceedsMaxLength_ThrowsArgumentException()
     {
-        var post = new Post("Initial Title", "Initial Content", new List<Comment>());
-        string newContent = "New Content";
+        string title = new string('X', 257);
+        string content = "Content";
+        IEnumerable<Comment> comments = [];
 
-        post.Content = newContent;
+        Assert.Throws<ArgumentException>(() => new Post(title, content, comments));
+    }
 
-        Assert.Equal(newContent, post.Content);
+    [Theory]
+    [InlineData(null)]
+    [InlineData("")]
+    [InlineData(" ")]
+    public void Post_ContentNullOrEmpty_ThrowsArgumentException(string content)
+    {
+        string title = "Title";
+        IEnumerable<Comment> comments = [];
+
+        Assert.Throws<ArgumentException>(() => new Post(title, content, comments));
     }
 }

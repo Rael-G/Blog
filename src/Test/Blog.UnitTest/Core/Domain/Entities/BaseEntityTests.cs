@@ -5,7 +5,7 @@ namespace Blog.UnitTest.Core.Domain.Entities;
 public class BaseEntityTests
 {
     [Fact]
-    public void BaseEntity_Id_Generated_When_Null_Id_Provided()
+    public void BaseEntity_IdGenerated_WhenNullIdProvided()
     {
         Guid? id = null;
 
@@ -15,7 +15,25 @@ public class BaseEntityTests
     }
 
     [Fact]
-    public void BaseEntity_Id_Set_When_Id_Provided()
+    public void BaseEntity_IdGenerated_WhenEmptyIdProvided()
+    {
+        var entity = new ConcreteEntity();
+
+        Assert.NotEqual(Guid.Empty, entity.Id);
+    }
+
+    [Fact]
+    public void BaseEntity_IdGenerated_WhenEmptyGuidProvided()
+    {
+        var guid = Guid.Empty;
+
+        var entity = new ConcreteEntity(guid);
+
+        Assert.NotEqual(Guid.Empty, entity.Id);
+    }
+
+    [Fact]
+    public void BaseEntity_IdSet_WhenIdProvided()
     {
         Guid id = Guid.NewGuid();
 
@@ -30,4 +48,6 @@ public class BaseEntityTests
 public class ConcreteEntity : BaseEntity
 {
     public ConcreteEntity(Guid? id) : base(id) { }
+    public ConcreteEntity() : base() { }
+
 }
