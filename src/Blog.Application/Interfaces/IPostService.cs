@@ -7,20 +7,20 @@ public interface IPostService
     /// <summary>
     /// Creates a new post.
     /// </summary>
-    /// <param name="post">The post to create.</param>
-    void Create(PostDto post);
+    /// <param name="postDto">The post to create.</param>
+    void Create(PostDto postDto);
 
     /// <summary>
     /// Updates an existing post.
     /// </summary>
-    /// <param name="post">The post to update.</param>
-    void Update(PostDto post);
+    /// <param name="postDto">The post to update.</param>
+    void Update(PostDto postDto);
 
     /// <summary>
     /// Deletes an existing post.
     /// </summary>
-    /// <param name="post">The post to delete.</param>
-    void Delete(PostDto post);
+    /// <param name="postDto">The post to delete.</param>
+    void Delete(PostDto postDto);
 
     /// <summary>
     /// Retrieves a post by its unique identifier.

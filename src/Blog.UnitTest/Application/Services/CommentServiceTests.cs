@@ -3,7 +3,6 @@ using Blog.Application;
 using Blog.Domain;
 using Moq;
 using FluentAssertions;
-using System.Xml.Linq;
 
 namespace Blog.UnitTest.Application
 {

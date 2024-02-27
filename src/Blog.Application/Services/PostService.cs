@@ -1,31 +1,45 @@
-﻿using Blog.Domain;
+﻿using AutoMapper;
+using Blog.Domain;
 
 namespace Blog.Application;
 
-public class PostService : IPostService
+public class PostService(IPostRepository postRepository, IMapper mapper) : IPostService
 {
-    public void Create(Post post)
+    private readonly IPostRepository _postRepository = postRepository;
+    private readonly IMapper _mapper = mapper;
+
+    public void Create(PostDto postDto)
     {
-        throw new NotImplementedException();
+        var post = _mapper.Map<Post>(postDto);
+        post.Validate();
+
+        _postRepository.Create(post);
     }
 
-    public void Update(Post post)
+    public void Update(PostDto postDto)
     {
-        throw new NotImplementedException();
+        var post = _mapper.Map<Post>(postDto);
+        post.Validate();
+
+        _postRepository.Update(post);
     }
 
-    public void Delete(Post post)
+    public void Delete(PostDto postDto)
     {
-        throw new NotImplementedException();
+        var post = _mapper.Map<Post>(postDto);
+
+        _postRepository.Delete(post);
     }
 
-    public Task<PostDto?> Get(Guid id)
+    public async Task<PostDto?> Get(Guid id)
     {
-        throw new NotImplementedException();
+        var post = await _postRepository.Get(id);
+        return _mapper.Map<PostDto>(post);
     }
 
-    public Task<IEnumerable<PostDto>> GetAll()
+    public async Task<IEnumerable<PostDto>> GetAll()
     {
-        throw new NotImplementedException();
+        var post = await _postRepository.GetAll();
+        return _mapper.Map<IEnumerable<PostDto>>(post);
     }
 }

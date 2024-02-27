@@ -37,7 +37,7 @@ public class Post : BaseEntity
     /// <param name="title">The title of the post.</param>
     /// <param name="content">The content of the post.</param>
     /// <param name="comments">Optional comments associated with the post.</param>
-    public Post(Guid id, string title, string content, IEnumerable<Comment>? comments) 
+    public Post(Guid id, string title, string content, IEnumerable<Comment>? comments = null) 
         : base(id)
     {
         Title = title;
