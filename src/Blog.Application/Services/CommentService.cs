@@ -1,31 +1,45 @@
-﻿using Blog.Domain;
+﻿using AutoMapper;
+using Blog.Domain;
 
 namespace Blog.Application;
 
-public class CommentService : ICommentService
+public class CommentService(ICommentRepository commentRepository, IMapper mapper) : ICommentService
 {
-    public void Create(Comment comment)
+    private readonly ICommentRepository _commentRepository = commentRepository;
+    private readonly IMapper _mapper = mapper;
+
+    public void Create(CommentDto commentDto)
     {
-        throw new NotImplementedException();
+        var comment = _mapper.Map<Comment>(commentDto);
+        comment.Validate();
+
+        _commentRepository.Create(comment);
     }
 
-    public void Update(Comment comment)
+    public void Update(CommentDto commentDto)
     {
-        throw new NotImplementedException();
+        var comment = _mapper.Map<Comment>(commentDto);
+        comment.Validate();
+
+        _commentRepository.Update(comment);
     }
 
-    public void Delete(Comment comment)
+    public void Delete(CommentDto commentDto)
     {
-        throw new NotImplementedException();
+        var comment = _mapper.Map<Comment>(commentDto);
+
+        _commentRepository.Delete(comment);
     }
 
-    public Task<CommentDto?> Get(Guid id)
+    public async Task<CommentDto?> Get(Guid id)
     {
-        throw new NotImplementedException();
+        var comment = await _commentRepository.Get(id);
+        return _mapper.Map<CommentDto>(comment);
     }
 
-    public Task<IEnumerable<CommentDto>> GetAll()
+    public async Task<IEnumerable<CommentDto>> GetAll()
     {
-        throw new NotImplementedException();
+        var comment = await _commentRepository.GetAll();
+        return _mapper.Map<IEnumerable<CommentDto>>(comment);
     }
 }
