@@ -56,33 +56,39 @@ public class PostTests
     [InlineData(null)]
     [InlineData("")]
     [InlineData(" ")]
-    public void Post_TitleNullOrEmpty_ThrowsArgumentException(string title)
+    public void Post_Validate_TitleNullOrEmpty_ThrowsArgumentException(string title)
     {
         string content = "Content";
         IEnumerable<Comment> comments = [];
 
-        Assert.Throws<ArgumentException>(() => new Post(title, content, comments));
+        var post = new Post(title, content, comments);
+
+        Assert.Throws<ArgumentException>(() => post.Validate());
     }
 
     [Fact]
-    public void Post_TitleExceedsMaxLength_ThrowsArgumentException()
+    public void Post_Validate_TitleExceedsMaxLength_ThrowsArgumentException()
     {
         string title = new string('X', 257);
         string content = "Content";
         IEnumerable<Comment> comments = [];
 
-        Assert.Throws<ArgumentException>(() => new Post(title, content, comments));
+        var post = new Post(title, content, comments);
+
+        Assert.Throws<ArgumentException>(() => post.Validate());
     }
 
     [Theory]
     [InlineData(null)]
     [InlineData("")]
     [InlineData(" ")]
-    public void Post_ContentNullOrEmpty_ThrowsArgumentException(string content)
+    public void Post_Validate_ContentNullOrEmpty_ThrowsArgumentException(string content)
     {
         string title = "Title";
         IEnumerable<Comment> comments = [];
 
-        Assert.Throws<ArgumentException>(() => new Post(title, content, comments));
+        var post = new Post(title, content, comments);
+
+        Assert.Throws<ArgumentException>(() => post.Validate());
     }
 }

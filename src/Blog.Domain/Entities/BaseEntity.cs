@@ -1,33 +1,34 @@
 ﻿namespace Blog.Domain;
 
-public abstract class BaseEntity
+/// <summary>
+/// Constructor for the BaseEntity class.
+/// </summary>
+/// <param name="id">The unique identifier of the entity, optional. If not provided, a new unique identifier will be generated.</param>
+public abstract class BaseEntity(Guid? id = null)
 {
     /// <summary>
     /// Gets or sets the unique identifier of the entity.
     /// </summary>
-    public Guid Id { get => _id; private set => _id = SetId(value); }
-
-    private Guid _id;
+    public Guid Id { get; private set; } = id ?? Guid.NewGuid();
 
     /// <summary>
-    /// Constructor for the BaseEntity class.
+    /// Virtual method to perform additional validation logic for the entity.
     /// </summary>
-    /// <param name="id">The unique identifier of the entity, optional. If not provided, a new unique identifier will be generated.</param>
-    protected BaseEntity(Guid? id = null)
+    public virtual void Validate()
     {
-        Id = id ?? Guid.NewGuid();
+        Id = ValidateId(Id);
     }
 
     /// <summary>
     /// Private method to validate the unique identifier of the entity.
     /// </summary>
     /// <param name="id">The identifier to be validated.</param>
-    /// <returns>The valid identifier or a new unique identifier if the provided identifier is null or empty.</returns>
-    private static Guid SetId(Guid? id)
+    /// <returns>The set identifier or a new unique identifier if the provided identifier is null or empty.</returns>
+    private static Guid ValidateId(Guid? id)
     {
-        if (id == Guid.Empty) 
+        if (id == null || id == Guid.Empty) 
             id = Guid.NewGuid();
 
-        return id ?? Guid.NewGuid();
+        return (Guid)id;
     }
 }

@@ -5,21 +5,17 @@ public class Post : BaseEntity
     /// <summary>
     /// Gets or sets the title of the post.
     /// </summary>
-    public string Title { get => _title; set => _title = SetTitle(value); }
+    public string Title { get; set; }
     
     /// <summary>
     /// Gets or sets the content of the post.
     /// </summary>
-    public string Content { get => _content; set => _content = SetContent(value); }
+    public string Content { get; set; }
 
     /// <summary>
     /// Gets the comments associated with the post.
     /// </summary>
-    public IEnumerable<Comment> Comments { get => _comments; private set => _comments = SetComments(value); }
-
-    private string _title = string.Empty;
-    private string _content = string.Empty;
-    private IEnumerable<Comment> _comments = [];
+    public IEnumerable<Comment> Comments { get; private set; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Post"/> class with the specified title, content, and comments.
@@ -49,43 +45,43 @@ public class Post : BaseEntity
         Comments = comments?? [];
     }
 
+    /// <summary>
+    /// Private constructor for entity framework use.
+    /// </summary>
     private Post() { }
+
+    /// <summary>
+    /// Performs additional validation logic for the post entity.
+    /// </summary>
+    /// <exception cref="ArgumentException">Thrown when <see cref="Title"/> is null, empty, or exceeds 256 characters.</exception>
+    /// <exception cref="ArgumentException">Thrown when <see cref="Content"/> is null or empty.</exception>
+    public override void Validate()
+    {
+        base.Validate();
+        ValidateTitle(Title);
+        ValidateContent(Content);
+    }
 
     /// <summary>
     /// Validates the title of the post.
     /// </summary>
     /// <param name="title">The title to validate.</param>
-    /// <returns>The validated title.</returns>
-    private static string SetTitle(string title)
+    private static void ValidateTitle(string title)
     {
         if (string.IsNullOrWhiteSpace(title))
             throw new ArgumentException("Title must contain a value", nameof(title));
 
         if (title.Length > 256)
             throw new ArgumentException("Title max length is 256", nameof(title));
-
-        return title;
     }
 
     /// <summary>
     /// Validates the content of the post.
     /// </summary>
     /// <param name="content">The content to validate.</param>
-    /// <returns>The validated content.</returns>
-    private static string SetContent(string content)
+    private static void ValidateContent(string content)
     {
         if (string.IsNullOrWhiteSpace(content))
             throw new ArgumentException("Content must contain a value", nameof(content));
-
-        return content;
     }
-
-    /// <summary>
-    /// Validates the comments associated with the post.
-    /// </summary>
-    /// <param name="comments">The comments to validate.</param>
-    /// <returns>The validated comments.</returns>
-    private static IEnumerable<Comment> SetComments(IEnumerable<Comment> comments)
-        => comments ?? [];
-
 }

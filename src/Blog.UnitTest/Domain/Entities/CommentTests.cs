@@ -36,39 +36,43 @@ public class CommentTests
     [InlineData(null)]
     [InlineData("")]
     [InlineData(" ")]
-    public void Comment_AuthorNullOrEmpty_ThrowsArgumentException(string author)
+    public void Comment_Validate_AuthorNullOrEmpty_ThrowsArgumentException(string author)
     {
         string content = "Content";
+        var comment = new Comment(author, content);
 
-        Assert.Throws<ArgumentException>(() => new Comment(author, content));
+        Assert.Throws<ArgumentException>(() => comment.Validate());
     }
 
     [Fact]
-    public void Comment_AuthorExceedsMaxLength_ThrowsArgumentException()
+    public void Comment_Validate_AuthorExceedsMaxLength_ThrowsArgumentException()
     {
         string author = new('X', 257);
         string content = "Content";
+        var comment = new Comment(author, content);
 
-        Assert.Throws<ArgumentException>(() => new Comment(author, content));
+        Assert.Throws<ArgumentException>(() => comment.Validate());
     }
 
     [Theory]
     [InlineData(null)]
     [InlineData("")]
     [InlineData(" ")]
-    public void Comment_ContentNullOrEmpty_ThrowsArgumentException(string content)
+    public void Comment_Validate_ContentNullOrEmpty_ThrowsArgumentException(string content)
     {
         string author = "Author";
+        var comment = new Comment(author, content);
 
-        Assert.Throws<ArgumentException>(() => new Comment(author, content));
+        Assert.Throws<ArgumentException>(() => comment.Validate());
     }
 
     [Fact]
-    public void Comment_ContentExceedsMaxLength_ThrowsArgumentException()
+    public void Comment_Validate_ContentExceedsMaxLength_ThrowsArgumentException()
     {
         string author = "Author";
         string content = new('X', 513);
+        var comment = new Comment(author, content);
 
-        Assert.Throws<ArgumentException>(() => new Comment(author, content));
+        Assert.Throws<ArgumentException>(() => comment.Validate());
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Blog.Domain;
+using Xunit.Sdk;
 
 namespace Blog.UnitTest.Domain.Entities;
 
@@ -12,6 +13,7 @@ public class BaseEntityTests
         var entity = new ConcreteEntity(id);
 
         Assert.NotEqual(Guid.Empty, entity.Id);
+        Assert.NotNull(entity.Id);
     }
 
     [Fact]
@@ -20,16 +22,19 @@ public class BaseEntityTests
         var entity = new ConcreteEntity();
 
         Assert.NotEqual(Guid.Empty, entity.Id);
+        Assert.NotNull(entity.Id);
     }
 
     [Fact]
-    public void BaseEntity_IdGenerated_WhenEmptyGuidProvided()
+    public void BaseEntity_Validate_IdGenerated_WhenEmptyGuidProvided()
     {
         var guid = Guid.Empty;
-
         var entity = new ConcreteEntity(guid);
 
+        entity.Validate();
+
         Assert.NotEqual(Guid.Empty, entity.Id);
+        Assert.NotNull(entity.Id);
     }
 
     [Fact]

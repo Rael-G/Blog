@@ -1,4 +1,6 @@
-﻿namespace Blog.Domain;
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace Blog.Domain;
 
 public class Comment
     : BaseEntity
@@ -6,15 +8,12 @@ public class Comment
     /// <summary>
     /// Gets or sets the author of the comment.
     /// </summary>
-    public string Author { get => _author; set => _author = SetAuthor(value); }
+    public string Author { get; set; }
 
     /// <summary>
     /// Gets or sets the content of the comment.
     /// </summary>
-    public string Content { get => _content; set => _content = SetContent(value); }
-
-    private string _author = string.Empty;
-    private string _content = string.Empty;
+    public string Content { get; set; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Comment"/> class with specified identifier, author, and content.
@@ -40,39 +39,45 @@ public class Comment
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="Comment"/> class.
+    /// Private constructor for entity framework use.
     /// </summary>
     private Comment() { }
+
+    /// <summary>
+    /// Performs additional validation logic for the post entity.
+    /// </summary>
+    /// <exception cref="ArgumentException">Thrown when <see cref="Title"/> is null, empty, or exceeds 256 characters.</exception>
+    /// <exception cref="ArgumentException">Thrown when <see cref="Content"/> is null or empty.</exception>
+    public override void Validate()
+    {
+        base.Validate();
+        ValidateAuthor(Author);
+        ValidateContent(Content);
+    }
 
     /// <summary>
     /// Validates the author of the comment.
     /// </summary>
     /// <param name="author">The author to validate.</param>
-    /// <returns>The valid author.</returns>
-    private static string SetAuthor(string author)
+    private static void ValidateAuthor(string author)
     {
         if (string.IsNullOrWhiteSpace(author))
             throw new ArgumentException("Author must contain a value", nameof(author));
 
         if (author.Length > 256)
             throw new ArgumentException("Author max length is 256", nameof(author));
-
-        return author;
     }
 
     /// <summary>
     /// Validates the content of the comment.
     /// </summary>
     /// <param name="content">The content to validate.</param>
-    /// <returns>The valid content.</returns>
-    private static string SetContent(string content)
+    private static void ValidateContent(string content)
     {
         if (string.IsNullOrWhiteSpace(content))
             throw new ArgumentException("Content must contain a value", nameof(content));
 
         if (content.Length > 256)
             throw new ArgumentException("Content max length is 512", nameof(content));
-
-        return content;
     }
 }
