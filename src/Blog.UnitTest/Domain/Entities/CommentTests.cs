@@ -1,7 +1,7 @@
 ﻿using Blog.Domain;
 using System;
 
-namespace Blog.UnitTest.Core.Domain.Entities;
+namespace Blog.UnitTest.Domain.Entities;
 
 public class CommentTests
 {
@@ -49,7 +49,7 @@ public class CommentTests
         string author = new('X', 257);
         string content = "Content";
 
-        Assert.Throws<ArgumentException>(() => new Comment (author, content));
+        Assert.Throws<ArgumentException>(() => new Comment(author, content));
     }
 
     [Theory]

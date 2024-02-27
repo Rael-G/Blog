@@ -1,6 +1,6 @@
 ﻿using Blog.Domain;
 
-namespace Blog.UnitTest.Core.Domain.Entities;
+namespace Blog.UnitTest.Domain.Entities;
 
 public class BaseEntityTests
 {
@@ -41,7 +41,7 @@ public class BaseEntityTests
 
         Assert.Equal(id, entity.Id);
     }
-    
+
 }
 
 //Test purpose class
