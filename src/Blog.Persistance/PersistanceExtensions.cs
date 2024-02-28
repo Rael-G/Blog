@@ -5,9 +5,8 @@ using Blog.Domain;
 
 namespace Blog.Persistance;
 
-public static class HostExtensions
+public static class PersistanceExtensions
 {
-
     /// <summary>
     /// Configures persistence-related services such as database context and repositories.
     /// </summary>

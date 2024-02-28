@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Blog.Application\Blog.Application.csproj" />
+    <ProjectReference Include="..\Blog.Persistance\Blog.Persistance.csproj" />
   </ItemGroup>
 
 </Project>
