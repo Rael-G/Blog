@@ -9,11 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blog.Domain", "src\Blog.Dom
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blog.UnitTest", "src\Blog.UnitTest\Blog.UnitTest.csproj", "{388B4289-E3CC-4162-B960-5C0042B2B624}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blog.Infrastructure.Persistance", "src\Blog.Infrastructure.Persistance\Blog.Infrastructure.Persistance.csproj", "{E1F29BF4-2F0E-4F62-93BF-5E4B39059D61}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blog.Persistance", "src\Blog.Persistance\Blog.Persistance.csproj", "{E1F29BF4-2F0E-4F62-93BF-5E4B39059D61}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blog.Application", "src\Blog.Application\Blog.Application.csproj", "{4D5CF084-C63B-42A9-918D-95BC6D4E6037}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blog.WebApi", "src\Blog.WebApi\Blog.WebApi.csproj", "{0793570D-8774-4AF6-A1A9-22AB9DA82C2F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blog.WebApi", "src\Blog.WebApi\Blog.WebApi.csproj", "{0793570D-8774-4AF6-A1A9-22AB9DA82C2F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,5 +51,8 @@ Global
 		{E1F29BF4-2F0E-4F62-93BF-5E4B39059D61} = {86CD1393-786D-4676-B96D-DCA5D88E32C6}
 		{4D5CF084-C63B-42A9-918D-95BC6D4E6037} = {86CD1393-786D-4676-B96D-DCA5D88E32C6}
 		{0793570D-8774-4AF6-A1A9-22AB9DA82C2F} = {86CD1393-786D-4676-B96D-DCA5D88E32C6}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {53DDE1DE-393F-4A27-AFB3-08307F137A1B}
 	EndGlobalSection
 EndGlobal

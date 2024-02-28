@@ -3,7 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Blog.Domain;
 
-namespace Blog.Infrastructure.Persistance;
+namespace Blog.Persistance;
 
 public static class HostExtensions
 {

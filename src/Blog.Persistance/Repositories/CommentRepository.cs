@@ -1,6 +1,6 @@
 ﻿using Blog.Domain;
 
-namespace Blog.Infrastructure.Persistance;
+namespace Blog.Persistance;
 
 public class CommentRepository(ApplicationDbContext context) 
     : BaseRepository<Comment>(context), ICommentRepository

@@ -1,7 +1,7 @@
 ﻿using Blog.Domain;
 using Microsoft.EntityFrameworkCore;
 
-namespace Blog.Infrastructure.Persistance;
+namespace Blog.Persistance;
 
 public abstract class BaseRepository<T>(ApplicationDbContext context) 
     : IBaseRepository<T> where T : BaseEntity
