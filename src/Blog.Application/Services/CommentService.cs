@@ -3,7 +3,8 @@ using Blog.Domain;
 
 namespace Blog.Application;
 
-public class CommentService(ICommentRepository commentRepository, IMapper mapper) : ICommentService
+public class CommentService(ICommentRepository commentRepository, IMapper mapper) 
+    : ICommentService
 {
     private readonly ICommentRepository _commentRepository = commentRepository;
     private readonly IMapper _mapper = mapper;
@@ -42,4 +43,7 @@ public class CommentService(ICommentRepository commentRepository, IMapper mapper
         var comment = await _commentRepository.GetAll();
         return _mapper.Map<IEnumerable<CommentDto>>(comment);
     }
+
+    public async Task Commit()
+        => await _commentRepository.Commit();
 }

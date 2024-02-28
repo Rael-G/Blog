@@ -1,6 +1,4 @@
-﻿using Blog.Domain;
-
-namespace Blog.Application;
+﻿namespace Blog.Application;
 
 public interface IPostService
 {
@@ -34,4 +32,9 @@ public interface IPostService
     /// </summary>
     /// <returns>A collection of posts.</returns>
     Task<IEnumerable<PostDto>> GetAll();
+
+    /// <summary>
+    /// Save Changes
+    /// </summary>
+    Task Commit();
 }

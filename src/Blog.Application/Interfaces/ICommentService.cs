@@ -1,6 +1,4 @@
-﻿using Blog.Domain;
-
-namespace Blog.Application;
+﻿namespace Blog.Application;
 
 public interface ICommentService
 {
@@ -35,4 +33,9 @@ public interface ICommentService
     /// </summary>
     /// <returns>A collection of comments.</returns>
     Task<IEnumerable<CommentDto>> GetAll();
+    
+    /// <summary>
+    /// Save Changes
+    /// </summary>
+    Task Commit();
 }

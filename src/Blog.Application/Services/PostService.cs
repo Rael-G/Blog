@@ -42,4 +42,9 @@ public class PostService(IPostRepository postRepository, IMapper mapper) : IPost
         var post = await _postRepository.GetAll();
         return _mapper.Map<IEnumerable<PostDto>>(post);
     }
+
+    public async Task Commit()
+    {
+        await _postRepository.Commit();
+    }
 }
