@@ -3,7 +3,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Blog.Infrastructure.Persistance;
 
-public abstract class BaseRepository<T>(ApplicationDbContext context) : IBaseRepository<T> where T : BaseEntity
+public abstract class BaseRepository<T>(ApplicationDbContext context) 
+    : IBaseRepository<T> where T : BaseEntity
 {
     protected readonly ApplicationDbContext Context = context;
 

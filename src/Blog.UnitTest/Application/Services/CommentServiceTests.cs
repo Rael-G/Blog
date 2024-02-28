@@ -4,7 +4,7 @@ using Blog.Domain;
 using Moq;
 using FluentAssertions;
 
-namespace Blog.UnitTest.Application
+namespace Blog.UnitTest.Application.Services
 {
     public class CommentServiceTests
     {
