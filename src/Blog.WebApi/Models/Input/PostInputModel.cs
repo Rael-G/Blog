@@ -18,6 +18,7 @@ namespace Blog.WebApi.Models.Input
                 Id = Guid.NewGuid(),
                 Title = Title,
                 Content = Content,
+                Comments = []
             };
 
         public void InputToDto(PostDto postDto)
