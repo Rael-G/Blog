@@ -4,7 +4,7 @@ using Blog.WebApi.Models.Input;
 
 namespace Blog.WebApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/posts")]
     [ApiController]
     public class PostsController(IPostService postService) 
         : ControllerBase
@@ -13,8 +13,7 @@ namespace Blog.WebApi.Controllers
 
         [HttpGet]
         public async Task<IActionResult> Get()
-            => Ok(await _postService.GetAll());
-        
+           => Ok(await _postService.GetAll());
 
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(Guid id)
@@ -22,7 +21,7 @@ namespace Blog.WebApi.Controllers
             var post = await _postService.Get(id);
 
             if (post is null)
-                return NotFound();
+                return NotFound(id);
 
             return Ok(post);
         }
@@ -53,11 +52,11 @@ namespace Blog.WebApi.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var existentPost = await _postService.Get(id);
-            if (existentPost is null)
-                return NotFound();
+            var post = await _postService.Get(id);
+            if (post is null)
+                return NotFound(id);
 
-            var post = input.InputToDto(id);
+            input.InputToDto(post);
             try
             {
                 _postService.Update(post);
@@ -77,10 +76,11 @@ namespace Blog.WebApi.Controllers
             var post = await _postService.Get(id);
 
             if (post is null)
-                return NotFound();
+                return NotFound(id);
 
             _postService.Delete(post);
 
+            await _postService.Commit();
             return NoContent();
         }
     }

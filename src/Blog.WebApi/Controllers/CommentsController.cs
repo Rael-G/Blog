@@ -1,19 +1,28 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Blog.Application;
 using Blog.WebApi.Models.Input;
+using AutoMapper;
+using Blog.Domain;
 
 namespace Blog.WebApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/posts/{postId}/comments")]
     [ApiController]
-    public class CommentsController(ICommentService commentsService) 
+    public class CommentsController(ICommentService commentsService, IPostService postService, IMapper mapper) 
         : ControllerBase
     {
         private readonly ICommentService _commentService = commentsService;
+        private readonly IPostService _postService = postService;
+        private readonly IMapper _mapper = mapper;
 
         [HttpGet]
-        public async Task<IActionResult> Get()
-            => Ok(await _commentService.GetAll());
+        public async Task<IActionResult> GetAll([FromRoute] Guid postId)
+        {
+            var post = await _postService.Get(postId);
+            if (post is null)
+                return NotFound(postId);
+            return Ok(await _commentService.GetAll(postId));
+        }
         
 
         [HttpGet("{id}")]
@@ -22,18 +31,23 @@ namespace Blog.WebApi.Controllers
             var comment = await _commentService.Get(id);
 
             if (comment is null)
-                return NotFound();
+                return NotFound(id);
 
             return Ok(comment);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] CommentInputModel input)
+        public async Task<IActionResult> Post([FromRoute]Guid postId, [FromBody] CommentInputModel input)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
+            var post = await _postService.Get(postId);
+            if (post is null)
+                return NotFound(postId);
+
             var comment = input.InputToDto();
+            comment.PostId = postId;
             try
             {
                 _commentService.Create(comment);
@@ -44,7 +58,7 @@ namespace Blog.WebApi.Controllers
             }
 
             await _commentService.Commit();
-            return CreatedAtAction(nameof(Get), new { comment.Id }, comment);
+            return CreatedAtAction(nameof(Get), new { postId, comment.Id }, comment);
         }
 
         [HttpPut("{id}")]
@@ -53,11 +67,11 @@ namespace Blog.WebApi.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var existentComment = await _commentService.Get(id);
-            if (existentComment is null)
-                return NotFound();
+            var comment = await _commentService.Get(id);
+            if (comment is null)
+                return NotFound(id);
 
-            var comment = input.InputToDto(id);
+            input.InputToDto(comment);
             try
             {
                 _commentService.Update(comment);
@@ -77,10 +91,11 @@ namespace Blog.WebApi.Controllers
             var comment = await _commentService.Get(id);
 
             if (comment is null)
-                return NotFound();
+                return NotFound(id);
 
             _commentService.Delete(comment);
 
+            await _commentService.Commit();
             return NoContent();
         }
     }
