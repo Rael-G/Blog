@@ -44,7 +44,7 @@ public class Post : BaseEntity
     {
         Title = title;
         Content = content;
-        Comments = [];
+        Comments = new List<Comment>();
     }
 
     /// <summary>
