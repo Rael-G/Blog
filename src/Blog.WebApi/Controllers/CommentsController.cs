@@ -7,12 +7,11 @@ namespace Blog.WebApi.Controllers
 {
     [Route("api/posts/{postId}/comments")]
     [ApiController]
-    public class CommentsController(ICommentService commentsService, IPostService postService, IMapper mapper) 
+    public class CommentsController(ICommentService commentsService, IPostService postService) 
         : ControllerBase
     {
         private readonly ICommentService _commentService = commentsService;
         private readonly IPostService _postService = postService;
-        private readonly IMapper _mapper = mapper;
 
         /// <summary>
         /// Retrieves all comments for a specific post.

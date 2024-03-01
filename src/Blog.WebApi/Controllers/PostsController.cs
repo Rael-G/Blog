@@ -17,7 +17,6 @@ namespace Blog.WebApi.Controllers
         /// <returns>Returns a list of all blog posts.</returns>
         [HttpGet]
         [ProducesResponseType(200)] // OK
-        [ProducesResponseType(401)] // Unauthorized
         public async Task<IActionResult> Get()
            => Ok(await _postService.GetAll());
 
