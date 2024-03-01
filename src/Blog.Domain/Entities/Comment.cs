@@ -2,6 +2,9 @@
 
 namespace Blog.Domain;
 
+/// <summary>
+/// Represents a comment associated with a blog post.
+/// </summary>
 public class Comment
     : BaseEntity
 {
@@ -16,32 +19,43 @@ public class Comment
     public string Content { get; set; }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="Comment"/> class with specified identifier, author, and content.
+    /// Gets the associated post of the comment.
+    /// </summary>
+    public Post? Post { get; }
+
+    /// <summary>
+    /// Gets the identifier of the associated post.
+    /// </summary>
+    public Guid PostId { get; }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="Comment"/> class with the specified identifier, author, content, and associated post.
     /// </summary>
     /// <param name="id">The identifier of the comment.</param>
     /// <param name="author">The author of the comment.</param>
     /// <param name="content">The content of the comment.</param>
-    public Comment(Guid id, string author, string content) : base(id)
-    { 
+    /// <param name="postId">The Id of the associated post of the comment.</param>
+    public Comment(Guid id, string author, string content, Guid postId) : base(id)
+    {
         Author = author;
         Content = content;
+        PostId = postId;
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="Comment"/> class with specified author and content.
+    /// Initializes a new instance of the <see cref="Comment"/> class with the specified identifier, author, content, and associated post.
     /// </summary>
+    /// <param name="id">The identifier of the comment.</param>
     /// <param name="author">The author of the comment.</param>
     /// <param name="content">The content of the comment.</param>
-    public Comment(string author, string content)
-    { 
+    /// <param name="post">The associated post of the comment.</param>
+    public Comment(Guid id, string author, string content, Post post) : base(id)
+    {
         Author = author;
         Content = content;
+        Post = post;
+        PostId = post.Id;
     }
-
-    /// <summary>
-    /// Private constructor for entity framework use.
-    /// </summary>
-    private Comment() { }
 
     /// <summary>
     /// Performs additional validation logic for the post entity.
@@ -77,7 +91,7 @@ public class Comment
         if (string.IsNullOrWhiteSpace(content))
             throw new ArgumentException("Content must contain a value", nameof(content));
 
-        if (content.Length > 256)
+        if (content.Length > 512)
             throw new ArgumentException("Content max length is 512", nameof(content));
     }
 }

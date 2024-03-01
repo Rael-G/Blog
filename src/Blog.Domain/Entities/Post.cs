@@ -46,11 +46,6 @@ public class Post : BaseEntity
     }
 
     /// <summary>
-    /// Private constructor for entity framework use.
-    /// </summary>
-    private Post() { }
-
-    /// <summary>
     /// Performs additional validation logic for the post entity.
     /// </summary>
     /// <exception cref="ArgumentException">Thrown when <see cref="Title"/> is null, empty, or exceeds 256 characters.</exception>
