@@ -1,21 +1,29 @@
 ﻿using Blog.Application;
-using Blog.Domain;
+using System.ComponentModel.DataAnnotations;
 
 namespace Blog.WebApi.Models.Input
 {
     public record PostInputModel
     {
+        [Required]
+        [MaxLength(256)]
         public string Title { get; set; }
-        public string Content { get; set; }
-        public IEnumerable<Comment> Comments { get; set; }
 
-        public PostDto InputToDto(Guid? id = null)
-            => new() 
+        [Required]
+        public string Content { get; set; }
+
+        public PostDto InputToDto()
+            => new()
             {
-                Id = id ?? Guid.NewGuid(),
-                Title = Title, 
+                Id = Guid.NewGuid(),
+                Title = Title,
                 Content = Content,
-                Comments = Comments
             };
+
+        public void InputToDto(PostDto postDto)
+        {
+            postDto.Title = Title;
+            postDto.Content = Content;
+        }
     }
 }
