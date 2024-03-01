@@ -18,19 +18,6 @@ public class Post : BaseEntity
     public IEnumerable<Comment> Comments { get; private set; }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="Post"/> class with the specified title, content, and comments.
-    /// </summary>
-    /// <param name="title">The title of the post.</param>
-    /// <param name="content">The content of the post.</param>
-    /// <param name="comments">Optional comments associated with the post.</param>
-    public Post(string title, string content, IEnumerable<Comment>? comments = null)
-    {
-        Title = title;
-        Content = content;
-        Comments = comments?? [];
-    }
-
-    /// <summary>
     /// Initializes a new instance of the <see cref="Post"/> class with the specified identifier, title, content, and comments.
     /// </summary>
     /// <param name="id">The identifier of the post.</param>
@@ -58,6 +45,7 @@ public class Post : BaseEntity
     /// </summary>
     /// <exception cref="ArgumentException">Thrown when <see cref="Title"/> is null, empty, or exceeds 256 characters.</exception>
     /// <exception cref="ArgumentException">Thrown when <see cref="Content"/> is null or empty.</exception>
+    /// <exception cref="ArgumentNullException">Thrown when <see cref="Id"/> is null or empty.</exception>
     public override void Validate()
     {
         base.Validate();

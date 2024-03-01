@@ -62,6 +62,7 @@ public class Comment
     /// </summary>
     /// <exception cref="ArgumentException">Thrown when <see cref="Title"/> is null, empty, or exceeds 256 characters.</exception>
     /// <exception cref="ArgumentException">Thrown when <see cref="Content"/> is null or empty.</exception>
+    /// <exception cref="ArgumentNullException">Thrown when <see cref="Id"/> is null or empty.</exception>
     public override void Validate()
     {
         base.Validate();

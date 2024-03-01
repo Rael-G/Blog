@@ -14,9 +14,10 @@ public abstract class BaseEntity(Guid? id = null)
     /// <summary>
     /// Virtual method to perform additional validation logic for the entity.
     /// </summary>
+    /// <exception cref="ArgumentNullException">Thrown when <see cref="Id"/> is null or empty.</exception>
     public virtual void Validate()
     {
-        Id = ValidateId(Id);
+        ValidateId(Id);
     }
 
     /// <summary>
@@ -24,11 +25,9 @@ public abstract class BaseEntity(Guid? id = null)
     /// </summary>
     /// <param name="id">The identifier to be validated.</param>
     /// <returns>The set identifier or a new unique identifier if the provided identifier is null or empty.</returns>
-    private static Guid ValidateId(Guid? id)
+    private static void ValidateId(Guid? id)
     {
         if (id == null || id == Guid.Empty) 
-            id = Guid.NewGuid();
-
-        return (Guid)id;
+            throw new ArgumentNullException(nameof(id));
     }
 }
