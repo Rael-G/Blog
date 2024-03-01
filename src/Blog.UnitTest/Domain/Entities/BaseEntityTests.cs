@@ -31,10 +31,7 @@ public class BaseEntityTests
         var guid = Guid.Empty;
         var entity = new ConcreteEntity(guid);
 
-        entity.Validate();
-
-        Assert.NotEqual(Guid.Empty, entity.Id);
-        Assert.NotNull(entity.Id);
+        Assert.Throws<ArgumentNullException>(() => entity.Validate());
     }
 
     [Fact]

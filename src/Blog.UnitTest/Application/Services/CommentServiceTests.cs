@@ -21,7 +21,7 @@ namespace Blog.UnitTest.Application.Services
             _mockMapper = new Mock<IMapper>();
             _commentService = new CommentService(_mockRepository.Object, _mockMapper.Object);
 
-            _post = new("Title", "Content", []);
+            _post = new(Guid.NewGuid(), "Title", "Content", []);
             _comment = new(Guid.NewGuid(), "Author", "Content", _post);
         }
 
