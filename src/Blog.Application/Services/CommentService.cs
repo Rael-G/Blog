@@ -38,9 +38,9 @@ public class CommentService(ICommentRepository commentRepository, IMapper mapper
         return _mapper.Map<CommentDto>(comment);
     }
 
-    public async Task<IEnumerable<CommentDto>> GetAll()
+    public async Task<IEnumerable<CommentDto>> GetAll(Guid postId)
     {
-        var comment = await _commentRepository.GetAll();
+        var comment = await _commentRepository.GetAllByPostId(postId);
         return _mapper.Map<IEnumerable<CommentDto>>(comment);
     }
 

@@ -20,7 +20,6 @@ public interface ICommentService
     /// <param name="commentDto">The comment to delete.</param>
     void Delete(CommentDto commentDto);
 
-
     /// <summary>
     /// Retrieves a comment by its unique identifier.
     /// </summary>
@@ -29,13 +28,14 @@ public interface ICommentService
     Task<CommentDto?> Get(Guid id);
 
     /// <summary>
-    /// Retrieves all comments.
+    /// Retrieves all comments associated with a specific post.
     /// </summary>
-    /// <returns>A collection of comments.</returns>
-    Task<IEnumerable<CommentDto>> GetAll();
-    
+    /// <param name="postId">The identifier of the post.</param>
+    /// <returns>A collection of comments associated with the specified post.</returns>
+    Task<IEnumerable<CommentDto>> GetAll(Guid postId);
+
     /// <summary>
-    /// Save Changes
+    /// Commits changes to the underlying data store.
     /// </summary>
     Task Commit();
 }
