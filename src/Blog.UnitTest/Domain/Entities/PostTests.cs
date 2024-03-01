@@ -9,16 +9,11 @@ public class PostTests
     {
         var title = "My Post";
         var content = "Post content";
-        var author = "John Doe";
-        var commentContent = "Test comment";
-        var comment = new Comment(author, commentContent);
-        var comments = new List<Comment> { comment };
 
-        var post = new Post(title, content, comments);
+        var post = new Post(title, content, []);
 
         Assert.Equal(title, post.Title);
         Assert.Equal(content, post.Content);
-        Assert.Equal(comments, post.Comments);
     }
 
     [Fact]
@@ -27,17 +22,12 @@ public class PostTests
         var guid = Guid.NewGuid();
         var title = "My Post";
         var content = "Post content";
-        var author = "John Doe";
-        var commentContent = "Test comment";
-        var comment = new Comment(author, commentContent);
-        var comments = new List<Comment> { comment };
 
-        var post = new Post(guid, title, content, comments);
+        var post = new Post(guid, title, content, []);
 
         Assert.Equal(guid, post.Id);
         Assert.Equal(title, post.Title);
         Assert.Equal(content, post.Content);
-        Assert.Equal(comments, post.Comments);
     }
 
     [Fact]

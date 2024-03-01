@@ -5,6 +5,8 @@ namespace Blog.UnitTest.Domain.Entities;
 
 public class CommentTests
 {
+    Post _post = new("Title", "Content", []);
+
     [Fact]
     public void Comment_Initialization_WithGuid()
     {
@@ -12,11 +14,13 @@ public class CommentTests
         string author = "Test Author";
         string content = "Test Content";
 
-        var comment = new Comment(guid, author, content);
+        var comment = new Comment(guid, author, content, _post);
 
         Assert.Equal(guid, comment.Id);
         Assert.Equal(author, comment.Author);
         Assert.Equal(content, comment.Content);
+        Assert.Equal(_post, comment.Post);
+        Assert.Equal(_post.Id, comment.PostId);
     }
 
     [Fact]
@@ -26,7 +30,7 @@ public class CommentTests
         string author = "Test Author";
         string content = "Test Content";
 
-        var comment = new Comment(author, content);
+        var comment = new Comment(author, content, _post);
 
         Assert.Equal(author, comment.Author);
         Assert.Equal(content, comment.Content);
@@ -39,7 +43,7 @@ public class CommentTests
     public void Comment_Validate_AuthorNullOrEmpty_ThrowsArgumentException(string author)
     {
         string content = "Content";
-        var comment = new Comment(author, content);
+        var comment = new Comment(author, content, _post);
 
         Assert.Throws<ArgumentException>(() => comment.Validate());
     }
@@ -49,7 +53,7 @@ public class CommentTests
     {
         string author = new('X', 257);
         string content = "Content";
-        var comment = new Comment(author, content);
+        var comment = new Comment(author, content, _post);
 
         Assert.Throws<ArgumentException>(() => comment.Validate());
     }
@@ -61,7 +65,7 @@ public class CommentTests
     public void Comment_Validate_ContentNullOrEmpty_ThrowsArgumentException(string content)
     {
         string author = "Author";
-        var comment = new Comment(author, content);
+        var comment = new Comment(author, content, _post);
 
         Assert.Throws<ArgumentException>(() => comment.Validate());
     }
@@ -71,7 +75,7 @@ public class CommentTests
     {
         string author = "Author";
         string content = new('X', 513);
-        var comment = new Comment(author, content);
+        var comment = new Comment(author, content, _post);
 
         Assert.Throws<ArgumentException>(() => comment.Validate());
     }

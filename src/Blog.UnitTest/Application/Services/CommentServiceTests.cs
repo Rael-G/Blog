@@ -12,13 +12,17 @@ namespace Blog.UnitTest.Application.Services
         private readonly Mock<IMapper> _mockMapper;
         private readonly CommentService _commentService;
 
-        private readonly Comment _comment = new(Guid.NewGuid(), "Author", "Content");
-        
+        private readonly Post _post;
+        private readonly Comment _comment;
+
         public CommentServiceTests()
         {
             _mockRepository = new Mock<ICommentRepository>();
             _mockMapper = new Mock<IMapper>();
             _commentService = new CommentService(_mockRepository.Object, _mockMapper.Object);
+
+            _post = new("Title", "Content", []);
+            _comment = new(Guid.NewGuid(), "Author", "Content", _post);
         }
 
         [Fact]
@@ -76,19 +80,19 @@ namespace Blog.UnitTest.Application.Services
             _mockRepository.Verify(m => m.Get(_comment.Id), Times.Once);        }
 
         [Fact]
-        public async Task GetAll_Should_Call_Repository_GetAll_And_Map_To_DtoCollection()
+        public async Task GetAll_Should_Call_Repository_GetAllByPostId_And_Map_To_DtoCollection()
         {
             var comments = new List<Comment>();
             var commentDtos = new List<CommentDto>();
 
-            _mockRepository.Setup(m => m.GetAll()).ReturnsAsync(comments);
+            _mockRepository.Setup(m => m.GetAllByPostId(It.IsAny<Guid>())).ReturnsAsync(comments);
             _mockMapper.Setup(m => m.Map<IEnumerable<CommentDto>>(comments))
                 .Returns(commentDtos);
 
-            var result = await _commentService.GetAll();
+            var result = await _commentService.GetAll(_post.Id);
 
             result.Should().BeEquivalentTo(commentDtos);
-            _mockRepository.Verify(m => m.GetAll(), Times.Once);
+            _mockRepository.Verify(m => m.GetAllByPostId(_post.Id), Times.Once);
         }
     }
 }
