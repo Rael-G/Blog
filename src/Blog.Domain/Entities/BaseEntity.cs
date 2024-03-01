@@ -4,12 +4,12 @@
 /// Constructor for the BaseEntity class.
 /// </summary>
 /// <param name="id">The unique identifier of the entity, optional. If not provided, a new unique identifier will be generated.</param>
-public abstract class BaseEntity(Guid? id = null)
+public abstract class BaseEntity(Guid id)
 {
     /// <summary>
     /// Gets or sets the unique identifier of the entity.
     /// </summary>
-    public Guid Id { get; private set; } = id ?? Guid.NewGuid();
+    public Guid Id { get; private set; } = id;
 
     /// <summary>
     /// Virtual method to perform additional validation logic for the entity.

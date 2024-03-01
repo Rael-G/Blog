@@ -15,7 +15,7 @@ public class Post : BaseEntity
     /// <summary>
     /// Gets the comments associated with the post.
     /// </summary>
-    public IEnumerable<Comment> Comments { get; private set; }
+    public IEnumerable<Comment> Comments { get; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Post"/> class with the specified identifier, title, content, and comments.
@@ -24,20 +24,27 @@ public class Post : BaseEntity
     /// <param name="title">The title of the post.</param>
     /// <param name="content">The content of the post.</param>
     /// <param name="comments">Optional comments associated with the post.</param>
-    public Post(Guid id, string title, string content, IEnumerable<Comment>? comments = null) 
+    public Post(Guid id, string title, string content, IEnumerable<Comment> comments) 
         : base(id)
     {
         Title = title;
         Content = content;
-        Comments = comments?? [];
+        Comments = comments;
     }
 
     /// <summary>
-    /// For Entity Framework use
+    /// Initializes a new instance of the <see cref="Post"/> class with the specified identifier, title, content, and comments.
     /// </summary>
-    private Post()
+    /// <param name="id">The identifier of the post.</param>
+    /// <param name="title">The title of the post.</param>
+    /// <param name="content">The content of the post.</param>
+    /// <param name="comments">Optional comments associated with the post.</param>
+    public Post(Guid id, string title, string content)
+        : base(id)
     {
-        
+        Title = title;
+        Content = content;
+        Comments = [];
     }
 
     /// <summary>
