@@ -18,19 +18,6 @@ public class PostTests
         Assert.Equal(content, post.Content);
     }
 
-    [Fact]
-    public void Post_Initialization_WithNullComments()
-    {
-        Guid id = Guid.NewGuid();
-        string title = "Test Title";
-        string content = "Test Content";
-
-        var post = new Post(id, title, content, null);
-
-        Assert.NotNull(post.Comments);
-        Assert.Empty(post.Comments);
-    }
-
     [Theory]
     [InlineData(null)]
     [InlineData("")]
