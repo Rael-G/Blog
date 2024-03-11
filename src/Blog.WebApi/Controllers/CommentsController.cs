@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Blog.Application;
 using Blog.WebApi.Models.Input;
-using AutoMapper;
 
 namespace Blog.WebApi.Controllers
 {
