@@ -1,6 +1,6 @@
 <header class="navbar navbar-expand-lg navbar-dark bg-dark custom-header">
     <div class="container">
-        <a class="navbar-brand" href="/">Blog</a>
+        <a routerLink="/" class="navbar-brand">Blog</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -8,7 +8,7 @@
         <nav class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="/" data-bs-toggle="dropdown" role="button" aria-expanded="false">
+                    <a routerLink="/" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false">
                         Categories
                     </a>                      
                     <ul class="dropdown-menu dropdown-menu-dark">
@@ -18,10 +18,13 @@
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/about">About</a>
+                    <a routerLink="/about" class="nav-link" >About</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/contact">Contact</a>
+                    <a routerLink="/contact" class="nav-link">Contact</a>
+                </li>
+                <li class="nav-item">
+                    <a routerLink="/management" class="nav-link">Management</a>
                 </li>
             </ul>
         </nav>        
