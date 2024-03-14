@@ -1,0 +1,28 @@
+<div class="container">
+    <h1>Create Post</h1>
+  
+    <form>
+      <div class="form-group">
+        <label for="title">Title</label>
+        <input type="text" class="form-control" id="title" name="title" placeholder="Enter the title of your post" required>
+      </div>
+  
+      <div class="form-group">
+        <label for="content">Content</label>
+        <textarea class="form-control" id="content" name="content" rows="30" placeholder="Enter the content of your post" required></textarea>
+      </div>
+  
+      <div class="form-group">
+        <label for="category">Category</label>
+        <select class="form-control" id="category" name="category" required>
+            <option value="">Select a category</option>
+            @for(category of categories; track category){
+                <option value={{category}}>{{category}}</option>
+            }
+        </select>
+      </div>
+  
+      <button type="submit" class="btn btn-primary">Salvar Post</button>
+    </form>
+  </div>
+  
