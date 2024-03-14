@@ -2,3 +2,10 @@
 
 /* Importing Bootstrap SCSS file. */
 @import 'bootstrap/scss/bootstrap';
+
+.dropdown-menu {
+    .dropdown-item:active {
+      background-color: transparent;
+      color: #ffffff;
+    }
+  }
