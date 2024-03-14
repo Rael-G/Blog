@@ -1,12 +1,26 @@
 import { Component } from '@angular/core';
+import { PaginationComponent } from "../../pagination/pagination.component";
+import { RouterLink } from '@angular/router';
 
 @Component({
     selector: 'app-home',
     standalone: true,
     templateUrl: './home.component.html',
-    styleUrl: './home.component.scss'
+    styleUrl: './home.component.scss',
+    imports: [PaginationComponent, RouterLink]
 })
 export class HomeComponent {
+
+  currentPage: number = 1;
+  pageSize: number = 10;
+  totalPosts: number = 100;
+
+  constructor() { }
+
+  onPageChange(pageNumber: number) {
+    this.currentPage = pageNumber;
+    //Logic to call posts
+  }
 
   //examples
   lorem: string = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam convallis, enim vel sodales volutpat, lorem ipsum aliquet velit, ut hendrerit nulla odio ut dolor. Quisque vulputate risus id lacus commodo, et rutrum arcu lacinia. Phasellus hendrerit diam at leo congue sollicitudin.';

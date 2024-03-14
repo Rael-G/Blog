@@ -1,0 +1,14 @@
+<nav aria-label="Page navigation">
+    <ul class="pagination justify-content-center">
+      <li class="page-item" [class.disabled]="currentPage < 2">
+        <a routerLink="/" class="page-link" (click)="previousPage()">Previous</a>
+      </li>
+      <li class="page-item">
+        <a routerLink="/" class="page-link">{{ currentPage }}</a>
+      </li>
+      <li class="page-item" [class.disabled]="currentPage === totalPages()">
+        <a routerLink="/" class="page-link" (click)="nextPage()">Next</a>
+      </li>
+    </ul>
+  </nav>
+  
