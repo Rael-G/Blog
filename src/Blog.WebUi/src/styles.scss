@@ -4,12 +4,12 @@
 @import 'bootstrap/scss/bootstrap';
 
 .dropdown-menu {
-    .dropdown-item:active {
-      background-color: transparent;
-      color: #ffffff;
-    }
+  .dropdown-item:active {
+    background-color: transparent;
+    color: #ffffff;
   }
+}
 
-main{
+main {
   min-height: 85vh;
 }

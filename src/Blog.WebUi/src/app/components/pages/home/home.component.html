@@ -1,27 +1,25 @@
 <div class="container">
-    <h1 class="text-center">Latest posts</h1>
-    @for(post of posts; track post)
-    {
-    <div class="row">
-      <div class="col-md-6 offset-md-3 mb-4">
-        <div class="card">
-          <div class="card-body">
-            <h4 class="card-title">{{ post.title }}</h4>
-            <p class="card-text">{{ post.summary }}</p>
-            <div class="mb-2">
-                <a routerLink="/categories/{{post.categorie}}" class="badge badge-primary text-dark">{{post.categorie}}</a>
-            </div>
-            <a routerLink={{post.route}} class="btn btn-dark">Read more</a>
+  <h1 class="text-center">Latest posts</h1>
+
+  @for(post of posts; track post){
+  <div class="row">
+    <div class="col-md-6 offset-md-3 mb-4">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">{{ post.title }}</h4>
+          <p class="card-text">{{ post.summary }}</p>
+          <div class="mb-2">
+            <a routerLink="/categories/{{post.categorie}}" class="badge badge-primary text-dark">{{post.categorie}}</a>
           </div>
+          <a routerLink={{post.route}} class="btn btn-dark">Read more</a>
         </div>
       </div>
     </div>
-    }
   </div>
+  }
 
-  <app-pagination 
-    [currentPage]="currentPage"
-    [totalItems]="totalPosts"
-    [itemsPerPage]="pageSize"
-    (pageChange)="onPageChange($event)">
-  </app-pagination>
+</div>
+
+<app-pagination [currentPage]="currentPage" [totalItems]="totalPosts" [itemsPerPage]="pageSize"
+  (pageChange)="onPageChange($event)">
+</app-pagination>

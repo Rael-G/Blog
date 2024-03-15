@@ -3,11 +3,11 @@ import { PaginationComponent } from "../../pagination/pagination.component";
 import { RouterLink } from '@angular/router';
 
 @Component({
-    selector: 'app-home',
-    standalone: true,
-    templateUrl: './home.component.html',
-    styleUrl: './home.component.scss',
-    imports: [PaginationComponent, RouterLink]
+  selector: 'app-home',
+  standalone: true,
+  templateUrl: './home.component.html',
+  styleUrl: './home.component.scss',
+  imports: [PaginationComponent, RouterLink]
 })
 export class HomeComponent {
 
@@ -36,5 +36,5 @@ export class HomeComponent {
     { title: 'Post Title 8', summary: this.lorem, route: this.route, categorie: this.categories[Math.floor(Math.random() * 4)] },
     { title: 'Post Title 9', summary: this.lorem, route: this.route, categorie: this.categories[Math.floor(Math.random() * 4)] },
     { title: 'Post Title 10', summary: this.lorem, route: this.route, categorie: this.categories[Math.floor(Math.random() * 4)] },
-];
+  ];
 }

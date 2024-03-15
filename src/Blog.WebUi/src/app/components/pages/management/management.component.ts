@@ -13,14 +13,14 @@ export class ManagementComponent {
   route: string = '/posts/example';
   id: string[] = ['jfer8iqw9fjqefj8q4j8q4jfqj', 'fdas7f8dasf9sa87sda9f789sa', '7fdsaf9d7g8f9h7g9hf0h', 'yt8re9jbyb09rtby0rt8by0r']
   posts: any[] = [
-    { id: this.id[Math.floor(Math.random() * 4)], title: 'Post Title 1'},
-    { id: this.id[Math.floor(Math.random() * 4)], title: 'Post Title 2'},
-    { id: this.id[Math.floor(Math.random() * 4)], title: 'Post Title 4'},
-    { id: this.id[Math.floor(Math.random() * 4)], title: 'Post Title 5'},
-    { id: this.id[Math.floor(Math.random() * 4)], title: 'Post Title 6'},
-    { id: this.id[Math.floor(Math.random() * 4)], title: 'Post Title 7'},
-    { id: this.id[Math.floor(Math.random() * 4)], title: 'Post Title 8'},
-    { id: this.id[Math.floor(Math.random() * 4)], title: 'Post Title 9'},
-    { id: this.id[Math.floor(Math.random() * 4)], title: 'Post Title 10'},
-];
+    { id: this.id[Math.floor(Math.random() * 4)], title: 'Post Title 1' },
+    { id: this.id[Math.floor(Math.random() * 4)], title: 'Post Title 2' },
+    { id: this.id[Math.floor(Math.random() * 4)], title: 'Post Title 4' },
+    { id: this.id[Math.floor(Math.random() * 4)], title: 'Post Title 5' },
+    { id: this.id[Math.floor(Math.random() * 4)], title: 'Post Title 6' },
+    { id: this.id[Math.floor(Math.random() * 4)], title: 'Post Title 7' },
+    { id: this.id[Math.floor(Math.random() * 4)], title: 'Post Title 8' },
+    { id: this.id[Math.floor(Math.random() * 4)], title: 'Post Title 9' },
+    { id: this.id[Math.floor(Math.random() * 4)], title: 'Post Title 10' }
+  ];
 }
