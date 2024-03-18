@@ -32,7 +32,7 @@ export class CreatePostComponent {
 
   }
 
-  CreateHandler(post: Post) {
+  createHandler(post: Post) {
     this.postService.createPost(post).subscribe()
 
     this.redirect()
@@ -44,7 +44,7 @@ export class CreatePostComponent {
     if (this.postForm.invalid)
       return;
 
-    this.CreateHandler(this.postForm.value)
+    this.createHandler(this.postForm.value)
   }
 
   redirect(){
