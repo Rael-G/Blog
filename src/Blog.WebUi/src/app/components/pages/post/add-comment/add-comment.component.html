@@ -1,0 +1,13 @@
+<div class="container mt-3">
+  <form [formGroup]="commentForm" (submit)="submit()">
+    <div class="mb-3">
+      <label for="name" class="form-label">Name:</label>
+      <input type="text" class="form-control" formControlName="author" placeholder="Enter your name" required>
+    </div>
+    <div class="mb-3">
+      <label for="content" class="form-label">Content:</label>
+      <textarea class="form-control" formControlName="content" placeholder="Enter your comment" required></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary mb-4">Submit</button>
+  </form>
+</div>
