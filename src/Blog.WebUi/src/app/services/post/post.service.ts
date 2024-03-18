@@ -1,9 +1,24 @@
 import { Injectable } from '@angular/core';
+import { enviroment } from '../../../enviroments/enviroment';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { Post } from '../../models/Post';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PostService {
 
-  constructor() { }
+  private baseApiUrl = enviroment.baseApiUrl
+  private postUrl = `${this.baseApiUrl}/posts`
+
+  constructor(private http: HttpClient) { }
+
+  createPost(post: Post): Observable<Post>{
+    return this.http.post<Post>(this.postUrl, post)
+  }
+
+  getPosts(): Observable<Post[]>{
+    return this.http.get<Post[]>(this.postUrl)
+  }
 }

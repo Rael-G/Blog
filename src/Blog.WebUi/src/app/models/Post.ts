@@ -1,6 +1,6 @@
 export interface Post {
-    Id?: string,
-    Title: string,
-    Content: string,
-    Comments: Comment[]
+    id?: string,
+    title: string,
+    content: string,
+    comments: Comment[]
 }
