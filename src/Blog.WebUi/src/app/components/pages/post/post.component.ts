@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import { Post } from '../../../models/Post';
+import { PostService } from '../../../services/post/post.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-post',
@@ -8,7 +11,19 @@ import { Component } from '@angular/core';
   styleUrl: './post.component.scss'
 })
 export class PostComponent {
-  lorem: string = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam convallis, enim vel sodales volutpat, lorem ipsum aliquet velit, ut hendrerit nulla odio ut dolor. Quisque vulputate risus id lacus commodo, et rutrum arcu lacinia. Phasellus hendrerit diam at leo congue sollicitudin.';
+  private postService: PostService
+  private route: ActivatedRoute
+  protected post!: Post;
 
-  index: string[] = [this.lorem, this.lorem, this.lorem, this.lorem, this.lorem, this.lorem, this.lorem, this.lorem, this.lorem, this.lorem];
+  constructor(postService: PostService, route: ActivatedRoute) {
+    this.postService = postService
+    this.route = route
+   }
+
+  ngOnInit() : void{
+    const id = this.route.snapshot.paramMap.get('id');
+    this.postService.getPost(id ?? '').subscribe((post) => {
+      this.post = post
+  });
+}
 }

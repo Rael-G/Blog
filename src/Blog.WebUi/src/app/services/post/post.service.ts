@@ -14,11 +14,15 @@ export class PostService {
 
   constructor(private http: HttpClient) { }
 
-  createPost(post: Post): Observable<Post>{
-    return this.http.post<Post>(this.postUrl, post)
-  }
-
   getPosts(): Observable<Post[]>{
     return this.http.get<Post[]>(this.postUrl)
+  }
+
+  getPost(id: string): Observable<Post>{
+    return this.http.get<Post>(this.postUrl + '/' + id)
+  }
+
+  createPost(post: Post): Observable<Post>{
+    return this.http.post<Post>(this.postUrl, post)
   }
 }
