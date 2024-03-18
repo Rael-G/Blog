@@ -7,11 +7,11 @@
       <div class="card">
         <div class="card-body">
           <h4 class="card-title">{{ post.title }}</h4>
-          <p class="card-text">{{ post.summary }}</p>
+          <p class="card-text">{{ post.content.substring(0, 200) }} ...</p>
           <div class="mb-2">
-            <a routerLink="/categories/{{post.categorie}}" class="badge badge-primary text-dark">{{post.categorie}}</a>
+            <a routerLink="/categories/example" class="badge badge-primary text-dark">example</a>
           </div>
-          <a routerLink={{post.route}} class="btn btn-dark">Read more</a>
+          <a routerLink="{{categoriesUrl}}/{{post.id}}" class="btn btn-dark">Read more</a>
         </div>
       </div>
     </div>
