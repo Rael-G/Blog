@@ -11,6 +11,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.ConfigurePersistance(builder.Configuration);
 builder.Services.ConfigureApplication();
+builder.Services.ConfigureCors();
 
 var app = builder.Build();
 
@@ -22,6 +23,8 @@ if (app.Environment.IsDevelopment())
 
     app.InitializeDb();
 }
+
+app.UseCors();
 
 app.UseAuthorization();
 

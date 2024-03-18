@@ -14,5 +14,15 @@ namespace Blog.WebApi
             if (context.Database.GetPendingMigrations().Any())
                 context.Database.Migrate();
         }
+
+        public static void ConfigureCors(this IServiceCollection services)
+        {
+            services.AddCors(options => options.AddDefaultPolicy(builder =>
+            {
+                builder.AllowAnyOrigin()
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
+            }));
+        }
     }
 }
