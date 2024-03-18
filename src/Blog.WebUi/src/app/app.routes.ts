@@ -13,6 +13,6 @@ export const routes: Routes =
         { path: 'contact', component: ContactComponent },
         { path: 'posts/example', component: PostComponent },
         { path: 'management', component: ManagementComponent },
-        { path: 'create-post', component: CreatePostComponent }
-
+        { path: 'create-post', component: CreatePostComponent },
+        { path: 'posts/:id', component: PostComponent }
     ];
