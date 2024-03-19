@@ -24,7 +24,7 @@ export class AddCommentComponent {
   constructor(commentService: CommentService, route: ActivatedRoute, router: Router) {
     this.commentForm = new FormGroup({
       author: new FormControl('', [Validators.required, Validators.maxLength(255)]),
-      content: new FormControl('', [Validators.required])
+      content: new FormControl('', [Validators.required, Validators.maxLength(511)])
     });
 
     this.commentService = commentService
@@ -52,6 +52,7 @@ export class AddCommentComponent {
   reset(comment: Comment){
     this.commentForm.reset()
     this.commentAdded.emit(comment);
+    this.submitted = false;
   }
 
 }

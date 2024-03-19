@@ -3,11 +3,34 @@
     <div class="mb-3">
       <label for="name" class="form-label">Name:</label>
       <input type="text" class="form-control" formControlName="author" placeholder="Enter your name" required>
+
+      @if (submitted && commentForm.get('author')?.errors?.['required']){
+        <div class="alert alert-danger">
+          Author is required.
+        </div>
+        }
+      @else if(commentForm.get('author')?.errors?.['maxlength']){
+        <div class="alert alert-danger">
+          Author max length is 255.
+        </div>
+
+        }
     </div>
     <div class="mb-3">
       <label for="content" class="form-label">Content:</label>
       <textarea class="form-control" formControlName="content" placeholder="Enter your comment" required></textarea>
+
+      @if (submitted && commentForm.get('content')?.errors?.['required']){
+        <div class="alert alert-danger">
+          Content is required.
+        </div>
+        }
+      @else if(commentForm.get('content')?.errors?.['maxlength']){
+        <div class="alert alert-danger">
+          Comment max length is 511.
+        </div>
+      }
     </div>
-    <button type="submit" class="btn btn-primary mb-4">Submit</button>
+    <button type="submit" class="btn btn-dark mb-4">Submit</button>
   </form>
 </div>
