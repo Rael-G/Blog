@@ -12,8 +12,10 @@ import { Post } from '../../../models/Post';
 })
 export class ManagementComponent {
   protected posts: Post[] = []
+  protected collapse: Map<string, boolean> = new Map<string, boolean>()
   
   private postService: PostService
+  protected showComments = true;
 
   constructor(postService: PostService) {
     this.postService = postService 
@@ -23,5 +25,23 @@ export class ManagementComponent {
     this.postService.getPosts().subscribe((posts) => {
       this.posts = posts
     });
+  }
+
+  toggleComments(postId: string)
+  {
+    let post = this.collapse.get(postId)
+
+    if (post == undefined)
+      this.collapse.set(postId, true)
+    else
+      this.collapse.set(postId, !post)
+  }
+
+  isActive(postId: string): boolean{
+    let post = this.collapse.get(postId)
+    if (!post || post == undefined)
+      return false;
+
+    return post;
   }
 }
