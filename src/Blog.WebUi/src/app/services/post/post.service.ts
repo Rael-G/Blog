@@ -29,4 +29,8 @@ export class PostService {
   editPost(post: Post): Observable<Post>{
     return this.http.put<Post>(this.postUrl + '/' + post.id, post)
   }
+
+  deletePost(id: string): Observable<Post>{
+    return this.http.delete<Post>(this.postUrl + '/' + id)
+  }
 }

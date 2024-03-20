@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { PostService } from '../../../services/post/post.service';
 import { Post } from '../../../models/Post';
+import { CommentService } from '../../../services/comment/comment.service';
+import { Comment } from '../../../models/Comment';
 
 @Component({
   selector: 'app-management',
@@ -10,38 +12,68 @@ import { Post } from '../../../models/Post';
   templateUrl: './management.component.html',
   styleUrl: './management.component.scss'
 })
-export class ManagementComponent {
+export class ManagementComponent implements OnInit{
   protected posts: Post[] = []
-  protected collapse: Map<string, boolean> = new Map<string, boolean>()
-  
-  private postService: PostService
-  protected showComments = true;
+  protected coolapseComments: Map<string, boolean> = new Map<string, boolean>()
+  protected coolapseConfirmPostDelete: Map<string, boolean> = new Map<string, boolean>()
+  protected coolapseConfirmCommentDelete: Map<string, boolean> = new Map<string, boolean>()
 
-  constructor(postService: PostService) {
-    this.postService = postService 
-   }
+  constructor(private postService: PostService, private commentService: CommentService) { }
 
   ngOnInit() : void{
+    this.getPosts()
+  }
+
+  getPosts(){
     this.postService.getPosts().subscribe((posts) => {
       this.posts = posts
     });
   }
 
-  toggleComments(postId: string)
+  toggle(id: string, map: Map<string, boolean>)
   {
-    let post = this.collapse.get(postId)
+    let obj = map.get(id)
 
-    if (post == undefined)
-      this.collapse.set(postId, true)
-    else
-      this.collapse.set(postId, !post)
+    if (!obj){
+      map.set(id, true)
+      return
+    }
+
+    map.set(id, !obj)
   }
 
-  isActive(postId: string): boolean{
-    let post = this.collapse.get(postId)
-    if (!post || post == undefined)
+  isActive(id: string, map: Map<string, boolean>): boolean{
+    let obj = map.get(id)
+    if (!obj)
       return false;
 
-    return post;
+    return obj;
+  }
+
+  deletePost(post: Post)
+  {
+    this.postService.deletePost(post.id ?? '').subscribe()
+    
+    this.refresh()
+  }
+
+  deleteComment(comment: Comment)
+  {
+    this.commentService.deleteComment(comment).subscribe();
+
+    this.refresh()
+  }
+
+  refresh(){
+    this.toggleAllOff(this.coolapseConfirmCommentDelete)
+    this.toggleAllOff(this.coolapseConfirmPostDelete)
+
+    this.getPosts()
+  }
+
+  toggleAllOff(map: Map<string, boolean>){
+    map.forEach((value, key) => {
+      map.set(key, false);
+    });
   }
 }

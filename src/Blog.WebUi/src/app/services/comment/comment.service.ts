@@ -16,4 +16,8 @@ export class CommentService {
   createComment(comment: Comment): Observable<Comment>{
     return this.http.post<Comment>(`${this.postsUrl}/${comment.postId}/comments`, comment)
   }
+
+  deleteComment(comment: Comment): Observable<Comment>{
+    return this.http.delete<Comment>(`${this.postsUrl}/${comment.postId}/comments/${comment.id}`)
+  }
 }
