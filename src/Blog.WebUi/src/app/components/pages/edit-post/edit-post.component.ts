@@ -3,6 +3,8 @@ import { PostFormComponent } from '../../post-form/post-form.component'; // Impo
 import { PostService } from '../../../services/post/post.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Post } from '../../../models/Post';
+import { MessageService } from '../../../services/message.service';
+import { Color } from '../../../enums/Color';
 
 @Component({
   selector: 'app-edit-post',
@@ -16,7 +18,7 @@ export class EditPostComponent implements OnInit {
   public post!: Post
   private postId: string
 
-  constructor(private postService: PostService, private router: Router, private route: ActivatedRoute) {
+  constructor(private postService: PostService, private router: Router, private route: ActivatedRoute, private messageService: MessageService) {
     this.postId = this.route.snapshot.paramMap.get('id') ?? ''
   }
 
@@ -34,6 +36,7 @@ export class EditPostComponent implements OnInit {
     post.id = this.postId
     this.postService.editPost(post).subscribe()
     this.redirect()
+    this.messageService.add('Post was edited successfully. Refresh to reflect the changes...', Color.blue)
   }
 
   redirect() {

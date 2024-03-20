@@ -1,0 +1,35 @@
+.alert-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    width: 300px;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+
+  .green{
+    background-color: #daf8d7;
+    border-color: #c6f5cb;
+  }
+
+  .red{
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+  }
+
+  .blue{
+    background-color: #d7daf8;
+    border-color: #c6cbf5;
+  }
+
+  
+  .close-btn {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    cursor: pointer;
+  }

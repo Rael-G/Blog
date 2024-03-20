@@ -1,0 +1,6 @@
+@if (messageService.message){
+    <div class="alert-container {{getColor()}}" role="alert">
+        {{messageService.message}}
+        <span class="close-btn" (click)="closeMessage()">&times;</span>
+    </div>
+}

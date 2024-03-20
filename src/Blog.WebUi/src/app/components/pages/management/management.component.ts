@@ -4,6 +4,8 @@ import { PostService } from '../../../services/post/post.service';
 import { Post } from '../../../models/Post';
 import { CommentService } from '../../../services/comment/comment.service';
 import { Comment } from '../../../models/Comment';
+import { MessageService } from '../../../services/message.service';
+import { Color } from '../../../enums/Color';
 
 @Component({
   selector: 'app-management',
@@ -18,7 +20,7 @@ export class ManagementComponent implements OnInit{
   protected coolapseConfirmPostDelete: Map<string, boolean> = new Map<string, boolean>()
   protected coolapseConfirmCommentDelete: Map<string, boolean> = new Map<string, boolean>()
 
-  constructor(private postService: PostService, private commentService: CommentService) { }
+  constructor(private postService: PostService, private commentService: CommentService, private messageService: MessageService) { }
 
   ngOnInit() : void{
     this.getPosts()
@@ -53,22 +55,20 @@ export class ManagementComponent implements OnInit{
   deletePost(post: Post)
   {
     this.postService.deletePost(post.id ?? '').subscribe()
-    
+    this.messageService.add("Post was deleted successfully. Refresh to reflect the changes...", Color.red , 6)
     this.refresh()
   }
 
   deleteComment(comment: Comment)
   {
     this.commentService.deleteComment(comment).subscribe();
-
+    this.messageService.add("Comment was deleted successfully. Refresh to reflect the changes...", Color.red, 6)
     this.refresh()
   }
 
   refresh(){
     this.toggleAllOff(this.coolapseConfirmCommentDelete)
     this.toggleAllOff(this.coolapseConfirmPostDelete)
-
-    this.getPosts()
   }
 
   toggleAllOff(map: Map<string, boolean>){

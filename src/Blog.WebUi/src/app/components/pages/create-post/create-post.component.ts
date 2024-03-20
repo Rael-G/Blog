@@ -3,6 +3,8 @@ import { Post } from '../../../models/Post';
 import { PostService } from '../../../services/post/post.service';
 import { Router } from '@angular/router';
 import { PostFormComponent } from '../../post-form/post-form.component';
+import { Color } from '../../../enums/Color';
+import { MessageService } from '../../../services/message.service';
 
 @Component({
   selector: 'app-create-post',
@@ -14,11 +16,12 @@ import { PostFormComponent } from '../../post-form/post-form.component';
 export class CreatePostComponent {
 
 
-  constructor(private postService: PostService, private router: Router) { }
+  constructor(private postService: PostService, private router: Router, private messageService: MessageService) { }
 
   createHandler(post: Post) {
     this.postService.createPost(post).subscribe()
     this.redirect()
+    this.messageService.add('Post was created successfully. Refresh to reflect the changes...', Color.green)
   }
 
   redirect(){
