@@ -18,7 +18,6 @@ export class AddCommentComponent {
   protected submitted = false
   
   private route: ActivatedRoute
-  private router: Router
   private commentService: CommentService
 
   constructor(commentService: CommentService, route: ActivatedRoute, router: Router) {
@@ -29,7 +28,6 @@ export class AddCommentComponent {
 
     this.commentService = commentService
     this.route = route
-    this.router = router
   }
 
   createHandler(comment: Comment) {

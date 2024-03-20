@@ -1,4 +1,4 @@
-<div class="container">
+@if(post){<div class="container">
     <div class="row">
       <div class="col-md-8 offset-md-2">
         <div class="post">
@@ -10,7 +10,7 @@
         <div class="comments mt-4">
           <h2>Comments</h2>
 
-          <app-add-comment (commentAdded)="CommentAdded($event)"></app-add-comment>
+          <app-add-comment (commentAdded)="commentAdded($event)"></app-add-comment>
 
           @for(comment of post.comments; track comment){
             <div class="row">
@@ -29,3 +29,4 @@
       </div>
     </div>
   </div>
+}

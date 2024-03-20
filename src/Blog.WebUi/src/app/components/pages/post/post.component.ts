@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Post } from '../../../models/Post';
 import { PostService } from '../../../services/post/post.service';
 import { ActivatedRoute } from '@angular/router';
@@ -12,25 +12,21 @@ import { Comment } from '../../../models/Comment'
   templateUrl: './post.component.html',
   styleUrl: './post.component.scss'
 })
-export class PostComponent {
-  private postService: PostService
-  private route: ActivatedRoute
-  protected post!: Post;
+export class PostComponent implements OnInit {
+  
+  protected post!: Post
 
-  constructor(postService: PostService, route: ActivatedRoute) {
-    this.postService = postService
-    this.route = route
-   }
+  constructor(private postService: PostService, private route: ActivatedRoute) { }
 
-  ngOnInit() : void{
-    this.LoadPost();
+  ngOnInit(): void {
+    this.loadPost()
   }
 
-  protected CommentAdded(comment: Comment){
+  protected commentAdded(comment: Comment){
     this.post.comments.push(comment)
   }
 
-  LoadPost(){
+  loadPost() {
     const id = this.route.snapshot.paramMap.get('id');
     this.postService.getPost(id ?? '').subscribe((post) => {
       this.post = post
