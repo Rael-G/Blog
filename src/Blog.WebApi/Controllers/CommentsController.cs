@@ -4,7 +4,7 @@ using Blog.WebApi.Models.Input;
 
 namespace Blog.WebApi.Controllers
 {
-    [Route("api/posts/{postId}/comments")]
+    [Route("api/posts/comments")]
     [ApiController]
     public class CommentsController(ICommentService commentsService, IPostService postService) 
         : ControllerBase
@@ -20,14 +20,13 @@ namespace Blog.WebApi.Controllers
         [HttpGet]
         [ProducesResponseType(200)] // OK
         [ProducesResponseType(404)] // Not Found
-        public async Task<IActionResult> GetAll([FromRoute] Guid postId)
+        public async Task<IActionResult> GetAll([FromQuery] Guid postId)
         {
             var post = await _postService.Get(postId);
             if (post is null)
                 return NotFound(postId);
             return Ok(await _commentService.GetAll(postId));
         }
-
 
         /// <summary>
         /// Retrieves a specific comment by its ID.
@@ -50,24 +49,23 @@ namespace Blog.WebApi.Controllers
         /// <summary>
         /// Creates a new comment for a specific post.
         /// </summary>
-        /// <param name="postId">The ID of the post.</param>
         /// <param name="input">The input model containing data for the new comment.</param>
         /// <returns>Returns the newly created comment.</returns>
         [HttpPost]
         [ProducesResponseType(201)] // Created
         [ProducesResponseType(400)] // Bad Request
         [ProducesResponseType(404)] // Not Found
-        public async Task<IActionResult> Post([FromRoute]Guid postId, [FromBody] CommentInputModel input)
+        public async Task<IActionResult> Post([FromBody] CommentInputModel input)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var post = await _postService.Get(postId);
+            var post = await _postService.Get(input.PostId);
             if (post is null)
-                return NotFound(postId);
+                return NotFound(input.PostId);
 
             var comment = input.InputToDto();
-            comment.PostId = postId;
+            comment.PostId = input.PostId;
             try
             {
                 _commentService.Create(comment);
@@ -78,7 +76,7 @@ namespace Blog.WebApi.Controllers
             }
 
             await _commentService.Commit();
-            return CreatedAtAction(nameof(Get), new { postId, comment.Id }, comment);
+            return CreatedAtAction(nameof(Get), new { input.PostId, comment.Id }, comment);
         }
 
         /// <summary>
