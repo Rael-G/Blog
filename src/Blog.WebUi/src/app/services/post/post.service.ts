@@ -25,4 +25,8 @@ export class PostService {
   createPost(post: Post): Observable<Post>{
     return this.http.post<Post>(this.postUrl, post)
   }
+
+  editPost(post: Post): Observable<Post>{
+    return this.http.put<Post>(this.postUrl + '/' + post.id, post)
+  }
 }

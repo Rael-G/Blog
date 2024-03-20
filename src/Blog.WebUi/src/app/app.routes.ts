@@ -5,6 +5,7 @@ import { ContactComponent } from './components/pages/contact/contact.component';
 import { PostComponent } from './components/pages/post/post.component';
 import { ManagementComponent } from './components/pages/management/management.component';
 import { CreatePostComponent } from './components/pages/create-post/create-post.component';
+import { EditPostComponent } from './components/pages/edit-post/edit-post.component';
 
 export const routes: Routes =
     [
@@ -14,5 +15,7 @@ export const routes: Routes =
         { path: 'posts/example', component: PostComponent },
         { path: 'management', component: ManagementComponent },
         { path: 'create-post', component: CreatePostComponent },
-        { path: 'posts/:id', component: PostComponent }
+        { path: 'posts/:id', component: PostComponent },
+        { path: 'edit-post/:id', component: EditPostComponent }
+
     ];

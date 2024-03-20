@@ -1,0 +1,7 @@
+<div class="container">
+    <h1>Edit Post</h1>
+    @if(post){
+        <app-post-form (postSubmitted)="editHandler($event)" [post]="post"></app-post-form>
+    }
+    
+</div>
