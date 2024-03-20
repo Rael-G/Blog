@@ -13,7 +13,6 @@ import { Comment } from '../../../models/Comment'
   styleUrl: './post.component.scss'
 })
 export class PostComponent implements OnInit {
-  
   protected post!: Post
 
   constructor(private postService: PostService, private route: ActivatedRoute) { }
@@ -22,14 +21,14 @@ export class PostComponent implements OnInit {
     this.loadPost()
   }
 
-  protected commentAdded(comment: Comment){
+  commentAdded(comment: Comment) {
     this.post.comments.push(comment)
   }
 
   loadPost() {
-    const id = this.route.snapshot.paramMap.get('id');
+    const id = this.route.snapshot.paramMap.get('id')
     this.postService.getPost(id ?? '').subscribe((post) => {
       this.post = post
-    });
+    })
   }
 }

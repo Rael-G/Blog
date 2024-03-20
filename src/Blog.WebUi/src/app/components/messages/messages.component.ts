@@ -11,16 +11,14 @@ import { Color } from '../../enums/Color';
   styleUrl: './messages.component.scss'
 })
 export class MessagesComponent {
-
-
   constructor(protected messageService: MessageService) { }
 
-  closeMessage(){
+  closeMessage() {
     this.messageService.clear()
   }
 
   getColor(): string {
     return this.messageService.color === Color.green ? 'green' :
-           this.messageService.color === Color.red ? 'red' : 'blue';
+      this.messageService.color === Color.red ? 'red' : 'blue'
   }
 }

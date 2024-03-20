@@ -10,13 +10,12 @@ import { Post } from '../../models/Post';
   styleUrl: './post-form.component.scss'
 })
 export class PostFormComponent implements OnInit {
-
   protected postForm: FormGroup
   protected submitted = false
-  @Input() post!: Post;
+  @Input() post!: Post
 
-  @Output() postSubmitted = new EventEmitter<Post>();
-  
+  @Output() postSubmitted = new EventEmitter<Post>()
+
   constructor() {
     this.postForm = new FormGroup({
       title: new FormControl('', [Validators.required, Validators.maxLength(255)]),
@@ -25,15 +24,15 @@ export class PostFormComponent implements OnInit {
     });
   }
 
-  ngOnInit(){
-    this.getPostDetails();
+  ngOnInit() {
+    this.getPostDetails()
   }
 
   getPostDetails() {
-      this.postForm.patchValue({
-        title: this.post?.title,
-        content: this.post?.content
-      });
+    this.postForm.patchValue({
+      title: this.post?.title,
+      content: this.post?.content
+    })
   }
 
   submit() {
@@ -44,7 +43,7 @@ export class PostFormComponent implements OnInit {
 
     this.postSubmitted.emit(this.postForm.value)
   }
-  
+
   //example
   categories: string[] = [
     'Sports',

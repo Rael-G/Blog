@@ -11,7 +11,7 @@ export class MessageService {
 
   constructor() { }
 
-  add(message: string, color: Color, seconds: number = 4){
+  add(message: string, color: Color, seconds: number = 4) {
     this.message = message
     this.color = color
     setTimeout(() => {
@@ -19,7 +19,7 @@ export class MessageService {
     }, seconds * 1000);
   }
 
-  clear(){
+  clear() {
     this.message = ''
   }
 

@@ -1,32 +1,32 @@
 @if(post){<div class="container">
-    <div class="row">
-      <div class="col-md-8 offset-md-2">
-        <div class="post">
-          <h1 class="post-title">{{post.title}}</h1>
-          <div class="post-content">
-            {{post.content}}
-          </div>
+  <div class="row">
+    <div class="col-md-8 offset-md-2">
+      <div class="post">
+        <h1 class="post-title">{{post.title}}</h1>
+        <div class="post-content">
+          {{post.content}}
         </div>
-        <div class="comments mt-4">
-          <h2>Comments</h2>
+      </div>
+      <div class="comments mt-4">
+        <h2>Comments</h2>
 
-          <app-add-comment (commentAdded)="commentAdded($event)"></app-add-comment>
+        <app-add-comment (commentAdded)="commentAdded($event)"></app-add-comment>
 
-          @for(comment of post.comments; track comment){
-            <div class="row">
-              <div class="col-md-6 mb-4">
-                <div class="card">
-                  <div class="card-body">
-                    <p class="card-title font-weight-bold">{{ comment.author }}</p>
-                    <p class="card-text">{{ comment.content }}</p>
-                    </div>
-                </div>
+        @for(comment of post.comments; track comment){
+        <div class="row">
+          <div class="col-md-6 mb-4">
+            <div class="card">
+              <div class="card-body">
+                <p class="card-title font-weight-bold">{{ comment.author }}</p>
+                <p class="card-text">{{ comment.content }}</p>
               </div>
             </div>
-          }
-
+          </div>
         </div>
+        }
+
       </div>
     </div>
   </div>
+</div>
 }

@@ -14,8 +14,6 @@ import { MessageService } from '../../../services/message.service';
   styleUrl: './create-post.component.scss'
 })
 export class CreatePostComponent {
-
-
   constructor(private postService: PostService, private router: Router, private messageService: MessageService) { }
 
   createHandler(post: Post) {
@@ -24,8 +22,7 @@ export class CreatePostComponent {
     this.messageService.add('Post was created successfully. Refresh to reflect the changes...', Color.green)
   }
 
-  redirect(){
+  redirect() {
     this.router.navigate(['/management'])
   }
-
 }

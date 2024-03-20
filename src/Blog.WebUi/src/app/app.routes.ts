@@ -17,5 +17,4 @@ export const routes: Routes =
         { path: 'create-post', component: CreatePostComponent },
         { path: 'posts/:id', component: PostComponent },
         { path: 'edit-post/:id', component: EditPostComponent }
-
     ];

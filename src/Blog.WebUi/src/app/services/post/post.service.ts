@@ -14,23 +14,23 @@ export class PostService {
 
   constructor(private http: HttpClient) { }
 
-  getPosts(): Observable<Post[]>{
+  getPosts(): Observable<Post[]> {
     return this.http.get<Post[]>(this.postUrl)
   }
 
-  getPost(id: string): Observable<Post>{
+  getPost(id: string): Observable<Post> {
     return this.http.get<Post>(this.postUrl + '/' + id)
   }
 
-  createPost(post: Post): Observable<Post>{
+  createPost(post: Post): Observable<Post> {
     return this.http.post<Post>(this.postUrl, post)
   }
 
-  editPost(post: Post): Observable<Post>{
+  editPost(post: Post): Observable<Post> {
     return this.http.put<Post>(this.postUrl + '/' + post.id, post)
   }
 
-  deletePost(id: string): Observable<Post>{
+  deletePost(id: string): Observable<Post> {
     return this.http.delete<Post>(this.postUrl + '/' + id)
   }
 }

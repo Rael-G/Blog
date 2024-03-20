@@ -1,5 +1,5 @@
-export enum Color{
-    green,
-    red, 
-    blue
-  }
+export enum Color {
+  green,
+  red,
+  blue
+}

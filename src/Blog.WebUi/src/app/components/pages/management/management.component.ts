@@ -14,7 +14,7 @@ import { Color } from '../../../enums/Color';
   templateUrl: './management.component.html',
   styleUrl: './management.component.scss'
 })
-export class ManagementComponent implements OnInit{
+export class ManagementComponent implements OnInit {
   protected posts: Post[] = []
   protected coolapseComments: Map<string, boolean> = new Map<string, boolean>()
   protected coolapseConfirmPostDelete: Map<string, boolean> = new Map<string, boolean>()
@@ -22,21 +22,20 @@ export class ManagementComponent implements OnInit{
 
   constructor(private postService: PostService, private commentService: CommentService, private messageService: MessageService) { }
 
-  ngOnInit() : void{
+  ngOnInit(): void {
     this.getPosts()
   }
 
-  getPosts(){
+  getPosts() {
     this.postService.getPosts().subscribe((posts) => {
       this.posts = posts
     });
   }
 
-  toggle(id: string, map: Map<string, boolean>)
-  {
+  toggle(id: string, map: Map<string, boolean>) {
     let obj = map.get(id)
 
-    if (!obj){
+    if (!obj) {
       map.set(id, true)
       return
     }
@@ -44,7 +43,7 @@ export class ManagementComponent implements OnInit{
     map.set(id, !obj)
   }
 
-  isActive(id: string, map: Map<string, boolean>): boolean{
+  isActive(id: string, map: Map<string, boolean>): boolean {
     let obj = map.get(id)
     if (!obj)
       return false;
@@ -52,26 +51,24 @@ export class ManagementComponent implements OnInit{
     return obj;
   }
 
-  deletePost(post: Post)
-  {
+  deletePost(post: Post) {
     this.postService.deletePost(post.id ?? '').subscribe()
-    this.messageService.add("Post was deleted successfully. Refresh to reflect the changes...", Color.red , 6)
+    this.messageService.add("Post was deleted successfully. Refresh to reflect the changes...", Color.red, 6)
     this.refresh()
   }
 
-  deleteComment(comment: Comment)
-  {
+  deleteComment(comment: Comment) {
     this.commentService.deleteComment(comment).subscribe();
     this.messageService.add("Comment was deleted successfully. Refresh to reflect the changes...", Color.red, 6)
     this.refresh()
   }
 
-  refresh(){
+  refresh() {
     this.toggleAllOff(this.coolapseConfirmCommentDelete)
     this.toggleAllOff(this.coolapseConfirmPostDelete)
   }
 
-  toggleAllOff(map: Map<string, boolean>){
+  toggleAllOff(map: Map<string, boolean>) {
     map.forEach((value, key) => {
       map.set(key, false);
     });
