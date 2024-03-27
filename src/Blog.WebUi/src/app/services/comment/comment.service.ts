@@ -9,15 +9,15 @@ import { Comment } from '../../interfaces/Comment'
 })
 export class CommentService {
   private baseApiUrl = environment.baseApiUrl
-  private postsUrl = `${this.baseApiUrl}/posts`
+  private commentsUrl = `${this.baseApiUrl}/comments`
 
   constructor(private http: HttpClient) { }
 
   createComment(comment: Comment): Observable<Comment> {
-    return this.http.post<Comment>(`${this.postsUrl}/${comment.postId}/comments`, comment)
+    return this.http.post<Comment>(`${this.commentsUrl}`, comment)
   }
 
   deleteComment(comment: Comment): Observable<Comment> {
-    return this.http.delete<Comment>(`${this.postsUrl}/${comment.postId}/comments/${comment.id}`)
+    return this.http.delete<Comment>(`${this.commentsUrl}/${comment.id}`)
   }
 }

@@ -102,17 +102,16 @@ namespace Blog.UnitTest.WebApi.Controllers
         {
             // Arrange
             var postId = Guid.NewGuid();
-            var inputModel = new CommentInputModel { Author = "Author", Content = "Content" };
+            var inputModel = new CommentInputModel { Author = "Author", Content = "Content", PostId = postId };
 
             _mockPostService.Setup(ps => ps.Get(postId)).ReturnsAsync(new PostDto { Id = postId });
 
             // Act
-            var result = await _controller.Post(postId, inputModel);
+            var result = await _controller.Post(inputModel);
 
             // Assert
             var createdAtActionResult = result.Should().BeOfType<CreatedAtActionResult>().Subject;
             createdAtActionResult.ActionName.Should().Be(nameof(CommentsController.Get));
-            createdAtActionResult.RouteValues["postId"].Should().Be(postId);
             createdAtActionResult.RouteValues["id"].Should().Be(createdAtActionResult.Value.As<CommentDto>().Id);
             _mockCommentService.Verify(cs => cs.Commit(), Times.Once());
 
@@ -123,12 +122,12 @@ namespace Blog.UnitTest.WebApi.Controllers
         {
             // Arrange
             var postId = Guid.NewGuid();
-            var inputModel = new CommentInputModel { Author = "Author", Content = "Content" };
+            var inputModel = new CommentInputModel { Author = "Author", Content = "Content", PostId = postId };
 
-            _mockPostService.Setup(ps => ps.Get(postId)).ReturnsAsync(() => null);
+            _mockPostService.Setup(ps => ps.Get(inputModel.PostId)).ReturnsAsync(() => null);
 
             // Act
-            var result = await _controller.Post(postId, inputModel);
+            var result = await _controller.Post(inputModel);
 
             // Assert
             result.Should().BeOfType<NotFoundObjectResult>();
@@ -139,12 +138,12 @@ namespace Blog.UnitTest.WebApi.Controllers
         {
             // Arrange
             var postId = Guid.NewGuid();
-            var inputModel = new CommentInputModel { }; // Invalid input model
+            var inputModel = new CommentInputModel { Author = "invalid author", Content = "invalid content", PostId = postId}; // Invalid input model
             _controller.ModelState.AddModelError("Author", "The Author field is required.");
             _controller.ModelState.AddModelError("Content", "The Content field is required.");
 
             // Act
-            var result = await _controller.Post(postId, inputModel);
+            var result = await _controller.Post(inputModel);
 
             // Assert
             result.Should().BeOfType<BadRequestObjectResult>();
@@ -155,8 +154,9 @@ namespace Blog.UnitTest.WebApi.Controllers
         {
             // Arrange
             var commentId = Guid.NewGuid();
-            var inputModel = new CommentInputModel { Author = "Updated Author", Content = "Updated Content" };
-            var commentDto = new CommentDto { Id = commentId, Author = "Original Author", Content = "Original Content" };
+            var postId = Guid.NewGuid();
+            var inputModel = new CommentInputModel { Author = "Updated Author", Content = "Updated Content", PostId = postId };
+            var commentDto = new CommentDto { Id = commentId, Author = "Original Author", Content = "Original Content", PostId = postId };
 
             _mockCommentService.Setup(cs => cs.Get(commentId)).ReturnsAsync(commentDto);
 
@@ -174,7 +174,7 @@ namespace Blog.UnitTest.WebApi.Controllers
         {
             // Arrange
             var commentId = Guid.NewGuid();
-            var inputModel = new CommentInputModel { Author = "Updated Author", Content = "Updated Content" };
+            var inputModel = new CommentInputModel { Author = "Updated Author", Content = "Updated Content", PostId = Guid.NewGuid() };
 
             _mockCommentService.Setup(cs => cs.Get(commentId)).ReturnsAsync(() => null);
 
@@ -190,7 +190,7 @@ namespace Blog.UnitTest.WebApi.Controllers
         {
             // Arrange
             var commentId = Guid.NewGuid();
-            var inputModel = new CommentInputModel { }; // Invalid input model
+            var inputModel = new CommentInputModel { Author = "Invalid Author", Content = "Invalid Content", PostId = Guid.NewGuid() }; // Invalid input model
             _controller.ModelState.AddModelError("Author", "The Author field is required.");
             _controller.ModelState.AddModelError("Content", "The Content field is required.");
 

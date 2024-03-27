@@ -4,7 +4,7 @@ using Blog.WebApi.Models.Input;
 
 namespace Blog.WebApi.Controllers
 {
-    [Route("api/posts/comments")]
+    [Route("api/comments")]
     [ApiController]
     public class CommentsController(ICommentService commentsService, IPostService postService) 
         : ControllerBase
