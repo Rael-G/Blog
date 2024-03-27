@@ -1,0 +1,55 @@
+networks:
+  blog-network:
+    driver: bridge
+
+volumes:
+  postgres-volume:
+
+services:
+
+  server:
+    ports:
+      - 9999:80
+      - 3000:3000
+    image: nginx
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    networks:
+      - blog-network
+    depends_on: 
+      - app
+      - api
+
+  db:
+    image: postgres
+    ports:
+      - 5432:5432
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: blog 
+      POSTGRES_USER: blog 
+      POSTGRES_DB: blog
+    volumes:
+      - postgres-volume:/var/lib/postgresql/data
+    networks:
+      - blog-network
+
+  api:
+    restart: always
+    build:
+      context: .
+      dockerfile: src/Blog.WebApi/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80;
+    depends_on: 
+      - db
+    networks:
+      - blog-network
+
+  app:
+    build:
+      context: .
+      dockerfile: src/Blog.WebUi/Dockerfile
+    networks:
+      - blog-network
