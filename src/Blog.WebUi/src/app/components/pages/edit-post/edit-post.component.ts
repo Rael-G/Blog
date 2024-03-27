@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { PostFormComponent } from '../../post-form/post-form.component'; // Import the form component
 import { PostService } from '../../../services/post/post.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Post } from '../../../models/Post';
+import { Post } from '../../../interfaces/Post';
 import { MessageService } from '../../../services/message.service';
 import { Color } from '../../../enums/Color';
 

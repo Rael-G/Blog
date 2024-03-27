@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { PostService } from '../../../services/post/post.service';
-import { Post } from '../../../models/Post';
+import { Post } from '../../../interfaces/Post';
 import { CommentService } from '../../../services/comment/comment.service';
-import { Comment } from '../../../models/Comment';
+import { Comment } from '../../../interfaces/Comment';
 import { MessageService } from '../../../services/message.service';
 import { Color } from '../../../enums/Color';
 

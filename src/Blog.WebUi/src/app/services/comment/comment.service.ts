@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { enviroment } from '../../../enviroments/enviroment';
+import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { Comment } from '../../models/Comment'
+import { Comment } from '../../interfaces/Comment'
 
 @Injectable({
   providedIn: 'root'
 })
 export class CommentService {
-  private baseApiUrl = enviroment.baseApiUrl
+  private baseApiUrl = environment.baseApiUrl
   private postsUrl = `${this.baseApiUrl}/posts`
 
   constructor(private http: HttpClient) { }

@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Post } from '../../../models/Post';
+import { Post } from '../../../interfaces/Post';
 import { PostService } from '../../../services/post/post.service';
 import { ActivatedRoute } from '@angular/router';
 import { AddCommentComponent } from './add-comment/add-comment.component';
-import { Comment } from '../../../models/Comment'
+import { Comment } from '../../../interfaces/Comment'
 
 @Component({
   selector: 'app-post',

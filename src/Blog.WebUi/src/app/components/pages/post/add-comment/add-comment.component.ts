@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { CommentService } from '../../../../services/comment/comment.service';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Comment } from '../../../../models/Comment';
+import { Comment } from '../../../../interfaces/Comment';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({

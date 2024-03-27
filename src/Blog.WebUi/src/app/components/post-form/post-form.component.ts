@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Post } from '../../models/Post';
+import { Post } from '../../interfaces/Post';
 
 @Component({
   selector: 'app-post-form',

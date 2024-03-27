@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { PaginationComponent } from "../../pagination/pagination.component";
 import { RouterLink } from '@angular/router';
 import { PostService } from '../../../services/post/post.service';
-import { Post } from '../../../models/Post';
-import { enviroment } from '../../../../enviroments/enviroment';
+import { Post } from '../../../interfaces/Post';
 
 @Component({
   selector: 'app-home',
@@ -17,7 +16,6 @@ export class HomeComponent implements OnInit {
   protected pageSize: number = 10
   protected totalPosts: number = 100
   protected posts: Post[] = []
-  protected categoriesUrl: string = enviroment.baseAppUrl + '/categories'
 
   constructor(private postService: PostService) { }
 
