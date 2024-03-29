@@ -11,6 +11,9 @@ public class CommentService(ICommentRepository commentRepository, IMapper mapper
 
     public void Create(CommentDto commentDto)
     {
+        commentDto.CreatedTime = DateTime.UtcNow;
+        commentDto.UpdateTime = DateTime.UtcNow;
+
         var comment = _mapper.Map<Comment>(commentDto);
         comment.Validate();
 
@@ -19,6 +22,8 @@ public class CommentService(ICommentRepository commentRepository, IMapper mapper
 
     public void Update(CommentDto commentDto)
     {
+        commentDto.UpdateTime = DateTime.UtcNow;
+
         var comment = _mapper.Map<Comment>(commentDto);
         comment.Validate();
 

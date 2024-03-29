@@ -10,12 +10,17 @@ public class PostTests
         var id = Guid.NewGuid();
         var title = "My Post";
         var content = "Post content";
+        var created = DateTime.Now;
+        var updated = DateTime.Now;
 
-        var post = new Post(id, title, content, []);
+        var post = new Post(id, created, updated, title, content);
 
         Assert.Equal(id, post.Id);
         Assert.Equal(title, post.Title);
         Assert.Equal(content, post.Content);
+        Assert.Equal(created, post.CreatedTime);
+        Assert.Equal(updated, post.UpdateTime);
+
     }
 
     [Theory]
@@ -26,9 +31,10 @@ public class PostTests
     {
         Guid id = Guid.NewGuid();
         string content = "Content";
-        IEnumerable<Comment> comments = [];
+        var created = DateTime.Now;
+        var updated = DateTime.Now;
 
-        var post = new Post(id, title, content, comments);
+        var post = new Post(id, created, updated, title, content);
 
         Assert.Throws<ArgumentException>(() => post.Validate());
     }
@@ -39,9 +45,10 @@ public class PostTests
         Guid id = Guid.NewGuid();
         string title = new string('X', 257);
         string content = "Content";
-        IEnumerable<Comment> comments = [];
+        var created = DateTime.Now;
+        var updated = DateTime.Now;
 
-        var post = new Post(id, title, content, comments);
+        var post = new Post(id, created, updated, title, content);
 
         Assert.Throws<ArgumentException>(() => post.Validate());
     }
@@ -54,9 +61,10 @@ public class PostTests
     {
         Guid id = Guid.NewGuid();
         string title = "Title";
-        IEnumerable<Comment> comments = [];
+        var created = DateTime.Now;
+        var updated = DateTime.Now;
 
-        var post = new Post(id, title, content, comments);
+        var post = new Post(id, created, updated, title, content);
 
         Assert.Throws<ArgumentException>(() => post.Validate());
     }

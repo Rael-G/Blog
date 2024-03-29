@@ -10,6 +10,9 @@ public class PostService(IPostRepository postRepository, IMapper mapper) : IPost
 
     public void Create(PostDto postDto)
     {
+        postDto.CreatedTime = DateTime.UtcNow;
+        postDto.UpdateTime = DateTime.UtcNow;
+
         var post = _mapper.Map<Post>(postDto);
         post.Validate();
 
@@ -18,6 +21,8 @@ public class PostService(IPostRepository postRepository, IMapper mapper) : IPost
 
     public void Update(PostDto postDto)
     {
+        postDto.UpdateTime = DateTime.UtcNow;
+        
         var post = _mapper.Map<Post>(postDto);
         post.Validate();
 

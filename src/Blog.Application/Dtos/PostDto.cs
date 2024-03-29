@@ -3,6 +3,8 @@
 public class PostDto
 {
     public Guid? Id { get; set; }
+    public DateTime CreatedTime { get; set; }
+    public DateTime UpdateTime { get; set; }
     public string Title { get; set; }
     public string Content { get; set; }
     public IEnumerable<CommentDto> Comments { get; set; }

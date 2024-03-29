@@ -12,17 +12,38 @@ namespace Blog.UnitTest.Application.Services
         private readonly Mock<IMapper> _mockMapper;
         private readonly PostService _postService;
 
-        private readonly Post _post = new(Guid.NewGuid(), "Title", "Content");
+        private readonly Post _post;
 
         public PostServiceTests()
         {
             _mockRepository = new Mock<IPostRepository>();
             _mockMapper = new Mock<IMapper>();
             _postService = new PostService(_mockRepository.Object, _mockMapper.Object);
+
+            var createdTime = DateTime.Now.Subtract(TimeSpan.FromMinutes(5));
+            var updateTime = DateTime.Now;
+
+            _post = new(Guid.NewGuid(), createdTime, updateTime, "Title", "Content", []);
         }
 
         [Fact]
-        public void Create_Should_Call_Validate_And_Repository_Create()
+        public void Create_Should_Call_Validate()
+        {
+            var postDto = new PostDto()
+            { Title = "Title", Content = "Content" };
+
+            var invalidPost = _post;
+            invalidPost.Title = "";
+
+            _mockMapper.Setup(m => m.Map<Post>(It.IsAny<PostDto>()))
+                .Returns(invalidPost);
+
+            //If the exception was throw here, it is because Validate() was Called
+            Assert.Throws<ArgumentException>(() => _postService.Create(postDto));
+        }
+
+        [Fact]
+        public void Create_Should_Call_Repository_Create()
         {
             var postDto = new PostDto()
             { Title = "Title", Content = "Content" };
@@ -36,7 +57,39 @@ namespace Blog.UnitTest.Application.Services
         }
 
         [Fact]
-        public void Update_Should_Call_Validate_And_Repository_Update()
+        public void Create_Should_DefineTime()
+        {
+            var creationTime = DateTime.UtcNow;
+            var postDto = new PostDto()
+            { Title = "Title", Content = "Content" };
+
+            _mockMapper.Setup(m => m.Map<Post>(It.IsAny<PostDto>()))
+                .Returns(_post);
+
+            _postService.Create(postDto);
+
+            postDto.CreatedTime.Should().BeAfter(creationTime);
+            postDto.UpdateTime.Should().BeAfter(creationTime);
+        }
+
+        [Fact]
+        public void Update_Should_Call_Validate()
+        {
+            var postDto = new PostDto()
+            { Title = "Title", Content = "Content" };
+
+            var invalidPost = _post;
+            invalidPost.Title = "";
+
+            _mockMapper.Setup(m => m.Map<Post>(It.IsAny<PostDto>()))
+                .Returns(invalidPost);
+
+            //If the exception was throw here, it is because Validate() was Called
+            Assert.Throws<ArgumentException>(() => _postService.Update(postDto));
+        }
+
+        [Fact]
+        public void Update_Should_Call_Repository_Update()
         {
             var postDto = new PostDto()
             { Id = _post.Id, Title = "Updated Title", Content = "Updated Content" };
@@ -47,6 +100,21 @@ namespace Blog.UnitTest.Application.Services
             _postService.Update(postDto);
 
             _mockRepository.Verify(m => m.Update(_post), Times.Once);
+        }
+
+        [Fact]
+        public void Update_Should_DefineTime()
+        {
+            var creationTime = DateTime.UtcNow;
+            var postDto = new PostDto()
+            { Title = "Title", Content = "Content" };
+
+            _mockMapper.Setup(m => m.Map<Post>(It.IsAny<PostDto>()))
+                .Returns(_post);
+
+            _postService.Update(postDto);
+
+            postDto.UpdateTime.Should().BeAfter(creationTime);
         }
 
         [Fact]

@@ -1,22 +1,23 @@
 ﻿using Blog.Domain;
-using System;
 
 namespace Blog.UnitTest.Domain.Entities;
 
 public class CommentTests
 {
-    Post _post = new(Guid.NewGuid(), "Title", "Content", []);
+    private readonly Post _post = new(Guid.NewGuid(), DateTime.Now.Subtract(TimeSpan.FromMinutes(5)), DateTime.Now, "Title", "Content", []);
 
     [Fact]
     public void Comment_Initialization()
     {
-        Guid guid = Guid.NewGuid();
+        Guid id = Guid.NewGuid();
         string author = "Test Author";
         string content = "Test Content";
+        var created = DateTime.Now;
+        var updated = DateTime.Now;
 
-        var comment = new Comment(guid, author, content, _post);
+        var comment = new Comment(id, created, updated, author, content, _post);
 
-        Assert.Equal(guid, comment.Id);
+        Assert.Equal(id, comment.Id);
         Assert.Equal(author, comment.Author);
         Assert.Equal(content, comment.Content);
         Assert.Equal(_post, comment.Post);
@@ -31,7 +32,10 @@ public class CommentTests
     {
         Guid id = Guid.NewGuid();
         string content = "Content";
-        var comment = new Comment(id, author, content, _post);
+        var created = DateTime.Now;
+        var updated = DateTime.Now;
+
+        var comment = new Comment(id, created, updated, author, content, _post);
 
         Assert.Throws<ArgumentException>(() => comment.Validate());
     }
@@ -42,7 +46,10 @@ public class CommentTests
         Guid id = Guid.NewGuid();
         string author = new('X', 257);
         string content = "Content";
-        var comment = new Comment(id, author, content, _post);
+        var created = DateTime.Now;
+        var updated = DateTime.Now;
+
+        var comment = new Comment(id, created, updated, author, content, _post);
 
         Assert.Throws<ArgumentException>(() => comment.Validate());
     }
@@ -55,7 +62,10 @@ public class CommentTests
     {
         Guid id = Guid.NewGuid();
         string author = "Author";
-        var comment = new Comment(id, author, content, _post);
+        var created = DateTime.Now;
+        var updated = DateTime.Now;
+
+        var comment = new Comment(id, created, updated, author, content, _post);
 
         Assert.Throws<ArgumentException>(() => comment.Validate());
     }
@@ -66,7 +76,10 @@ public class CommentTests
         Guid id = Guid.NewGuid();
         string author = "Author";
         string content = new('X', 513);
-        var comment = new Comment(id, author, content, _post);
+        var created = DateTime.Now;
+        var updated = DateTime.Now;
+
+        var comment = new Comment(id, created, updated, author, content, _post);
 
         Assert.Throws<ArgumentException>(() => comment.Validate());
     }

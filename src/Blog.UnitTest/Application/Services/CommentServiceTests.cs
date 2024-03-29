@@ -20,13 +20,33 @@ namespace Blog.UnitTest.Application.Services
             _mockRepository = new Mock<ICommentRepository>();
             _mockMapper = new Mock<IMapper>();
             _commentService = new CommentService(_mockRepository.Object, _mockMapper.Object);
+            var postCreatedTime = DateTime.Now.Subtract(TimeSpan.FromMinutes(10));
+            var commentCreatedTime = DateTime.Now.Subtract(TimeSpan.FromMinutes(5));
+            var updateTime = DateTime.Now;
 
-            _post = new(Guid.NewGuid(), "Title", "Content", []);
-            _comment = new(Guid.NewGuid(), "Author", "Content", _post);
+
+            _post = new(Guid.NewGuid(), postCreatedTime, updateTime, "Title", "Content", []);
+            _comment = new(Guid.NewGuid(), commentCreatedTime, updateTime, "Author", "Content", _post);
         }
 
         [Fact]
-        public void Create_Should_Call_Validate_And_Repository_Create()
+        public void Create_Should_Call_Validate()
+        {
+            var commentDto = new CommentDto()
+            { Author = "Author", Content = "Content" };
+
+            var invalidComment = _comment;
+            invalidComment.Author = "";
+
+            _mockMapper.Setup(m => m.Map<Comment>(It.IsAny<CommentDto>()))
+                .Returns(invalidComment);
+
+            //If the exception was throw here, it is because Validate() was Called
+            Assert.Throws<ArgumentException>(() => _commentService.Create(commentDto));
+        }
+
+        [Fact]
+        public void Create_Should_Call_Repository_Create()
         {
             var commentDto = new CommentDto()
             { Author = "Author", Content = "Content" };
@@ -40,10 +60,42 @@ namespace Blog.UnitTest.Application.Services
         }
 
         [Fact]
-        public void Update_Should_Call_Validate_And_Repository_Update()
+        public void Create_Should_DefineTime()
+        {
+            var creationTime = DateTime.UtcNow;
+            var commentDto = new CommentDto()
+            { Author = "Author", Content = "Content" };
+
+            _mockMapper.Setup(m => m.Map<Comment>(It.IsAny<CommentDto>()))
+                .Returns(_comment);
+
+            _commentService.Create(commentDto);
+
+            commentDto.CreatedTime.Should().BeAfter(creationTime);
+            commentDto.UpdateTime.Should().BeAfter(creationTime);
+        }
+
+        [Fact]
+        public void Update_Should_Call_Validate()
         {
             var commentDto = new CommentDto()
-            { Id = _comment.Id, Author = "Other Author", Content = "Another Content" };
+            { Author = "Author", Content = "Content" };
+
+            var invalidComment = _comment;
+            invalidComment.Author = "";
+
+            _mockMapper.Setup(m => m.Map<Comment>(It.IsAny<CommentDto>()))
+                .Returns(invalidComment);
+
+            //If the exception was throw here, it is because Validate() was Called
+            Assert.Throws<ArgumentException>(() => _commentService.Update(commentDto));
+        }
+
+        [Fact]
+        public void Update_Should_Call_Repository_Create()
+        {
+            var commentDto = new CommentDto()
+            { Author = "Author", Content = "Content" };
 
             _mockMapper.Setup(m => m.Map<Comment>(It.IsAny<CommentDto>()))
                 .Returns(_comment);
@@ -51,6 +103,21 @@ namespace Blog.UnitTest.Application.Services
             _commentService.Update(commentDto);
 
             _mockRepository.Verify(m => m.Update(_comment), Times.Once);
+        }
+
+        [Fact]
+        public void Update_Should_DefineTime()
+        {
+            var creationTime = DateTime.UtcNow;
+            var commentDto = new CommentDto()
+            { Author = "Author", Content = "Content" };
+
+            _mockMapper.Setup(m => m.Map<Comment>(It.IsAny<CommentDto>()))
+                .Returns(_comment);
+
+            _commentService.Update(commentDto);
+
+            commentDto.UpdateTime.Should().BeAfter(creationTime);
         }
 
         [Fact]
