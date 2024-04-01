@@ -29,6 +29,13 @@ export class ManagementComponent implements OnInit {
   getPosts() {
     this.postService.getPosts().subscribe((posts) => {
       this.posts = posts
+      for(let post of posts){
+        if (post.id){
+          this.commentService.getComments(post.id).subscribe((comments) => {
+            post.comments = comments
+          })
+        }
+      }
     });
   }
 

@@ -4,83 +4,62 @@ namespace Blog.UnitTest.Domain.Entities;
 
 public class CommentTests
 {
-    private readonly Post _post = new(Guid.NewGuid(), DateTime.Now.Subtract(TimeSpan.FromMinutes(5)), DateTime.Now, "Title", "Content", []);
-
+    private readonly Guid _postId = Guid.NewGuid();
     [Fact]
-    public void Comment_Initialization()
+    public void Comment_Initialization_WithValidValues_Success()
     {
         Guid id = Guid.NewGuid();
         string author = "Test Author";
         string content = "Test Content";
-        var created = DateTime.Now;
-        var updated = DateTime.Now;
 
-        var comment = new Comment(id, created, updated, author, content, _post);
+        var comment = new Comment(id, author, content, _postId);
 
-        Assert.Equal(id, comment.Id);
         Assert.Equal(author, comment.Author);
         Assert.Equal(content, comment.Content);
-        Assert.Equal(_post, comment.Post);
-        Assert.Equal(_post.Id, comment.PostId);
+        Assert.Equal(_postId, comment.PostId);
     }
 
     [Theory]
     [InlineData(null)]
     [InlineData("")]
     [InlineData(" ")]
-    public void Comment_Validate_AuthorNullOrEmpty_ThrowsArgumentException(string author)
+    public void Comment_Initialization_AuthorNullOrEmpty_ThrowsArgumentException(string author)
     {
         Guid id = Guid.NewGuid();
         string content = "Content";
-        var created = DateTime.Now;
-        var updated = DateTime.Now;
 
-        var comment = new Comment(id, created, updated, author, content, _post);
-
-        Assert.Throws<ArgumentException>(() => comment.Validate());
+        Assert.Throws<ArgumentException>(() => new Comment(id, author, content, _postId));
     }
 
     [Fact]
-    public void Comment_Validate_AuthorExceedsMaxLength_ThrowsArgumentException()
+    public void Comment_Initialization_AuthorExceedsMaxLength_ThrowsArgumentException()
     {
         Guid id = Guid.NewGuid();
-        string author = new('X', 257);
+        string author = new('X', Comment.AuthorMaxLength + 1);
         string content = "Content";
-        var created = DateTime.Now;
-        var updated = DateTime.Now;
 
-        var comment = new Comment(id, created, updated, author, content, _post);
-
-        Assert.Throws<ArgumentException>(() => comment.Validate());
+        Assert.Throws<ArgumentException>(() => new Comment(id, author, content, _postId));
     }
 
     [Theory]
     [InlineData(null)]
     [InlineData("")]
     [InlineData(" ")]
-    public void Comment_Validate_ContentNullOrEmpty_ThrowsArgumentException(string content)
+    public void Comment_Initialization_ContentNullOrEmpty_ThrowsArgumentException(string content)
     {
         Guid id = Guid.NewGuid();
         string author = "Author";
-        var created = DateTime.Now;
-        var updated = DateTime.Now;
 
-        var comment = new Comment(id, created, updated, author, content, _post);
-
-        Assert.Throws<ArgumentException>(() => comment.Validate());
+        Assert.Throws<ArgumentException>(() => new Comment(id, author, content, _postId));
     }
 
     [Fact]
-    public void Comment_Validate_ContentExceedsMaxLength_ThrowsArgumentException()
+    public void Comment_Initialization_ContentExceedsMaxLength_ThrowsArgumentException()
     {
+        var contentMaxLength = 255;
         Guid id = Guid.NewGuid();
         string author = "Author";
-        string content = new('X', 513);
-        var created = DateTime.Now;
-        var updated = DateTime.Now;
-
-        var comment = new Comment(id, created, updated, author, content, _post);
-
-        Assert.Throws<ArgumentException>(() => comment.Validate());
+        string content = new('X', Comment.ContentMaxLength + 1);
+        Assert.Throws<ArgumentException>(() => new Comment(id, author, content, _postId));
     }
 }

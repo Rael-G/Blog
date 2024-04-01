@@ -24,8 +24,8 @@ namespace Blog.UnitTest.WebApi.Controllers
             // Arrange
             var expectedPosts = new List<PostDto>
             {
-                new() { Id = Guid.NewGuid(), Title = "Title 1", Content = "Content 1" },
-                new() { Id = Guid.NewGuid(), Title = "Title 2", Content = "Content 2" }
+                new(Guid.NewGuid(), "Title 1", "Content 1", []),
+                new(Guid.NewGuid(), "Title 2", "Content 2", [])
             };
 
             _mockPostService.Setup(ps => ps.GetAll()).ReturnsAsync(expectedPosts);
@@ -45,7 +45,7 @@ namespace Blog.UnitTest.WebApi.Controllers
         {
             // Arrange
             var postId = Guid.NewGuid();
-            var expectedPost = new PostDto { Id = postId, Title = "Title", Content = "Content" };
+            var expectedPost = new PostDto(postId, "Title", "Content", []);
 
             _mockPostService.Setup(ps => ps.Get(postId)).ReturnsAsync(expectedPost);
 
@@ -78,8 +78,8 @@ namespace Blog.UnitTest.WebApi.Controllers
         public async Task Post_WithValidData_ReturnsCreated()
         {
             // Arrange
-            var inputModel = new PostInputModel { Title = "Title", Content = "Content" };
-            var expectedPostDto = new PostDto { Id = Guid.NewGuid(), Title = inputModel.Title, Content = inputModel.Content, Comments = [] };
+            var inputModel = new PostInputModel("Title", "Content");
+            var expectedPostDto = new PostDto(Guid.NewGuid(), inputModel.Title, inputModel.Content, []);
 
             _mockPostService.Setup(ps => ps.Create(It.IsAny<PostDto>())).Callback<PostDto>(post =>
             {
@@ -102,12 +102,12 @@ namespace Blog.UnitTest.WebApi.Controllers
         public async Task Post_WithInvalidInputModel_ReturnsBadRequest()
         {
             // Arrange
-            var inputModel = new PostInputModel { }; // Invalid input model
+            var invalidInputModel = new PostInputModel("", "");
             _controller.ModelState.AddModelError("Title", "The Title field is required.");
             _controller.ModelState.AddModelError("Content", "The Content field is required.");
 
             // Act
-            var result = await _controller.Post(inputModel);
+            var result = await _controller.Post(invalidInputModel);
 
             // Assert
             result.Should().BeOfType<BadRequestObjectResult>();
@@ -118,8 +118,8 @@ namespace Blog.UnitTest.WebApi.Controllers
         {
             // Arrange
             var postId = Guid.NewGuid();
-            var inputModel = new PostInputModel { Title = "Updated Title", Content = "Updated Content" };
-            var postDto = new PostDto { Id = postId, Title = "Original Title", Content = "Original Content" };
+            var inputModel = new PostInputModel ("Updated Title", "Updated Content");
+            var postDto = new PostDto (postId, "Original Title", "Original Content", []);
 
             _mockPostService.Setup(ps => ps.Get(postId)).ReturnsAsync(postDto);
 
@@ -135,7 +135,7 @@ namespace Blog.UnitTest.WebApi.Controllers
         {
             // Arrange
             var postId = Guid.NewGuid();
-            var inputModel = new PostInputModel { Title = "Updated Title", Content = "Updated Content" };
+            var inputModel = new PostInputModel ("Updated Title", "Updated Content");
 
             _mockPostService.Setup(ps => ps.Get(postId)).ReturnsAsync(() => null);
 
@@ -151,12 +151,12 @@ namespace Blog.UnitTest.WebApi.Controllers
         {
             // Arrange
             var postId = Guid.NewGuid();
-            var inputModel = new PostInputModel { }; // Invalid input model
+            var invalidInputModel = new PostInputModel("", "");
             _controller.ModelState.AddModelError("Title", "The Title field is required.");
             _controller.ModelState.AddModelError("Content", "The Content field is required.");
 
             // Act
-            var result = await _controller.Put(postId, inputModel);
+            var result = await _controller.Put(postId, invalidInputModel);
 
             // Assert
             result.Should().BeOfType<BadRequestObjectResult>();
@@ -167,7 +167,7 @@ namespace Blog.UnitTest.WebApi.Controllers
         {
             // Arrange
             var postId = Guid.NewGuid();
-            var postDto = new PostDto { Id = postId };
+            var postDto = new PostDto(postId, "Title", "Content", []);
 
             _mockPostService.Setup(ps => ps.Get(postId)).ReturnsAsync(postDto);
 

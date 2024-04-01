@@ -20,33 +20,13 @@ namespace Blog.UnitTest.Application.Services
             _mockMapper = new Mock<IMapper>();
             _postService = new PostService(_mockRepository.Object, _mockMapper.Object);
 
-            var createdTime = DateTime.Now.Subtract(TimeSpan.FromMinutes(5));
-            var updateTime = DateTime.Now;
-
-            _post = new(Guid.NewGuid(), createdTime, updateTime, "Title", "Content", []);
-        }
-
-        [Fact]
-        public void Create_Should_Call_Validate()
-        {
-            var postDto = new PostDto()
-            { Title = "Title", Content = "Content" };
-
-            var invalidPost = _post;
-            invalidPost.Title = "";
-
-            _mockMapper.Setup(m => m.Map<Post>(It.IsAny<PostDto>()))
-                .Returns(invalidPost);
-
-            //If the exception was throw here, it is because Validate() was Called
-            Assert.Throws<ArgumentException>(() => _postService.Create(postDto));
+            _post = new(Guid.NewGuid(), "Title", "Content");
         }
 
         [Fact]
         public void Create_Should_Call_Repository_Create()
         {
-            var postDto = new PostDto()
-            { Title = "Title", Content = "Content" };
+            var postDto = new PostDto(Guid.NewGuid(), "Title", "Content", []);
 
             _mockMapper.Setup(m => m.Map<Post>(It.IsAny<PostDto>()))
                 .Returns(_post);
@@ -57,42 +37,9 @@ namespace Blog.UnitTest.Application.Services
         }
 
         [Fact]
-        public void Create_Should_DefineTime()
-        {
-            var creationTime = DateTime.UtcNow;
-            var postDto = new PostDto()
-            { Title = "Title", Content = "Content" };
-
-            _mockMapper.Setup(m => m.Map<Post>(It.IsAny<PostDto>()))
-                .Returns(_post);
-
-            _postService.Create(postDto);
-
-            postDto.CreatedTime.Should().BeAfter(creationTime);
-            postDto.UpdateTime.Should().BeAfter(creationTime);
-        }
-
-        [Fact]
-        public void Update_Should_Call_Validate()
-        {
-            var postDto = new PostDto()
-            { Title = "Title", Content = "Content" };
-
-            var invalidPost = _post;
-            invalidPost.Title = "";
-
-            _mockMapper.Setup(m => m.Map<Post>(It.IsAny<PostDto>()))
-                .Returns(invalidPost);
-
-            //If the exception was throw here, it is because Validate() was Called
-            Assert.Throws<ArgumentException>(() => _postService.Update(postDto));
-        }
-
-        [Fact]
         public void Update_Should_Call_Repository_Update()
         {
-            var postDto = new PostDto()
-            { Id = _post.Id, Title = "Updated Title", Content = "Updated Content" };
+            var postDto = new PostDto(Guid.NewGuid(), "Updated Title", "Updated Content", []);
 
             _mockMapper.Setup(m => m.Map<Post>(It.IsAny<PostDto>()))
                 .Returns(_post);
@@ -105,22 +52,24 @@ namespace Blog.UnitTest.Application.Services
         [Fact]
         public void Update_Should_DefineTime()
         {
-            var creationTime = DateTime.UtcNow;
-            var postDto = new PostDto()
-            { Title = "Title", Content = "Content" };
+            var postDto = new PostDto(Guid.NewGuid(), "Title", "Content", []);
+            var post = new Post(Guid.NewGuid(), postDto.Title, postDto.Content);
 
             _mockMapper.Setup(m => m.Map<Post>(It.IsAny<PostDto>()))
-                .Returns(_post);
+                .Returns(post);
 
+            var before = DateTime.UtcNow;
             _postService.Update(postDto);
+            var after = DateTime.UtcNow;
 
-            postDto.UpdateTime.Should().BeAfter(creationTime);
+            post.ModifiedTime.Should().BeAfter(before);
+            post.ModifiedTime.Should().BeBefore(after);
         }
 
         [Fact]
         public void Delete_Should_Call_Repository_Delete()
         {
-            var postDto = new PostDto();
+            var postDto = new PostDto(Guid.NewGuid(), "Title", "Content", []);
 
             _postService.Delete(postDto);
 
@@ -130,8 +79,7 @@ namespace Blog.UnitTest.Application.Services
         [Fact]
         public async Task Get_Should_Call_Repository_Get_And_Map_To_Dto()
         {
-            var postDto = new PostDto()
-            { Id = _post.Id, Title = _post.Title, Content = _post.Content };
+            var postDto = new PostDto(_post.Id, _post.Title, _post.Content, []);
 
             _mockRepository.Setup(m => m.Get(It.IsAny<Guid>()))
                 .ReturnsAsync(_post);

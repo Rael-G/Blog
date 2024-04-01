@@ -1,66 +1,62 @@
-﻿using Blog.Domain;
-using Xunit.Sdk;
+﻿using System.Configuration;
+using Blog.Domain;
+using FluentAssertions;
 
 namespace Blog.UnitTest.Domain.Entities;
 
 public class BaseEntityTests
 {
     [Fact]
-    public void BaseEntity_Validate_IdEmpty_ThrowsArgumentNullException()
+    public void BaseEntity_Initialization_IdEmpty_ThrowsArgumentNullException()
     {
         var id = Guid.Empty;
-        var created = DateTime.UtcNow;
         var updated = DateTime.UtcNow;
-        var entity = new ConcreteEntity(id, created, updated);
 
-        Assert.Throws<ArgumentNullException>(() => entity.Validate());
+        Assert.Throws<ArgumentNullException>(() => new ConcreteEntity(id));
     }
 
     [Fact]
-    public void BaseEntity_IdSet_WhenIdProvided()
+    public void BaseEntity_Initialization_WithValidValues_Success()
     {
         Guid id = Guid.NewGuid();
-        var created = DateTime.UtcNow;
-        var updated = DateTime.UtcNow;
-        var entity = new ConcreteEntity(id, created, updated);
+        var entity = new ConcreteEntity(id);
 
         Assert.Equal(id, entity.Id);
     }
 
-        [Fact]
-    public void BaseEntity_Validate_CreatedTimeInFuture_ThrowsArgumentException()
+    [Fact]
+    public void BaseEntity_Initialization_CreatedTimeIsUtcNow()
     {
         Guid id = Guid.NewGuid();
-        var created = DateTime.UtcNow.AddMinutes(5);
-        var updated = DateTime.UtcNow;
+        var before = DateTime.UtcNow.Subtract(TimeSpan.FromMicroseconds(1));
+        var entity = new ConcreteEntity(id);
+        var after = DateTime.UtcNow.AddMicroseconds(1);
 
-        var entity = new ConcreteEntity(id, created, updated);
-
-        Assert.Throws<ArgumentException>(() => entity.Validate());
+        entity.CreatedTime.Should().BeAfter(before).And.BeBefore(after);
     }
 
     [Fact]
-    public void BaseEntity_Validate_UpdateTimeInFuture_ThrowsArgumentException()
+    public void BaseEntity_Initialization_ModifiedTimeIsCreatedTime()
     {
         Guid id = Guid.NewGuid();
-        var created = DateTime.UtcNow;
-        var updated = DateTime.UtcNow.AddMinutes(5);
 
-        var entity = new ConcreteEntity(id, created, updated);
+        var entity = new ConcreteEntity(id);
 
-        Assert.Throws<ArgumentException>(() => entity.Validate());
+        Assert.Equal(entity.CreatedTime, entity.ModifiedTime);
     }
 
     [Fact]
-    public void BaseEntity_Validate_UpdateTimeOlderThanCreatedTime_ThrowsArgumentException()
+    public void BaseEntity_UpdateTime_ModifiedTimeIsUtcNow()
     {
         Guid id = Guid.NewGuid();
-        var created = DateTime.UtcNow;
-        var updated = DateTime.UtcNow.Subtract(TimeSpan.FromMinutes(5));
+        var entity = new ConcreteEntity(id);
 
-        var entity = new ConcreteEntity(id, created, updated);
+        var before = DateTime.UtcNow.Subtract(TimeSpan.FromMicroseconds(1));
+        entity.UpdateTime();
+        var after = DateTime.UtcNow.AddMicroseconds(1);
 
-        Assert.Throws<ArgumentException>(() => entity.Validate());
+
+        entity.ModifiedTime.Should().BeAfter(before).And.BeBefore(after);
     }
 
 }
@@ -68,5 +64,5 @@ public class BaseEntityTests
 //Test purpose class
 public class ConcreteEntity : BaseEntity
 {
-    public ConcreteEntity(Guid id, DateTime createdDate, DateTime updateTime) : base(id, createdDate, updateTime) { }
+    public ConcreteEntity(Guid id) : base(id) { }
 }
