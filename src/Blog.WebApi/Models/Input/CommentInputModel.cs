@@ -8,6 +8,7 @@ namespace Blog.WebApi.Models.Input
         [Required]
         [MaxLength(256)]
         public required string Author { get; set; }
+
         [Required]
         [MaxLength(512)]
         public required string Content { get; set; }
@@ -15,14 +16,20 @@ namespace Blog.WebApi.Models.Input
         [Required]
         public required Guid PostId { get; set; }
 
+        public CommentInputModel(string author, string content, Guid postId)
+        {
+            Author = author;
+            Content = content;
+            PostId = postId;
+        }
+
+        public CommentInputModel()
+        {
+
+        }
+
         public CommentDto InputToDto()
-            => new()
-            {
-                Id = Guid.NewGuid(),
-                Author = Author,
-                Content = Content,
-                PostId = PostId
-            };
+            => new(Guid.NewGuid(), Author, Content, PostId);
 
         public void InputToDto(CommentDto commentDto)
             {

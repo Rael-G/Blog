@@ -12,14 +12,14 @@ namespace Blog.WebApi.Models.Input
         [Required]
         public string Content { get; set; }
 
+        public PostInputModel(string title, string content)
+        {
+            Title = title;
+            Content = content;
+        }
+
         public PostDto InputToDto()
-            => new()
-            {
-                Id = Guid.NewGuid(),
-                Title = Title,
-                Content = Content,
-                Comments = []
-            };
+            => new(Guid.NewGuid(), Title, Content, []);
 
         public void InputToDto(PostDto postDto)
         {
