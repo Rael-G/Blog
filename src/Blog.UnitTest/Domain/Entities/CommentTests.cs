@@ -4,62 +4,57 @@ namespace Blog.UnitTest.Domain.Entities;
 
 public class CommentTests
 {
-    private readonly Guid _postId = Guid.NewGuid();
+    private Comment _comment;
+
+    public CommentTests()
+    {
+        var postId = Guid.NewGuid();
+        var id = Guid.NewGuid();
+        var author = "Test Author";
+        var content = "Test Content";
+        _comment = new Comment(id, author, content, postId);
+    }
+    
     [Fact]
     public void Comment_Initialization_WithValidValues_Success()
     {
-        Guid id = Guid.NewGuid();
-        string author = "Test Author";
-        string content = "Test Content";
+        var comment = new Comment(_comment.Id, _comment.Author, _comment.Content, _comment.PostId);
 
-        var comment = new Comment(id, author, content, _postId);
-
-        Assert.Equal(author, comment.Author);
-        Assert.Equal(content, comment.Content);
-        Assert.Equal(_postId, comment.PostId);
+        Assert.Equal(_comment.Author, comment.Author);
+        Assert.Equal(_comment.Content, comment.Content);
+        Assert.Equal(_comment.PostId, comment.PostId);
     }
 
     [Theory]
     [InlineData(null)]
     [InlineData("")]
     [InlineData(" ")]
-    public void Comment_Initialization_AuthorNullOrEmpty_ThrowsArgumentException(string author)
+    public void Comment_SetAuthor_NullOrEmpty_ThrowsArgumentException(string author)
     {
-        Guid id = Guid.NewGuid();
-        string content = "Content";
-
-        Assert.Throws<ArgumentException>(() => new Comment(id, author, content, _postId));
+        Assert.Throws<ArgumentException>(() => _comment.Author = author);
     }
 
     [Fact]
-    public void Comment_Initialization_AuthorExceedsMaxLength_ThrowsArgumentException()
+    public void Comment_SetAuthor_ExceedsMaxLength_ThrowsArgumentException()
     {
-        Guid id = Guid.NewGuid();
         string author = new('X', Comment.AuthorMaxLength + 1);
-        string content = "Content";
 
-        Assert.Throws<ArgumentException>(() => new Comment(id, author, content, _postId));
+        Assert.Throws<ArgumentException>(() => _comment.Author = author);
     }
 
     [Theory]
     [InlineData(null)]
     [InlineData("")]
     [InlineData(" ")]
-    public void Comment_Initialization_ContentNullOrEmpty_ThrowsArgumentException(string content)
+    public void Comment_SetContent_NullOrEmpty_ThrowsArgumentException(string content)
     {
-        Guid id = Guid.NewGuid();
-        string author = "Author";
-
-        Assert.Throws<ArgumentException>(() => new Comment(id, author, content, _postId));
+        Assert.Throws<ArgumentException>(() => _comment.Content = content);
     }
 
     [Fact]
     public void Comment_Initialization_ContentExceedsMaxLength_ThrowsArgumentException()
     {
-        var contentMaxLength = 255;
-        Guid id = Guid.NewGuid();
-        string author = "Author";
         string content = new('X', Comment.ContentMaxLength + 1);
-        Assert.Throws<ArgumentException>(() => new Comment(id, author, content, _postId));
+        Assert.Throws<ArgumentException>(() => _comment.Content = content);
     }
 }

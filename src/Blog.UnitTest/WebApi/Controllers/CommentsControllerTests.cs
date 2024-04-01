@@ -112,7 +112,8 @@ namespace Blog.UnitTest.WebApi.Controllers
             // Assert
             var createdAtActionResult = result.Should().BeOfType<CreatedAtActionResult>().Subject;
             createdAtActionResult.ActionName.Should().Be(nameof(CommentsController.Get));
-            createdAtActionResult.RouteValues["id"].Should().Be(createdAtActionResult.Value.As<CommentDto>().Id);
+            createdAtActionResult.RouteValues.Should().NotBeNull();
+            createdAtActionResult.RouteValues?["id"].Should().Be(createdAtActionResult.Value.As<CommentDto>().Id);
             _mockCommentService.Verify(cs => cs.Commit(), Times.Once());
 
         }

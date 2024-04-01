@@ -6,6 +6,13 @@ namespace Blog.UnitTest.Domain.Entities;
 
 public class BaseEntityTests
 {
+    Guid _id;
+
+    public BaseEntityTests()
+    {
+        _id = Guid.NewGuid();
+    }
+
     [Fact]
     public void BaseEntity_Initialization_IdEmpty_ThrowsArgumentNullException()
     {
@@ -18,18 +25,16 @@ public class BaseEntityTests
     [Fact]
     public void BaseEntity_Initialization_WithValidValues_Success()
     {
-        Guid id = Guid.NewGuid();
-        var entity = new ConcreteEntity(id);
+        var entity = new ConcreteEntity(_id);
 
-        Assert.Equal(id, entity.Id);
+        Assert.Equal(_id, entity.Id);
     }
 
     [Fact]
     public void BaseEntity_Initialization_CreatedTimeIsUtcNow()
     {
-        Guid id = Guid.NewGuid();
         var before = DateTime.UtcNow.Subtract(TimeSpan.FromMicroseconds(1));
-        var entity = new ConcreteEntity(id);
+        var entity = new ConcreteEntity(_id);
         var after = DateTime.UtcNow.AddMicroseconds(1);
 
         entity.CreatedTime.Should().BeAfter(before).And.BeBefore(after);
@@ -38,9 +43,7 @@ public class BaseEntityTests
     [Fact]
     public void BaseEntity_Initialization_ModifiedTimeIsCreatedTime()
     {
-        Guid id = Guid.NewGuid();
-
-        var entity = new ConcreteEntity(id);
+        var entity = new ConcreteEntity(_id);
 
         Assert.Equal(entity.CreatedTime, entity.ModifiedTime);
     }
@@ -48,13 +51,11 @@ public class BaseEntityTests
     [Fact]
     public void BaseEntity_UpdateTime_ModifiedTimeIsUtcNow()
     {
-        Guid id = Guid.NewGuid();
-        var entity = new ConcreteEntity(id);
+        var entity = new ConcreteEntity(_id);
 
         var before = DateTime.UtcNow.Subtract(TimeSpan.FromMicroseconds(1));
         entity.UpdateTime();
         var after = DateTime.UtcNow.AddMicroseconds(1);
-
 
         entity.ModifiedTime.Should().BeAfter(before).And.BeBefore(after);
     }

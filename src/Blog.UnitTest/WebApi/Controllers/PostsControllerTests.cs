@@ -94,7 +94,8 @@ namespace Blog.UnitTest.WebApi.Controllers
             // Assert
             var createdAtActionResult = result.Should().BeOfType<CreatedAtActionResult>().Subject;
             createdAtActionResult.ActionName.Should().Be(nameof(PostsController.Get));
-            createdAtActionResult.RouteValues["id"].Should().Be(expectedPostDto.Id);
+            createdAtActionResult.RouteValues.Should().NotBeNull();
+            createdAtActionResult.RouteValues?["id"].Should().Be(expectedPostDto.Id);
             createdAtActionResult.Value.Should().BeEquivalentTo(expectedPostDto);
         }
 

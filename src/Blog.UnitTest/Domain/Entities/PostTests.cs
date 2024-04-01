@@ -4,50 +4,50 @@ namespace Blog.UnitTest.Domain.Entities;
 
 public class PostTests
 {
-    [Fact]
-    public void Post_Initialization_WithValidValues_Success()
+    Post _post;
+
+    public PostTests()
     {
         var id = Guid.NewGuid();
         var title = "My Post";
-        var content = "Post content";
+        var content = "Post Content";
 
-        var post = new Post(id, title, content);
+        _post = new(id, title, content);
 
-        Assert.Equal(title, post.Title);
-        Assert.Equal(content, post.Content);
-    }
-
-    [Theory]
-    [InlineData(null)]
-    [InlineData("")]
-    [InlineData(" ")]
-    public void Post_Initialization_TitleNullOrEmpty_ThrowsArgumentException(string title)
-    {
-        Guid id = Guid.NewGuid();
-        string content = "Content";
-
-        Assert.Throws<ArgumentException>(() => new Post(id, title, content));
     }
 
     [Fact]
-    public void Post_Initialization_TitleExceedsMaxLength_ThrowsArgumentException()
+    public void Post_Initialization_WithValidValues_Success()
     {
-        Guid id = Guid.NewGuid();
-        string title = new('X', Post.TitleMaxLength + 1);
-        string content = "Content";
+        var post = new Post(_post.Id, _post.Title, _post.Content);
 
-        Assert.Throws<ArgumentException>(() => new Post(id, title, content));
+        Assert.Equal(_post.Title, post.Title);
+        Assert.Equal(_post.Content, post.Content);
     }
 
     [Theory]
     [InlineData(null)]
     [InlineData("")]
     [InlineData(" ")]
-    public void Post_Initialization_ContentNullOrEmpty_ThrowsArgumentException(string content)
+    public void Post_SetTitle_NullOrEmpty_ThrowsArgumentException(string title)
     {
-        Guid id = Guid.NewGuid();
-        string title = "Title";
+        Assert.Throws<ArgumentException>(() => _post.Title = title);
+    }
 
-        Assert.Throws<ArgumentException>(() => new Post(id, title, content));
+    [Fact]
+    public void Post_SetTitle_TitleExceedsMaxLength_ThrowsArgumentException()
+    {
+        string title = new('X', Post.TitleMaxLength + 1);
+
+        Assert.Throws<ArgumentException>(() => _post.Title = title);
+    }
+
+    [Theory]
+    [InlineData(null)]
+    [InlineData("")]
+    [InlineData(" ")]
+    public void Post_SetContent_NullOrEmpty_ThrowsArgumentException(string content)
+    {
+        Assert.Throws<ArgumentException>(() => _post.Content = content);
     }
 }
