@@ -1,6 +1,6 @@
 ﻿namespace Blog.Application;
 
-public interface IBaseService<TDto> 
+public interface IBaseService<TDto>
 {
     /// <summary>
     /// Creates a new <see cref="TDto"/>.

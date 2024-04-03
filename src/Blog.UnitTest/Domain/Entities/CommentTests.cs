@@ -14,7 +14,7 @@ public class CommentTests
         var content = "Test Content";
         _comment = new Comment(id, author, content, postId);
     }
-    
+
     [Fact]
     public void Comment_Initialization_WithValidValues_Success()
     {

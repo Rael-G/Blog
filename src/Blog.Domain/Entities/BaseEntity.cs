@@ -35,7 +35,7 @@ public abstract class BaseEntity
         CreatedTime = now;
         ModifiedTime = now;
     }
-    
+
     public void UpdateTime()
     {
         ModifiedTime = DateTime.UtcNow;
@@ -43,9 +43,9 @@ public abstract class BaseEntity
 
     private static Guid ValidateId(Guid id)
     {
-        if (id == Guid.Empty) 
+        if (id == Guid.Empty)
             throw new ArgumentNullException(nameof(id));
-        
+
         return id;
     }
 }

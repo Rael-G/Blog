@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Blog.Persistance;
 
-public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) 
+public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
     : DbContext(options)
 {
     public DbSet<Post> Posts { get; set; }
@@ -31,7 +31,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         });
 
         ConfigureBaseEntity<Tag>(modelBuilder);
-        modelBuilder.Entity<Tag>(tag => 
+        modelBuilder.Entity<Tag>(tag =>
         {
             tag.Property(t => t.Name).IsRequired();
             tag.HasIndex(t => t.Name).IsUnique();
@@ -40,10 +40,11 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 
     private void ConfigureBaseEntity<T>(ModelBuilder modelBuilder) where T : BaseEntity
     {
-        modelBuilder.Entity<T>(entity => {
+        modelBuilder.Entity<T>(entity =>
+        {
             entity.HasKey(e => e.Id);
             entity.Property(e => e.CreatedTime).IsRequired().ValueGeneratedOnAdd();
-            entity.Property(e=> e.ModifiedTime).IsRequired();
+            entity.Property(e => e.ModifiedTime).IsRequired();
         });
     }
 }

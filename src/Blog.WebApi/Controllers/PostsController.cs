@@ -6,7 +6,7 @@ namespace Blog.WebApi.Controllers
 {
     [Route("api/posts")]
     [ApiController]
-    public class PostsController(IPostService postService) 
+    public class PostsController(IPostService postService)
         : ControllerBase
     {
         private readonly IPostService _postService = postService;
@@ -56,7 +56,7 @@ namespace Blog.WebApi.Controllers
             {
                 _postService.Create(post);
             }
-            catch(ArgumentException ex)
+            catch (ArgumentException ex)
             {
                 return BadRequest(ex.Message);
             }

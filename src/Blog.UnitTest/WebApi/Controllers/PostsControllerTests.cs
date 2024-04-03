@@ -119,8 +119,8 @@ namespace Blog.UnitTest.WebApi.Controllers
         {
             // Arrange
             var postId = Guid.NewGuid();
-            var inputModel = new PostInputModel ("Updated Title", "Updated Content");
-            var postDto = new PostDto (postId, "Original Title", "Original Content", [], []);
+            var inputModel = new PostInputModel("Updated Title", "Updated Content");
+            var postDto = new PostDto(postId, "Original Title", "Original Content", [], []);
 
             _mockPostService.Setup(ps => ps.Get(postId)).ReturnsAsync(postDto);
 
@@ -136,7 +136,7 @@ namespace Blog.UnitTest.WebApi.Controllers
         {
             // Arrange
             var postId = Guid.NewGuid();
-            var inputModel = new PostInputModel ("Updated Title", "Updated Content");
+            var inputModel = new PostInputModel("Updated Title", "Updated Content");
 
             _mockPostService.Setup(ps => ps.Get(postId)).ReturnsAsync(() => null);
 

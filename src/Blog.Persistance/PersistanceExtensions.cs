@@ -12,7 +12,7 @@ public static class PersistanceExtensions
     /// </summary>
     /// <param name="services">The collection of services to configure.</param>
     /// <param name="configuration">The configuration settings.</param>
-    public static void ConfigurePersistance(this IServiceCollection services, 
+    public static void ConfigurePersistance(this IServiceCollection services,
         IConfiguration configuration)
     {
 

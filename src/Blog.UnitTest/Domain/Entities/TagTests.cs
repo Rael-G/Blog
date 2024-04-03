@@ -3,7 +3,7 @@
 namespace Blog.UnitTest.Domain.Entities;
 
 public class TagTests
-{   
+{
     private Tag _tag;
 
     public TagTests()

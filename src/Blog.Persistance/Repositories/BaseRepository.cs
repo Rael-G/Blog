@@ -3,20 +3,20 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Blog.Persistance;
 
-public abstract class BaseRepository<T>(ApplicationDbContext context) 
+public abstract class BaseRepository<T>(ApplicationDbContext context)
     : IBaseRepository<T> where T : BaseEntity
 {
     protected readonly ApplicationDbContext Context = context;
 
     public void Create(T entity)
         => Context.Add(entity);
-    
+
     public void Update(T entity)
         => Context.Update(entity);
-    
+
     public void Delete(T entity)
         => Context.Remove(entity);
-    
+
     public virtual async Task<T?> Get(Guid id)
         => await Context.Set<T>().AsNoTracking().FirstOrDefaultAsync(t => t.Id == id);
 

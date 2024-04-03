@@ -72,7 +72,7 @@ public class Post : BaseEntity
     {
         if (string.IsNullOrWhiteSpace(content))
             throw new ArgumentNullException($"{nameof(content)} must contain a value", nameof(content));
-        
+
         return content;
     }
 

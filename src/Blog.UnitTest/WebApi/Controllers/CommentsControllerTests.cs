@@ -68,7 +68,7 @@ namespace Blog.UnitTest.WebApi.Controllers
         {
             // Arrange
             var commentId = Guid.NewGuid();
-            var expectedComment = new CommentDto( commentId, "Author 1", "Comment 1", Guid.NewGuid());
+            var expectedComment = new CommentDto(commentId, "Author 1", "Comment 1", Guid.NewGuid());
 
             _mockCommentService.Setup(cs => cs.Get(commentId)).ReturnsAsync(expectedComment);
 
@@ -102,8 +102,8 @@ namespace Blog.UnitTest.WebApi.Controllers
         {
             // Arrange
             var postId = Guid.NewGuid();
-            var inputModel = new CommentInputModel() {Author = "Author", Content = "Content", PostId = postId};
-            
+            var inputModel = new CommentInputModel() { Author = "Author", Content = "Content", PostId = postId };
+
             _mockPostService.Setup(ps => ps.Get(postId)).ReturnsAsync(new PostDto(postId, "Title", "Content", [], []));
 
             // Act
@@ -123,7 +123,7 @@ namespace Blog.UnitTest.WebApi.Controllers
         {
             // Arrange
             var postId = Guid.NewGuid();
-            var inputModel = new CommentInputModel() {Author = "Author", Content = "Content", PostId = postId};
+            var inputModel = new CommentInputModel() { Author = "Author", Content = "Content", PostId = postId };
 
             _mockPostService.Setup(ps => ps.Get(inputModel.PostId)).ReturnsAsync(() => null);
 
@@ -139,7 +139,7 @@ namespace Blog.UnitTest.WebApi.Controllers
         {
             // Arrange
             var postId = Guid.NewGuid();
-            var invalidInputModel = new CommentInputModel() {Author = "", Content = "", PostId = postId};
+            var invalidInputModel = new CommentInputModel() { Author = "", Content = "", PostId = postId };
             _controller.ModelState.AddModelError("Author", "The Author field is required.");
             _controller.ModelState.AddModelError("Content", "The Content field is required.");
 
@@ -156,8 +156,8 @@ namespace Blog.UnitTest.WebApi.Controllers
             // Arrange
             var commentId = Guid.NewGuid();
             var postId = Guid.NewGuid();
-            var inputModel = new CommentInputModel() {Author = "Updated Author", Content = "Updated Content", PostId = postId};
-            var commentDto = new CommentDto( commentId, "Original Author", "Original Content", postId);
+            var inputModel = new CommentInputModel() { Author = "Updated Author", Content = "Updated Content", PostId = postId };
+            var commentDto = new CommentDto(commentId, "Original Author", "Original Content", postId);
 
             _mockCommentService.Setup(cs => cs.Get(commentId)).ReturnsAsync(commentDto);
 
@@ -175,7 +175,7 @@ namespace Blog.UnitTest.WebApi.Controllers
         {
             // Arrange
             var commentId = Guid.NewGuid();
-            var inputModel = new CommentInputModel() {Author = "Updated Author", Content = "Updated Content", PostId = Guid.NewGuid()};
+            var inputModel = new CommentInputModel() { Author = "Updated Author", Content = "Updated Content", PostId = Guid.NewGuid() };
             _mockCommentService.Setup(cs => cs.Get(commentId)).ReturnsAsync(() => null);
 
             // Act
@@ -190,7 +190,7 @@ namespace Blog.UnitTest.WebApi.Controllers
         {
             // Arrange
             var commentId = Guid.NewGuid();
-            var invalidInputModel = new CommentInputModel() {Author = "", Content = "", PostId = Guid.NewGuid()};
+            var invalidInputModel = new CommentInputModel() { Author = "", Content = "", PostId = Guid.NewGuid() };
             _controller.ModelState.AddModelError("Author", "The Author field is required.");
             _controller.ModelState.AddModelError("Content", "The Content field is required.");
 
@@ -206,7 +206,7 @@ namespace Blog.UnitTest.WebApi.Controllers
         {
             // Arrange
             var commentId = Guid.NewGuid();
-            var commentDto = new CommentDto( commentId, "Author", "Content", Guid.NewGuid());
+            var commentDto = new CommentDto(commentId, "Author", "Content", Guid.NewGuid());
 
             _mockCommentService.Setup(cs => cs.Get(commentId)).ReturnsAsync(commentDto);
             _mockCommentService.Setup(cs => cs.Commit()).Returns(Task.CompletedTask);

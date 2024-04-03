@@ -6,7 +6,7 @@ namespace Blog.WebApi.Controllers
 {
     [Route("api/comments")]
     [ApiController]
-    public class CommentsController(ICommentService commentsService, IPostService postService) 
+    public class CommentsController(ICommentService commentsService, IPostService postService)
         : ControllerBase
     {
         private readonly ICommentService _commentService = commentsService;
@@ -70,7 +70,7 @@ namespace Blog.WebApi.Controllers
             {
                 _commentService.Create(comment);
             }
-            catch(ArgumentException ex)
+            catch (ArgumentException ex)
             {
                 return BadRequest(ex.Message);
             }

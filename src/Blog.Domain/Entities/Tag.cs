@@ -52,7 +52,7 @@ public class Tag : BaseEntity
 
         if (name.Length > NameMaxLength)
             throw new ArgumentException($"{nameof(name)} maximum length is {NameMaxLength}", nameof(name));
-        
+
         return name;
     }
 
@@ -64,4 +64,3 @@ public class Tag : BaseEntity
         return Name;
     }
 }
-

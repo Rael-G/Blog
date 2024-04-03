@@ -5,7 +5,7 @@ namespace Blog.Application;
 
 public abstract class BaseService<TDto, TEntity>
     (IBaseRepository<TEntity> repository, IMapper mapper)
-    : IBaseService<TDto> 
+    : IBaseService<TDto>
     where TEntity : BaseEntity
 {
     private readonly IBaseRepository<TEntity> _repository = repository;

@@ -32,10 +32,10 @@ namespace Blog.WebApi.Models.Input
             => new(Guid.NewGuid(), Author, Content, PostId);
 
         public void InputToDto(CommentDto commentDto)
-            {
-                commentDto.Author = Author;
-                commentDto.Content = Content;
-                commentDto.PostId = PostId;
-            }
+        {
+            commentDto.Author = Author;
+            commentDto.Content = Content;
+            commentDto.PostId = PostId;
+        }
     }
 }
