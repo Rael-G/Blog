@@ -3,7 +3,7 @@ using Blog.Domain;
 
 namespace Blog.Application;
 
-public class BaseService<TDto, TEntity>
+public abstract class BaseService<TDto, TEntity>
     (IBaseRepository<TEntity> repository, IMapper mapper)
     : IBaseService<TDto> 
     where TEntity : BaseEntity
@@ -46,5 +46,3 @@ public class BaseService<TDto, TEntity>
         await _repository.Commit();
     }
 }
-
-
