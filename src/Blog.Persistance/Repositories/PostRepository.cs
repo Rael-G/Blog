@@ -11,9 +11,4 @@ public class PostRepository(ApplicationDbContext context)
         .AsNoTracking()
         .Include(p => p.Comments)
         .FirstOrDefaultAsync(t => t.Id == id);
-
-    public override async Task<IEnumerable<Post>> GetAll()
-        => await Context.Posts
-        .AsNoTracking()
-        .ToListAsync();
 }
