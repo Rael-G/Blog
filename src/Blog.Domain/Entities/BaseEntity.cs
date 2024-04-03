@@ -26,6 +26,7 @@ public abstract class BaseEntity
     /// Constructor for the BaseEntity class.
     /// </summary>
     /// <param name="id">The unique identifier of the entity.</param>
+    /// <exception cref="ArgumentNullException"></exception>
     public BaseEntity(Guid id)
     {
         var now = DateTime.UtcNow;
