@@ -1,4 +1,5 @@
 ﻿using Blog.Application;
+using Blog.Domain;
 using System.ComponentModel.DataAnnotations;
 
 namespace Blog.WebApi.Models.Input
@@ -6,7 +7,7 @@ namespace Blog.WebApi.Models.Input
     public record PostInputModel
     {
         [Required]
-        [MaxLength(256)]
+        [MaxLength(Post.TitleMaxLength)]
         public string Title { get; set; }
 
         [Required]
@@ -19,7 +20,7 @@ namespace Blog.WebApi.Models.Input
         }
 
         public PostDto InputToDto()
-            => new(Guid.NewGuid(), Title, Content, []);
+            => new(Guid.NewGuid(), Title, Content, [], []);
 
         public void InputToDto(PostDto postDto)
         {

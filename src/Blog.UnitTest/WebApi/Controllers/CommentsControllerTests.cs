@@ -30,7 +30,7 @@ namespace Blog.UnitTest.WebApi.Controllers
                 new(Guid.NewGuid(), "Author 1", "Comment 1", postId),
                 new(Guid.NewGuid(), "Author 2", "Comment 2", postId)
             };
-            var post = new PostDto(postId, "Title", "Content", expectedComments);
+            var post = new PostDto(postId, "Title", "Content", expectedComments, []);
 
             _mockPostService.Setup(ps => ps.Get(postId)).ReturnsAsync(post);
             _mockCommentService.Setup(cs => cs.GetAll(postId)).ReturnsAsync(expectedComments);
@@ -50,7 +50,7 @@ namespace Blog.UnitTest.WebApi.Controllers
         {
             // Arrange
             var postId = Guid.NewGuid();
-            var post = new PostDto(postId, "Title", "Content", []);
+            var post = new PostDto(postId, "Title", "Content", [], []);
 
             _mockPostService.Setup(ps => ps.Get(postId)).ReturnsAsync(() => null);
 
@@ -104,7 +104,7 @@ namespace Blog.UnitTest.WebApi.Controllers
             var postId = Guid.NewGuid();
             var inputModel = new CommentInputModel() {Author = "Author", Content = "Content", PostId = postId};
             
-            _mockPostService.Setup(ps => ps.Get(postId)).ReturnsAsync(new PostDto(postId, "Title", "Content", []));
+            _mockPostService.Setup(ps => ps.Get(postId)).ReturnsAsync(new PostDto(postId, "Title", "Content", [], []));
 
             // Act
             var result = await _controller.Post(inputModel);

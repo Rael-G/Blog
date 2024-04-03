@@ -24,8 +24,8 @@ namespace Blog.UnitTest.WebApi.Controllers
             // Arrange
             var expectedPosts = new List<PostDto>
             {
-                new(Guid.NewGuid(), "Title 1", "Content 1", []),
-                new(Guid.NewGuid(), "Title 2", "Content 2", [])
+                new(Guid.NewGuid(), "Title 1", "Content 1", [], []),
+                new(Guid.NewGuid(), "Title 2", "Content 2", [], [])
             };
 
             _mockPostService.Setup(ps => ps.GetAll()).ReturnsAsync(expectedPosts);
@@ -45,7 +45,7 @@ namespace Blog.UnitTest.WebApi.Controllers
         {
             // Arrange
             var postId = Guid.NewGuid();
-            var expectedPost = new PostDto(postId, "Title", "Content", []);
+            var expectedPost = new PostDto(postId, "Title", "Content", [], []);
 
             _mockPostService.Setup(ps => ps.Get(postId)).ReturnsAsync(expectedPost);
 
@@ -79,7 +79,7 @@ namespace Blog.UnitTest.WebApi.Controllers
         {
             // Arrange
             var inputModel = new PostInputModel("Title", "Content");
-            var expectedPostDto = new PostDto(Guid.NewGuid(), inputModel.Title, inputModel.Content, []);
+            var expectedPostDto = new PostDto(Guid.NewGuid(), inputModel.Title, inputModel.Content, [], []);
 
             _mockPostService.Setup(ps => ps.Create(It.IsAny<PostDto>())).Callback<PostDto>(post =>
             {
@@ -120,7 +120,7 @@ namespace Blog.UnitTest.WebApi.Controllers
             // Arrange
             var postId = Guid.NewGuid();
             var inputModel = new PostInputModel ("Updated Title", "Updated Content");
-            var postDto = new PostDto (postId, "Original Title", "Original Content", []);
+            var postDto = new PostDto (postId, "Original Title", "Original Content", [], []);
 
             _mockPostService.Setup(ps => ps.Get(postId)).ReturnsAsync(postDto);
 
@@ -168,7 +168,7 @@ namespace Blog.UnitTest.WebApi.Controllers
         {
             // Arrange
             var postId = Guid.NewGuid();
-            var postDto = new PostDto(postId, "Title", "Content", []);
+            var postDto = new PostDto(postId, "Title", "Content", [], []);
 
             _mockPostService.Setup(ps => ps.Get(postId)).ReturnsAsync(postDto);
 
