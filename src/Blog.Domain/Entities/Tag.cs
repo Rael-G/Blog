@@ -6,6 +6,16 @@
 public class Tag : BaseEntity
 {
     /// <summary>
+    /// Minimum length allowed for the name of the tag.
+    /// </summary>
+    public const int NameMinLength = 3;
+
+    /// <summary>
+    /// Maximum length allowed for the name of the tag.
+    /// </summary>
+    public const int NameMaxLength = 15;
+
+    /// <summary>
     /// Gets or sets the name of the tag.
     /// </summary>
     /// <exception cref="ArgumentNullException">Thrown when name is null or empty.</exception>
@@ -16,9 +26,6 @@ public class Tag : BaseEntity
     /// Gets the blog posts associated with the tag.
     /// </summary>
     public IEnumerable<Post> Posts { get; }
-
-    private const int NameMinLength = 3;
-    private const int NameMaxLength = 15;
 
     private string _name = "";
 

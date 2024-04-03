@@ -6,6 +6,16 @@
 public class Comment : BaseEntity
 {
     /// <summary>
+    /// Maximum length allowed for the author of the comment.
+    /// </summary>
+    public const int AuthorMaxLength = 100;
+
+    /// <summary>
+    /// Maximum length allowed for the content of the comment.
+    /// </summary>
+    public const int ContentMaxLength = 255;
+
+    /// <summary>
     /// Gets or sets the author of the comment.
     /// </summary>
     /// <exception cref="ArgumentNullException">Thrown when author is null or empty.</exception>
@@ -27,9 +37,6 @@ public class Comment : BaseEntity
     /// Gets the identifier of the associated post.
     /// </summary>
     public Guid PostId { get; }
-
-    private const int AuthorMaxLength = 100;
-    private const int ContentMaxLength = 255;
 
     private string _author = "";
     private string _content = "";

@@ -6,6 +6,16 @@
 public class Post : BaseEntity
 {
     /// <summary>
+    /// Maximum length allowed for the title of the post.
+    /// </summary>
+    public const int TitleMaxLength = 100;
+
+    /// <summary>
+    /// Minumum length of tags allowed for the post.
+    /// </summary>
+    public const int TagsMinLength = 1;
+
+    /// <summary>
     /// Gets or sets the title of the post.
     /// </summary>
     /// <exception cref="ArgumentNullException">Thrown when title is null or empty,.</exception>
@@ -27,9 +37,6 @@ public class Post : BaseEntity
     /// Gets the tags associated with the post.
     /// </summary>
     public IEnumerable<Tag> Tags { get; }
-
-    private const int TitleMaxLength = 100;
-    private const int TagsMinLength = 1;
 
     private string _title = "";
     private string _content = "";
