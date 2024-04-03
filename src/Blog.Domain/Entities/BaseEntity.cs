@@ -28,9 +28,11 @@ public abstract class BaseEntity
     /// <param name="id">The unique identifier of the entity.</param>
     public BaseEntity(Guid id)
     {
+        var now = DateTime.UtcNow;
+
         Id = id;
-        CreatedTime = DateTime.UtcNow;
-        ModifiedTime = CreatedTime;
+        CreatedTime = now;
+        ModifiedTime = now;
     }
     
     public void UpdateTime()
