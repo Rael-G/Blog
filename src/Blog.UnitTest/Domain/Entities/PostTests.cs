@@ -29,15 +29,16 @@ public class PostTests
     [InlineData(null)]
     [InlineData("")]
     [InlineData(" ")]
-    public void Post_SetTitle_NullOrEmpty_ThrowsArgumentException(string title)
+    public void Post_SetTitle_NullOrEmpty_ThrowsArgumentNullException(string title)
     {
-        Assert.Throws<ArgumentException>(() => _post.Title = title);
+        Assert.Throws<ArgumentNullException>(() => _post.Title = title);
     }
 
     [Fact]
     public void Post_SetTitle_TitleExceedsMaxLength_ThrowsArgumentException()
     {
-        string title = new('X', Post.TitleMaxLength + 1);
+        var titleMaxLength = 100;
+        string title = new('X', titleMaxLength + 1);
 
         Assert.Throws<ArgumentException>(() => _post.Title = title);
     }
@@ -46,8 +47,8 @@ public class PostTests
     [InlineData(null)]
     [InlineData("")]
     [InlineData(" ")]
-    public void Post_SetContent_NullOrEmpty_ThrowsArgumentException(string content)
+    public void Post_SetContent_NullOrEmpty_ThrowsArgumentNullException(string content)
     {
-        Assert.Throws<ArgumentException>(() => _post.Content = content);
+        Assert.Throws<ArgumentNullException>(() => _post.Content = content);
     }
 }

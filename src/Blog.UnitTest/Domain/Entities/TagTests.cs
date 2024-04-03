@@ -25,15 +25,16 @@ public class TagTests
     [InlineData(null)]
     [InlineData("")]
     [InlineData(" ")]
-    public void Tag_SetName_NullOrEmpty_ThrowsArgumentException(string name)
+    public void Tag_SetName_NullOrEmpty_ThrowsArgumentNullException(string name)
     {
-        Assert.Throws<ArgumentException>(() => _tag.Name = name);
+        Assert.Throws<ArgumentNullException>(() => _tag.Name = name);
     }
 
     [Fact]
     public void Comment_SetName_NameLessThanMinLength_ThrowsArgumentException()
     {
-        string name = new string('X', Tag.NameMinLength - 1);
+        var nameMinLength = 3;
+        string name = new string('X', nameMinLength - 1);
 
         Assert.Throws<ArgumentException>(() => _tag.Name = name);
     }
@@ -41,8 +42,9 @@ public class TagTests
     [Fact]
     public void Tag_SetName_NameExceedsMaxLength_ThrowsArgumentException()
     {
+        var nameMaxLength = 15;
         Guid id = Guid.NewGuid();
-        string name = new('X', Tag.NameMaxLength + 1);
+        string name = new('X', nameMaxLength + 1);
 
         Assert.Throws<ArgumentException>(() => _tag.Name = name);
     }

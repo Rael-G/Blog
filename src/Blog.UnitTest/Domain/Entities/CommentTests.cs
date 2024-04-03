@@ -29,15 +29,16 @@ public class CommentTests
     [InlineData(null)]
     [InlineData("")]
     [InlineData(" ")]
-    public void Comment_SetAuthor_NullOrEmpty_ThrowsArgumentException(string author)
+    public void Comment_SetAuthor_NullOrEmpty_ThrowsArgumentNullException(string author)
     {
-        Assert.Throws<ArgumentException>(() => _comment.Author = author);
+        Assert.Throws<ArgumentNullException>(() => _comment.Author = author);
     }
 
     [Fact]
     public void Comment_SetAuthor_ExceedsMaxLength_ThrowsArgumentException()
     {
-        string author = new('X', Comment.AuthorMaxLength + 1);
+        var authorMaxlength = 100;
+        string author = new('X', authorMaxlength + 1);
 
         Assert.Throws<ArgumentException>(() => _comment.Author = author);
     }
@@ -46,15 +47,16 @@ public class CommentTests
     [InlineData(null)]
     [InlineData("")]
     [InlineData(" ")]
-    public void Comment_SetContent_NullOrEmpty_ThrowsArgumentException(string content)
+    public void Comment_SetContent_NullOrEmpty_ThrowsArgumentNullException(string content)
     {
-        Assert.Throws<ArgumentException>(() => _comment.Content = content);
+        Assert.Throws<ArgumentNullException>(() => _comment.Content = content);
     }
 
     [Fact]
     public void Comment_Initialization_ContentExceedsMaxLength_ThrowsArgumentException()
     {
-        string content = new('X', Comment.ContentMaxLength + 1);
+        var contentMaxLength = 255;
+        string content = new('X', contentMaxLength + 1);
         Assert.Throws<ArgumentException>(() => _comment.Content = content);
     }
 }
