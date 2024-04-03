@@ -9,5 +9,6 @@ public class DomainToDto : Profile
     {
         CreateMap<Post, PostDto>().ReverseMap();
         CreateMap<Comment, CommentDto>().ReverseMap();
+        CreateMap<Tag, TagDto>().ReverseMap();
     }
 }
