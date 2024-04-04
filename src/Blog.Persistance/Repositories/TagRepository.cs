@@ -9,6 +9,13 @@ public class TagRepository(ApplicationDbContext context)
     public override async Task<Tag?> Get(Guid id)
         => await Context.Tags
         .AsNoTracking()
-        .Include(p => p.Posts)
+        .Include(t => t.Posts)
         .FirstOrDefaultAsync(t => t.Id == id);
+
+    public async Task<Tag?> GetByName(string name)
+        => await Context.Tags
+        .AsNoTracking()
+        .Include(t => t.Posts)
+        .FirstOrDefaultAsync(t => t.Name == name);
+
 }
