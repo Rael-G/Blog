@@ -1,6 +1,6 @@
 ﻿namespace Blog.Application;
 
-public class CommentDto
+public class CommentDto : IDto
 {
     public Guid Id { get; set; }
     public DateTime CreatedTime { get; set; }
