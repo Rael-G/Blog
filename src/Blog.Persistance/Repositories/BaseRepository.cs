@@ -8,20 +8,20 @@ public abstract class BaseRepository<T>(ApplicationDbContext context)
 {
     protected readonly ApplicationDbContext Context = context;
 
-    public void Create(T entity)
+    public virtual void Create(T entity)
         => Context.Add(entity);
 
-    public void Update(T entity)
+    public virtual void Update(T entity)
         => Context.Update(entity);
 
-    public void Delete(T entity)
+    public virtual void Delete(T entity)
         => Context.Remove(entity);
 
     public virtual async Task<T?> Get(Guid id)
-        => await Context.Set<T>().AsNoTracking().FirstOrDefaultAsync(t => t.Id == id);
+        => await Context.Set<T>().FirstOrDefaultAsync(t => t.Id == id);
 
     public virtual async Task<IEnumerable<T>> GetAll()
-        => await Context.Set<T>().AsNoTracking().ToListAsync();
+        => await Context.Set<T>().ToListAsync();
 
     public async Task Commit()
         => await Context.SaveChangesAsync();

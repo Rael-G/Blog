@@ -11,37 +11,37 @@ public abstract class BaseService<TDto, TEntity>
     private readonly IBaseRepository<TEntity> _repository = repository;
     private readonly IMapper _mapper = mapper;
 
-    public void Create(TDto dto)
+    public virtual void Create(TDto dto)
     {
         var entity = _mapper.Map<TEntity>(dto);
         _repository.Create(entity);
     }
 
-    public void Update(TDto dto)
+    public virtual void Update(TDto dto)
     {
         var entity = _mapper.Map<TEntity>(dto);
         _repository.Update(entity);
     }
 
-    public void Delete(TDto dto)
+    public virtual void Delete(TDto dto)
     {
         var entity = _mapper.Map<TEntity>(dto);
         _repository.Delete(entity);
     }
 
-    public async Task<TDto?> Get(Guid id)
+    public virtual async Task<TDto?> Get(Guid id)
     {
         var entity = await _repository.Get(id);
         return _mapper.Map<TDto>(entity);
     }
 
-    public async Task<IEnumerable<TDto>> GetAll()
+    public virtual async Task<IEnumerable<TDto>> GetAll()
     {
         var entity = await _repository.GetAll();
         return _mapper.Map<IEnumerable<TDto>>(entity);
     }
 
-    public async Task Commit()
+    public virtual async Task Commit()
     {
         await _repository.Commit();
     }
