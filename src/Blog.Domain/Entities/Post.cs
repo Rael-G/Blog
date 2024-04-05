@@ -11,11 +11,6 @@ public class Post : BaseEntity
     public const int TitleMaxLength = 100;
 
     /// <summary>
-    /// Minumum length of tags allowed for the post.
-    /// </summary>
-    public const int TagsMinLength = 1;
-
-    /// <summary>
     /// Gets or sets the title of the post.
     /// </summary>
     /// <exception cref="ArgumentNullException">Thrown when title is null or empty,.</exception>
@@ -74,13 +69,5 @@ public class Post : BaseEntity
             throw new ArgumentNullException($"{nameof(content)} must contain a value", nameof(content));
 
         return content;
-    }
-
-    private IEnumerable<Tag> ValidateTags(IEnumerable<Tag> tags)
-    {
-        if (tags.Count() < TagsMinLength)
-            throw new ArgumentException($"{nameof(tags)} minimum length is {TagsMinLength}", nameof(tags));
-
-        return tags;
     }
 }
