@@ -3,7 +3,6 @@ using Blog.Application;
 using Blog.Domain;
 using Moq;
 using FluentAssertions;
-using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 
 namespace Blog.UnitTest.Application.Services;
 
@@ -19,7 +18,7 @@ public class BaseServiceTests
     {
         _mockRepository = new Mock<IBaseRepository<TestEntity>>();
         _mockMapper = new Mock<IMapper>();
-        _testService = new TestService<TestDto, TestEntity>(_mockRepository.Object, _mockMapper.Object);
+        _testService = new TestService(_mockRepository.Object, _mockMapper.Object);
 
         _entity = new TestEntity(Guid.NewGuid());
     }
@@ -99,22 +98,4 @@ public class BaseServiceTests
 
         _mockRepository.Verify(m => m.Commit(), Times.Once);
     }
-}
-
-//Test purpose classes
-public class TestService<TDto, TEntity>(IBaseRepository<TestEntity> repository, IMapper mapper)
-    : BaseService<TestDto, TestEntity>(repository, mapper)
-    where TEntity : BaseEntity
-{
-
-}
-
-public class TestDto
-{
-
-}
-
-public class TestEntity(Guid id) : BaseEntity(id)
-{
-
 }
