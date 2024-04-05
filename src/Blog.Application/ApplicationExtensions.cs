@@ -16,6 +16,7 @@ namespace Blog.Application
             // Registers the PostService and CommentService services with scoped lifetime.
             services.AddScoped<IPostService, PostService>();
             services.AddScoped<ICommentService, CommentService>();
+            services.AddScoped<ITagService, TagService>();
         }
     }
 }

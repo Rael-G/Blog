@@ -24,5 +24,6 @@ public static class PersistanceExtensions
         // Registers the PostRepository and CommentRepository services with scoped lifetime.
         services.AddScoped<IPostRepository, PostRepository>();
         services.AddScoped<ICommentRepository, CommentRepository>();
+        services.AddScoped<ITagRepository, TagRepository>();
     }
 }
