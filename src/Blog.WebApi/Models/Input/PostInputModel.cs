@@ -30,6 +30,7 @@ namespace Blog.WebApi.Models.Input
         {
             postDto.Title = Title;
             postDto.Content = Content;
+            postDto.Tags = Tags;
         }
     }
 }

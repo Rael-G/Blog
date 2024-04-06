@@ -8,6 +8,7 @@ namespace Blog.WebApi.Controllers;
 public class PostsController(IPostService postService)
     : BaseController<PostDto>(postService)
 {
+    private readonly IPostService _postService = postService;
     /// <summary>
     /// Retrieves a specific post by its ID.
     /// </summary>
@@ -50,7 +51,27 @@ public class PostsController(IPostService postService)
     [ProducesResponseType(400)] // Bad Request
     [ProducesResponseType(404)] // Not Found
     public async Task<IActionResult> Put(Guid id, [FromBody] PostInputModel input)
-        => await base.Put(id, input);
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+
+        var entity = await _postService.Get(id);
+        if (entity is null)
+            return NotFound(id);
+
+        input.InputToDto(entity);
+        try
+        {
+            await _postService.Update(entity);
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+
+        await _postService.Commit();
+        return NoContent();
+    }
 
     /// <summary>
     /// Deletes a post by its ID.
