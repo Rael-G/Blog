@@ -29,14 +29,14 @@ namespace Blog.UnitTest.Application.Services
             var comments = new List<Comment>();
             var commentDtos = new List<CommentDto>();
 
-            _mockRepository.Setup(m => m.GetAllByPostId(It.IsAny<Guid>()))
+            _mockRepository.Setup(r => r.GetAllByPostId(It.IsAny<Guid>()))
                 .ReturnsAsync(comments);
-            _mockMapper.Setup(m => m.Map<IEnumerable<CommentDto>>(comments))
+            _mockMapper.Setup(r => r.Map<IEnumerable<CommentDto>>(comments))
                 .Returns(commentDtos);
 
             var result = await _commentService.GetAll(_post.Id);
 
-            _mockRepository.Verify(m => m.GetAllByPostId(_post.Id), Times.Once);
+            _mockRepository.Verify(r => r.GetAllByPostId(_post.Id), Times.Once);
         }
 
         [Fact]
@@ -45,9 +45,9 @@ namespace Blog.UnitTest.Application.Services
             var comments = new List<Comment>();
             var commentDtos = new List<CommentDto>();
 
-            _mockRepository.Setup(m => m.GetAllByPostId(It.IsAny<Guid>()))
+            _mockRepository.Setup(r => r.GetAllByPostId(It.IsAny<Guid>()))
                 .ReturnsAsync(comments);
-            _mockMapper.Setup(m => m.Map<IEnumerable<CommentDto>>(comments))
+            _mockMapper.Setup(r => r.Map<IEnumerable<CommentDto>>(comments))
                 .Returns(commentDtos);
 
             var result = await _commentService.GetAll(_post.Id);
