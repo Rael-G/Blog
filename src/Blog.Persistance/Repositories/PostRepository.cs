@@ -13,4 +13,15 @@ public class PostRepository(ApplicationDbContext context)
         .Include(p => p.Tags)
         .ThenInclude(pt => pt.Tag)
         .FirstOrDefaultAsync(p => p.Id == id);
+
+    public async Task UpdatePostTag(Post post) {
+
+        var existentPostTags = await Context.PostTag.Where(pt => pt.PostId == post.Id).ToListAsync();
+        var postTagsToDelete = existentPostTags.Except(post.Tags);
+        var postTagsToCreate = post.Tags.Except(existentPostTags);
+        Context.PostTag.RemoveRange(postTagsToDelete);
+        Context.PostTag.AddRange(postTagsToCreate);
+
+        base.Update(post);
+    }
 }
