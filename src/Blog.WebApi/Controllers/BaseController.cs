@@ -9,7 +9,7 @@ public abstract class BaseController<TDto>(IBaseService<TDto> service)
     : ControllerBase
     where TDto : IDto
 {
-    IBaseService<TDto> _service = service;
+    protected readonly IBaseService<TDto> Service = service;
 
     /// <summary>
     /// Retrieves all <see cref="TDto">.
@@ -18,7 +18,7 @@ public abstract class BaseController<TDto>(IBaseService<TDto> service)
     [HttpGet]
     [ProducesResponseType(200)] // OK
     protected async Task<IActionResult> GetAll()
-        => Ok(await _service.GetAll());
+        => Ok(await Service.GetAll());
 
     /// <summary>
     /// Retrieves a specific <see cref="TDto"> post by its ID.
@@ -30,7 +30,7 @@ public abstract class BaseController<TDto>(IBaseService<TDto> service)
     [ProducesResponseType(404)] // Not Found
     protected async Task<IActionResult> Get(Guid id)
     {
-        var entity = await _service.Get(id);
+        var entity = await Service.Get(id);
 
         if (entity is null)
             return NotFound(id);
@@ -54,14 +54,14 @@ public abstract class BaseController<TDto>(IBaseService<TDto> service)
         var entity = input.InputToDto();
         try
         {
-            _service.Create(entity);
+            Service.Create(entity);
         }
         catch (ArgumentException ex)
         {
             return BadRequest(ex.Message);
         }
 
-        await _service.Commit();
+        await Service.Commit();
         return CreatedAtAction(nameof(Get), new { entity.Id }, entity);
     }
 
@@ -80,21 +80,21 @@ public abstract class BaseController<TDto>(IBaseService<TDto> service)
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var entity = await _service.Get(id);
+        var entity = await Service.Get(id);
         if (entity is null)
             return NotFound(id);
 
         input.InputToDto(entity);
         try
         {
-            _service.Update(entity);
+            Service.Update(entity);
         }
         catch (ArgumentException ex)
         {
             return BadRequest(ex.Message);
         }
 
-        await _service.Commit();
+        await Service.Commit();
         return NoContent();
     }
 
@@ -108,14 +108,14 @@ public abstract class BaseController<TDto>(IBaseService<TDto> service)
     [ProducesResponseType(404)] // Not Found
     protected async Task<IActionResult> Delete(Guid id)
     {
-        var post = await _service.Get(id);
+        var post = await Service.Get(id);
 
         if (post is null)
             return NotFound(id);
 
-        _service.Delete(post);
+        Service.Delete(post);
 
-        await _service.Commit();
+        await Service.Commit();
         return NoContent();
     }
 }

@@ -8,41 +8,41 @@ public abstract class BaseService<TDto, TEntity>
     : IBaseService<TDto>
     where TEntity : BaseEntity
 {
-    private readonly IBaseRepository<TEntity> _repository = repository;
-    private readonly IMapper _mapper = mapper;
+    protected readonly IBaseRepository<TEntity> Repository = repository;
+    protected readonly IMapper Mapper = mapper;
 
     public virtual void Create(TDto dto)
     {
-        var entity = _mapper.Map<TEntity>(dto);
-        _repository.Create(entity);
+        var entity = Mapper.Map<TEntity>(dto);
+        Repository.Create(entity);
     }
 
     public virtual void Update(TDto dto)
     {
-        var entity = _mapper.Map<TEntity>(dto);
-        _repository.Update(entity);
+        var entity = Mapper.Map<TEntity>(dto);
+        Repository.Update(entity);
     }
 
     public virtual void Delete(TDto dto)
     {
-        var entity = _mapper.Map<TEntity>(dto);
-        _repository.Delete(entity);
+        var entity = Mapper.Map<TEntity>(dto);
+        Repository.Delete(entity);
     }
 
     public virtual async Task<TDto?> Get(Guid id)
     {
-        var entity = await _repository.Get(id);
-        return _mapper.Map<TDto>(entity);
+        var entity = await Repository.Get(id);
+        return Mapper.Map<TDto>(entity);
     }
 
     public virtual async Task<IEnumerable<TDto>> GetAll()
     {
-        var entity = await _repository.GetAll();
-        return _mapper.Map<IEnumerable<TDto>>(entity);
+        var entity = await Repository.GetAll();
+        return Mapper.Map<IEnumerable<TDto>>(entity);
     }
 
     public virtual async Task Commit()
     {
-        await _repository.Commit();
+        await Repository.Commit();
     }
 }
