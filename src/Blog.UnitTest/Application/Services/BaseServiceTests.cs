@@ -24,37 +24,37 @@ public class BaseServiceTests
     }
 
     [Fact]
-    public void Create_Should_Call_Repository_Create()
+    public async void Create_Should_Call_Repository_Create()
     {
         var dto = new TestDto();
 
         _mockMapper.Setup(m => m.Map<TestEntity>(It.IsAny<TestDto>()))
             .Returns(_entity);
 
-        _testService.Create(dto);
+        await _testService.Create(dto);
 
         _mockRepository.Verify(m => m.Create(_entity), Times.Once);
     }
 
     [Fact]
-    public void Update_Should_Call_Repository_Update()
+    public async void Update_Should_Call_Repository_Update()
     {
         var dto = new TestDto();
 
         _mockMapper.Setup(m => m.Map<TestEntity>(It.IsAny<TestDto>()))
             .Returns(_entity);
 
-        _testService.Update(dto);
+        await _testService.Update(dto);
 
         _mockRepository.Verify(m => m.Update(_entity), Times.Once);
     }
 
     [Fact]
-    public void Delete_Should_Call_Repository_Delete()
+    public async void Delete_Should_Call_Repository_Delete()
     {
         var dto = new TestDto();
 
-        _testService.Delete(dto);
+        await _testService.Delete(dto);
 
         _mockRepository.Verify(m => m.Delete(It.IsAny<TestEntity>()), Times.Once);
     }
@@ -91,11 +91,4 @@ public class BaseServiceTests
         _mockRepository.Verify(m => m.GetAll(), Times.Once);
     }
 
-    [Fact]
-    public async void Commit_Should_Call_Repository_Commit()
-    {
-        await _testService.Commit();
-
-        _mockRepository.Verify(m => m.Commit(), Times.Once);
-    }
 }
