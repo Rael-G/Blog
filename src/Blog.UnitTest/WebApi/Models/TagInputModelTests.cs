@@ -26,10 +26,7 @@ public class TagInputModelTests
     [Fact]
     public void InputToDto_WithTagDtoParameter_ShouldUpdateTagDtoCorrectly()
     {
-        var id = Guid.NewGuid();
-        var name = "Original Tag";
-
-        var tagDto = new TagDto(id, name, []);
+        var tagDto = new TagDto() { };
 
         _tagInputModel.InputToDto(tagDto);
 

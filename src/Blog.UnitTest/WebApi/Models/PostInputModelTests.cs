@@ -29,11 +29,7 @@ public class PostInputModelTests
     [Fact]
     public void InputToDto_WithPostDtoParameter_ShouldUpdatePostDtoCorrectly()
     {
-        var id = Guid.NewGuid();
-        var title = "Updated Post";
-        var content = "Updated post content";
-
-        var postDto = new PostDto(id, title, content, [], []);
+        var postDto = new PostDto() { };
 
         _postInputModel.InputToDto(postDto);
 

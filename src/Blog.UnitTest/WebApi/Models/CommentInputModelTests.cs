@@ -29,18 +29,26 @@ public class CommentInputModelTests
     [Fact]
     public void InputToDto_WithCommentDtoParameter_ShouldUpdateCommentDtoCorrectly()
     {
-        var id = Guid.NewGuid();
-        var author = "Ana Julie";
-        var content = "Another test comment";
-
-        var commentDto = new CommentDto(id, author, content, id);
+        var commentDto = new CommentDto() {};
 
         _commentInputModel.InputToDto(commentDto);
 
         commentDto.Should().NotBeNull();
         commentDto.Author.Should().Be(_commentInputModel.Author);
         commentDto.Content.Should().Be(_commentInputModel.Content);
-        commentDto.PostId.Should().Be(_commentInputModel.PostId);
+    }
+
+    [Fact]
+    public void InputToDto_WithCommentDtoParameter_ShouldNotAlterDtoPostId()
+    {
+        var postId = Guid.NewGuid();
+
+        var commentDto = new CommentDto() {PostId = postId};
+
+        _commentInputModel.InputToDto(commentDto);
+
+        commentDto.Should().NotBeNull();
+        commentDto.PostId.Should().Be(postId);
     }
 
     [Fact]

@@ -29,10 +29,10 @@ public class CommentsControllerTests
     {
         var expectedComments = new List<CommentDto>
         {
-            new(Guid.NewGuid(), "Author 1", "Comment 1", _postId),
-            new(Guid.NewGuid(), "Author 2", "Comment 2", _postId)
+            new() {Id = Guid.NewGuid(), Author = "Author 1", Content = "Comment 1", PostId = _postId},
+            new() {Id = Guid.NewGuid(), Author = "Author 2", Content = "Comment 2", PostId = _postId}
         };
-        var post = new PostDto(_postId, "Title", "Content", expectedComments, []);
+        var post = new PostDto() {Id = _postId, Comments = expectedComments};
 
         _mockPostService.Setup(ps => ps.Get(_postId)).ReturnsAsync(post);
         _mockCommentService.Setup(cs => cs.GetAll(_postId)).ReturnsAsync(expectedComments);
@@ -48,7 +48,6 @@ public class CommentsControllerTests
     [Fact]
     public async Task GetAll_WithInvalidPostId_ReturnsNotFound()
     {
-        var post = new PostDto(_postId, "Title", "Content", [], []);
         _mockPostService.Setup(ps => ps.Get(_postId)).ReturnsAsync(() => null);
 
         var result = await _controller.GetAll(_postId);
@@ -59,7 +58,8 @@ public class CommentsControllerTests
     [Fact]
     public async Task Post_WithValidData_ReturnsCreated()
     {
-        _mockPostService.Setup(ps => ps.Get(_postId)).ReturnsAsync(new PostDto(_postId, "Title", "Content", [], []));
+        var post = new PostDto(){ Id = _postId};
+        _mockPostService.Setup(ps => ps.Get(_postId)).ReturnsAsync(post);
 
         var result = await _controller.Post(_inputModel);
 
