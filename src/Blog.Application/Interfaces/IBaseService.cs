@@ -6,19 +6,19 @@ public interface IBaseService<TDto>
     /// Creates a new <see cref="TDto"/>.
     /// </summary>
     /// <param name="entity">The <see cref="TDto"/> to create.</param>
-    void Create(TDto entity);
+    Task Create(TDto entity);
 
     /// <summary>
     /// Updates an existing <see cref="TDto"/>.
     /// </summary>
     /// <param name="entity">The <see cref="TDto"/> to update.</param>
-    void Update(TDto entity);
+    Task Update(TDto entity);
 
     /// <summary>
     /// Deletes an existing <see cref="TDto"/>.
     /// </summary>
     /// <param name="entity">The <see cref="TDto"/> to delete.</param>
-    void Delete(TDto entity);
+    Task Delete(TDto entity);
 
     /// <summary>
     /// Retrieves a <see cref="TDto"/> by its unique identifier.
@@ -32,9 +32,4 @@ public interface IBaseService<TDto>
     /// </summary>
     /// <returns>A collection of <see cref="TDto"/>.</returns>
     Task<IEnumerable<TDto>> GetAll();
-
-    /// <summary>
-    /// Save Changes
-    /// </summary>
-    Task Commit();
 }

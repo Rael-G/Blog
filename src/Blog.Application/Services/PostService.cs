@@ -8,10 +8,10 @@ public class PostService(IPostRepository postRepository, IMapper mapper)
 {
     private readonly IPostRepository _postRepository = postRepository;
 
-    public new async Task Update(PostDto postDto)
+    public override async Task Update(PostDto postDto)
     {
         var post = Mapper.Map<Post>(postDto);
         await _postRepository.UpdatePostTag(post);
-        _postRepository.Update(post);
+        await base.Update(postDto);
     }
 }

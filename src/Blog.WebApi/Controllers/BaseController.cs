@@ -54,14 +54,13 @@ public abstract class BaseController<TDto>(IBaseService<TDto> service)
         var entity = input.InputToDto();
         try
         {
-            Service.Create(entity);
+            await Service.Create(entity);
         }
         catch (ArgumentException ex)
         {
             return BadRequest(ex.Message);
         }
 
-        await Service.Commit();
         return CreatedAtAction(nameof(Get), new { entity.Id }, entity);
     }
 
@@ -87,14 +86,13 @@ public abstract class BaseController<TDto>(IBaseService<TDto> service)
         input.InputToDto(entity);
         try
         {
-            Service.Update(entity);
+            await Service.Update(entity);
         }
         catch (ArgumentException ex)
         {
             return BadRequest(ex.Message);
         }
 
-        await Service.Commit();
         return NoContent();
     }
 
@@ -113,9 +111,8 @@ public abstract class BaseController<TDto>(IBaseService<TDto> service)
         if (post is null)
             return NotFound(id);
 
-        Service.Delete(post);
+        await Service.Delete(post);
 
-        await Service.Commit();
         return NoContent();
     }
 }

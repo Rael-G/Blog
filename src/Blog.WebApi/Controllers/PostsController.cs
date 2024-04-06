@@ -51,27 +51,7 @@ public class PostsController(IPostService postService)
     [ProducesResponseType(400)] // Bad Request
     [ProducesResponseType(404)] // Not Found
     public async Task<IActionResult> Put(Guid id, [FromBody] PostInputModel input)
-    {
-        if (!ModelState.IsValid)
-            return BadRequest(ModelState);
-
-        var entity = await _postService.Get(id);
-        if (entity is null)
-            return NotFound(id);
-
-        input.InputToDto(entity);
-        try
-        {
-            await _postService.Update(entity);
-        }
-        catch (ArgumentException ex)
-        {
-            return BadRequest(ex.Message);
-        }
-
-        await _postService.Commit();
-        return NoContent();
-    }
+        => await base.Put(id, input);
 
     /// <summary>
     /// Deletes a post by its ID.
