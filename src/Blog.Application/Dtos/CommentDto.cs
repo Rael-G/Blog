@@ -5,15 +5,7 @@ public class CommentDto : IDto
     public Guid Id { get; set; }
     public DateTime CreatedTime { get; set; }
     public DateTime ModifiedTime { get; set; }
-    public string Author { get; set; }
-    public string Content { get; set; }
+    public string Author { get; set; } = string.Empty;
+    public string Content { get; set; } = string.Empty;
     public Guid PostId { get; set; }
-
-    public CommentDto(Guid id, string author, string content, Guid postId)
-    {
-        Id = id;
-        Author = author;
-        Content = content;
-        PostId = postId;
-    }
 }
