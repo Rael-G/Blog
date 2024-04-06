@@ -8,6 +8,7 @@ public class CommentRepository(ApplicationDbContext context)
 {
     public async Task<IEnumerable<Comment>> GetAllByPostId(Guid postId)
         => await Context.Comments
+        .AsNoTracking()
         .Where(c => c.PostId == postId)
         .ToListAsync();
 }

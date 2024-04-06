@@ -85,6 +85,21 @@ namespace Blog.Persistance.Migrations
                     b.ToTable("Posts");
                 });
 
+            modelBuilder.Entity("Blog.Domain.PostTag", b =>
+                {
+                    b.Property<Guid>("PostId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("TagId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("PostId", "TagId");
+
+                    b.HasIndex("TagId");
+
+                    b.ToTable("PostTag");
+                });
+
             modelBuilder.Entity("Blog.Domain.Tag", b =>
                 {
                     b.Property<Guid>("Id")
@@ -110,21 +125,6 @@ namespace Blog.Persistance.Migrations
                     b.ToTable("Tags");
                 });
 
-            modelBuilder.Entity("PostTag", b =>
-                {
-                    b.Property<Guid>("PostsId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("TagsId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("PostsId", "TagsId");
-
-                    b.HasIndex("TagsId");
-
-                    b.ToTable("PostTag");
-                });
-
             modelBuilder.Entity("Blog.Domain.Comment", b =>
                 {
                     b.HasOne("Blog.Domain.Post", "Post")
@@ -136,24 +136,35 @@ namespace Blog.Persistance.Migrations
                     b.Navigation("Post");
                 });
 
-            modelBuilder.Entity("PostTag", b =>
+            modelBuilder.Entity("Blog.Domain.PostTag", b =>
                 {
-                    b.HasOne("Blog.Domain.Post", null)
-                        .WithMany()
-                        .HasForeignKey("PostsId")
+                    b.HasOne("Blog.Domain.Post", "Post")
+                        .WithMany("Tags")
+                        .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Blog.Domain.Tag", null)
-                        .WithMany()
-                        .HasForeignKey("TagsId")
+                    b.HasOne("Blog.Domain.Tag", "Tag")
+                        .WithMany("Posts")
+                        .HasForeignKey("TagId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Post");
+
+                    b.Navigation("Tag");
                 });
 
             modelBuilder.Entity("Blog.Domain.Post", b =>
                 {
                     b.Navigation("Comments");
+
+                    b.Navigation("Tags");
+                });
+
+            modelBuilder.Entity("Blog.Domain.Tag", b =>
+                {
+                    b.Navigation("Posts");
                 });
 #pragma warning restore 612, 618
         }

@@ -10,5 +10,7 @@ public class PostRepository(ApplicationDbContext context)
         => await Context.Posts
         .AsNoTracking()
         .Include(p => p.Comments)
-        .FirstOrDefaultAsync(t => t.Id == id);
+        .Include(p => p.Tags)
+        .ThenInclude(pt => pt.Tag)
+        .FirstOrDefaultAsync(p => p.Id == id);
 }

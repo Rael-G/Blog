@@ -1,5 +1,6 @@
 ﻿using Blog.Domain;
 using Microsoft.EntityFrameworkCore;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Query.Expressions.Internal;
 
 namespace Blog.Persistance;
 
@@ -19,7 +20,6 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         {
             post.Property(p => p.Title).IsRequired().HasMaxLength(256);
             post.Property(p => p.Content).IsRequired();
-            post.HasMany(p => p.Tags).WithMany(t => t.Posts);
             post.HasIndex(p => p.Title).IsUnique();
         });
 
@@ -37,6 +37,14 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             tag.Property(t => t.Name).IsRequired();
             tag.HasIndex(t => t.Name).IsUnique();
         });
+
+        modelBuilder.Entity<PostTag>(postTag =>
+        {
+            postTag.HasKey(pt => new { pt.PostId, pt.TagId });
+            postTag.HasOne(pt => pt.Post).WithMany(p => p.Tags).HasForeignKey(pt => pt.PostId);
+            postTag.HasOne(pt => pt.Tag).WithMany(t => t.Posts).HasForeignKey(pt => pt.TagId);
+        });
+            
     }
 
     private void ConfigureBaseEntity<T>(ModelBuilder modelBuilder) where T : BaseEntity
