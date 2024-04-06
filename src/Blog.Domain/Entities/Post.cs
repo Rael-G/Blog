@@ -29,9 +29,9 @@ public class Post : BaseEntity
     public IEnumerable<Comment> Comments { get; }
 
     /// <summary>
-    /// Gets the tags associated with the post.
+    /// Gets the relation of tags associated with the post.
     /// </summary>
-    public IEnumerable<Tag> Tags { get; }
+    public IEnumerable<PostTag> Tags { get; }
 
     private string _title = "";
     private string _content = "";
@@ -49,7 +49,7 @@ public class Post : BaseEntity
         Title = title;
         Content = content;
         Comments = new List<Comment>();
-        Tags = new List<Tag>();
+        Tags = new List<PostTag>();
     }
 
     private string ValidateTitle(string title)

@@ -23,9 +23,9 @@ public class Tag : BaseEntity
     public string Name { get => _name; set => _name = ValidateName(value); }
 
     /// <summary>
-    /// Gets the blog posts associated with the tag.
+    /// Gets the relation of posts associated with the tag.
     /// </summary>
-    public IEnumerable<Post> Posts { get; }
+    public IEnumerable<PostTag> Posts { get; }
 
     private string _name = "";
 
@@ -39,7 +39,7 @@ public class Tag : BaseEntity
     public Tag(Guid id, string name) : base(id)
     {
         Name = name;
-        Posts = new List<Post>();
+        Posts = new List<PostTag>();
     }
 
     private string ValidateName(string name)
