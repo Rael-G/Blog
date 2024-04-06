@@ -14,7 +14,7 @@ public record TagInputModel : IInputModel<TagDto>
     }
 
     public TagDto InputToDto()
-        => new(Guid.NewGuid(), Name, []);
+        => new() { Id = Guid.NewGuid(), Name = Name };
 
     public void InputToDto(TagDto tagDto)
     {

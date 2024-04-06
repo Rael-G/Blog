@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Blog.WebApi.Models.Input;
 
-public record CommentInputModel : IInputModel<CommentDto>
+public class CommentInputModel : IInputModel<CommentDto>
 {
     [Required]
     [MaxLength(Comment.AuthorMaxLength)]
@@ -24,18 +24,14 @@ public record CommentInputModel : IInputModel<CommentDto>
         PostId = postId;
     }
 
-    public CommentInputModel()
-    {
-
-    }
+    public CommentInputModel() { }
 
     public CommentDto InputToDto()
-        => new(Guid.NewGuid(), Author, Content, PostId);
+        => new() { Id = Guid.NewGuid(), Author = Author, Content = Content, PostId = PostId };
 
     public void InputToDto(CommentDto commentDto)
     {
         commentDto.Author = Author;
         commentDto.Content = Content;
-        commentDto.PostId = PostId;
     }
 }

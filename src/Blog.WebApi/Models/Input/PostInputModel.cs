@@ -24,7 +24,7 @@ namespace Blog.WebApi.Models.Input
         }
 
         public PostDto InputToDto()
-            => new(Guid.NewGuid(), Title, Content, [], Tags);
+            => new (){Id = Guid.NewGuid(), Title = Title, Content = Content, Tags = Tags };
 
         public void InputToDto(PostDto postDto)
         {
