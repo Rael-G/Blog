@@ -13,14 +13,16 @@ public abstract class BaseEntity
     /// <summary>
     /// Gets or sets the created time of the entity.
     /// </summary>
-    public DateTime CreatedTime { get; }
+    public DateTime CreatedTime { get => _createdTime; set => _createdTime = ValidateTime(value); }
 
     /// <summary>
     /// Gets the modified time of the entity.
     /// </summary>
-    public DateTime ModifiedTime { get; private set; }
+    public DateTime ModifiedTime { get => _modifiedTime; set => _modifiedTime = ValidateTime(value); }
 
     private Guid _id = Guid.Empty;
+    private DateTime _createdTime;
+    private DateTime _modifiedTime;
 
     /// <summary>
     /// Constructor for the BaseEntity class.
@@ -36,9 +38,11 @@ public abstract class BaseEntity
         ModifiedTime = now;
     }
 
-    public void UpdateTime()
+    private static DateTime ValidateTime(DateTime dateTime)
     {
-        ModifiedTime = DateTime.UtcNow;
+        if (dateTime == DateTime.MinValue)
+            throw new ArgumentNullException(nameof(dateTime));
+        return dateTime;
     }
 
     private static Guid ValidateId(Guid id)
