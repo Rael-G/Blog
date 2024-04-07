@@ -21,7 +21,5 @@ public class PostRepository(ApplicationDbContext context)
         var postTagsToCreate = post.Tags.Except(existentPostTags);
         Context.PostTag.RemoveRange(postTagsToDelete);
         Context.PostTag.AddRange(postTagsToCreate);
-
-        base.Update(post);
     }
 }

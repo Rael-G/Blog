@@ -12,6 +12,7 @@ public class PostService(IPostRepository postRepository, IMapper mapper)
     {
         var post = Mapper.Map<Post>(postDto);
         await _postRepository.UpdatePostTag(post);
-        await base.Update(postDto);
+        Repository.Update(post);
+        await Repository.Commit();
     }
 }
