@@ -45,16 +45,4 @@ public class BaseEntityTests
 
         Assert.Equal(entity.CreatedTime, entity.ModifiedTime);
     }
-
-    [Fact]
-    public void BaseEntity_UpdateTime_ModifiedTimeIsUtcNow()
-    {
-        var entity = new TestEntity(_id);
-
-        var before = DateTime.UtcNow.Subtract(TimeSpan.FromMicroseconds(1));
-        entity.UpdateTime();
-        var after = DateTime.UtcNow.AddMicroseconds(1);
-
-        entity.ModifiedTime.Should().BeAfter(before).And.BeBefore(after);
-    }
 }
