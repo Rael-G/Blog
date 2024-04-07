@@ -9,15 +9,25 @@ public class DomainToDto : Profile
 {
     public DomainToDto()
     {
-        CreateMap<Comment, CommentDto>().ReverseMap();
+        CreateMap<Comment, CommentDto>()
+            .ReverseMap()
+            .ForMember(dest => dest.ModifiedTime, opt => opt.Ignore())
+            .ForMember(dest => dest.CreatedTime, opt => opt.Ignore());
+
 
         CreateMap<Post, PostDto>()
             .ReverseMap()
-            .ForMember(dest => dest.Tags, opt => opt.MapFrom(src => src.Tags.Select(tag => new PostTag(src.Id, tag.Id))));
+            .ForMember(dest => dest.Tags, opt => opt.MapFrom(src => src.Tags.Select(tag => new PostTag(src.Id, tag.Id))))
+            .ForMember(dest => dest.ModifiedTime, opt => opt.Ignore())
+            .ForMember(dest => dest.CreatedTime, opt => opt.Ignore());
+
 
         CreateMap<Tag, TagDto>()
             .ReverseMap()
-            .ForMember(dest => dest.Posts, opt => opt.MapFrom(src => src.Posts.Select(post => new PostTag(post.Id, src.Id))));
+            .ForMember(dest => dest.Posts, opt => opt.MapFrom(src => src.Posts.Select(post => new PostTag(post.Id, src.Id))))
+            .ForMember(dest => dest.ModifiedTime, opt => opt.Ignore())
+            .ForMember(dest => dest.CreatedTime, opt => opt.Ignore());
+
 
         CreateMap<PostTag, TagDto>()
             .ForMember(dest => dest.Id, opt => opt.MapFrom(src => (src.Tag != null) ? src.Tag.Id : Guid.Empty))

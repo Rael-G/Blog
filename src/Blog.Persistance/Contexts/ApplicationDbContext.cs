@@ -1,5 +1,6 @@
 ﻿using Blog.Domain;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Query.Expressions.Internal;
 
 namespace Blog.Persistance;
@@ -53,7 +54,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         modelBuilder.Entity<T>(entity =>
         {
             entity.HasKey(e => e.Id);
-            entity.Property(e => e.CreatedTime).IsRequired().ValueGeneratedOnAdd();
+            entity.Property(e => e.CreatedTime).IsRequired().Metadata.SetAfterSaveBehavior(PropertySaveBehavior.Ignore);
             entity.Property(e => e.ModifiedTime).IsRequired();
         });
     }
