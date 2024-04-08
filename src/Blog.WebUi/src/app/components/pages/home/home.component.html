@@ -1,24 +1,4 @@
-<div class="container">
-  <h1 class="text-center">Latest posts</h1>
-
-  @for(post of posts; track post){
-  <div class="row">
-    <div class="col-md-6 offset-md-3 mb-4">
-      <div class="card">
-        <div class="card-body">
-          <h4 class="card-title">{{ post.title }}</h4>
-          <p class="card-text">{{ post.content.substring(0, 200) }} ...</p>
-          <div class="mb-2">
-            <a routerLink="/categories/example" class="badge badge-primary text-dark">example</a>
-          </div>
-          <a routerLink="posts/{{post.id}}" class="btn btn-dark">Read more</a>
-        </div>
-      </div>
-    </div>
-  </div>
-  }
-
-</div>
+<app-list-post [posts]="posts" [title]="title"></app-list-post>
 
 <app-pagination [currentPage]="currentPage" [totalItems]="totalPosts" [itemsPerPage]="pageSize"
   (pageChange)="onPageChange($event)">
