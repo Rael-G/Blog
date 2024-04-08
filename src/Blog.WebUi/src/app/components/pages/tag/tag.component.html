@@ -1,0 +1,5 @@
+<app-list-post [posts]="posts" [title]="title"></app-list-post>
+
+<app-pagination [currentPage]="currentPage" [totalItems]="totalPosts" [itemsPerPage]="pageSize"
+  (pageChange)="onPageChange($event)">
+</app-pagination>
