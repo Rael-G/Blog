@@ -5,9 +5,10 @@ using Blog.WebApi.Models.Input;
 namespace Blog.WebApi.Controllers;
 
 [ApiController]
-public class PostsController(IPostService postService)
+public class PostsController(IPostService postService, ITagService tagService)
     : BaseController<PostDto>(postService)
 {
+    private readonly ITagService _tagService = tagService;
     private readonly IPostService _postService = postService;
     /// <summary>
     /// Retrieves a specific post by its ID.
@@ -28,6 +29,16 @@ public class PostsController(IPostService postService)
     [ProducesResponseType(200)] // OK
     public new async Task<IActionResult> GetAll()
         => await base.GetAll();
+
+    /// <summary>
+    /// Retrieves all tags related to a post by its id
+    /// </summary>
+    /// <param name="postId">The id of the post</param>
+    /// <returns>A collection of tags</returns>
+    [HttpGet("tags/{postId}")]
+    [ProducesResponseType(200)] // OK
+    public async Task<IActionResult> GetTags(Guid postId)
+        => Ok(await _tagService.GetAll(postId));
 
     /// <summary>
     /// Creates a new blog post.
