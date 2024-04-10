@@ -6,11 +6,12 @@ import { CommentService } from '../../../services/comment/comment.service';
 import { Comment } from '../../../interfaces/Comment';
 import { MessageService } from '../../../services/message.service';
 import { Color } from '../../../enums/Color';
+import { CreateTagComponent } from '../../create-tag/create-tag.component';
 
 @Component({
   selector: 'app-management',
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink, CreateTagComponent],
   templateUrl: './management.component.html',
   styleUrl: './management.component.scss'
 })

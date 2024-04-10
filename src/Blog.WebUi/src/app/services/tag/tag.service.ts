@@ -22,12 +22,12 @@ export class TagService {
     return this.http.get<Tag>(this.tagsUrl + '/' + id)
   }
 
-  createTag(post: Tag): Observable<Tag> {
-    return this.http.post<Tag>(this.tagsUrl, post)
+  createTag(tag: Tag): Observable<Tag> {
+    return this.http.post<Tag>(this.tagsUrl, tag)
   }
 
-  editTag(post: Tag): Observable<Tag> {
-    return this.http.put<Tag>(this.tagsUrl + '/' + post.id, post)
+  editTag(tag: Tag): Observable<Tag> {
+    return this.http.put<Tag>(this.tagsUrl + '/' + tag.id, tag)
   }
 
   deleteTag(id: string): Observable<Tag> {
