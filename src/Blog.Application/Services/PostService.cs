@@ -20,6 +20,9 @@ public class PostService(IPostRepository postRepository, IMapper mapper)
     {
         var post = await Repository.Get(postId);
 
-        return Mapper.Map<IEnumerable<TagDto>>(post is not null? post.Tags.Select(pt => pt.Tag) : null);
+        if (post is null)
+            return null;  
+
+        return Mapper.Map<IEnumerable<TagDto>>(post.Tags.Select(pt => pt.Tag));
     }
 }
