@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Blog.Application;
 using Blog.Domain;
+using FluentAssertions;
 using Moq;
 
 namespace Blog.UnitTest.Application.Services;
@@ -48,4 +49,45 @@ public class PostServiceTests
 
         _mockRepository.Verify(r => r.UpdatePostTag(_post), Times.Once);
     }
+
+            [Fact]
+        public async Task GetTags_Should_Call_Repository_Get()
+        {
+            var tags = new List<TagDto>();
+
+            _mockRepository.Setup(r => r.Get(It.IsAny<Guid>()))
+                .ReturnsAsync(_post);
+            _mockMapper.Setup(r => r.Map<IEnumerable<TagDto>>(It.IsAny<IEnumerable<Tag>>()))
+                .Returns(tags);
+
+            var result = await _postService.GetTags(_post.Id);
+
+            _mockRepository.Verify(r => r.Get(_post.Id), Times.Once);
+        }
+
+        [Fact]
+        public async Task GetTags_WhenPostExists_ShouldReturn_TagsDto()
+        {
+            var tags = new List<TagDto>();
+
+            _mockRepository.Setup(r => r.Get(It.IsAny<Guid>()))
+                .ReturnsAsync(_post);
+            _mockMapper.Setup(r => r.Map<IEnumerable<TagDto>>(It.IsAny<IEnumerable<Tag>>()))
+                .Returns(tags);
+
+            var result = await _postService.GetTags(_post.Id);
+
+            result.Should().BeSameAs(tags);
+        }
+
+        [Fact]
+        public async Task GetTags_WhenPostIsNull_ShouldReturn_Null()
+        {
+            _mockRepository.Setup(r => r.Get(It.IsAny<Guid>()))
+                .ReturnsAsync(() => null);
+
+            var result = await _postService.GetTags(_post.Id);
+
+            result.Should().BeNull();
+        }
 }

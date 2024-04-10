@@ -24,7 +24,7 @@ namespace Blog.UnitTest.Application.Services
         }
 
         [Fact]
-        public async Task GetAll_Should_Call_Repository_GetAllByPostId_And_Map_To_DtoCollection()
+        public async Task GetAll_Should_Call_Repository_GetAllByPostId()
         {
             var comments = new List<Comment>();
             var commentDtos = new List<CommentDto>();

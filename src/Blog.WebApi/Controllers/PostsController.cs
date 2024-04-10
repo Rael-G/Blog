@@ -5,10 +5,9 @@ using Blog.WebApi.Models.Input;
 namespace Blog.WebApi.Controllers;
 
 [ApiController]
-public class PostsController(IPostService postService, ITagService tagService)
+public class PostsController(IPostService postService)
     : BaseController<PostDto>(postService)
 {
-    private readonly ITagService _tagService = tagService;
     private readonly IPostService _postService = postService;
     /// <summary>
     /// Retrieves a specific post by its ID.
