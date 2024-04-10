@@ -22,14 +22,30 @@ export class HomeComponent implements OnInit {
   constructor(private postService: PostService) { }
 
   ngOnInit(): void {
-    this.postService.getPosts().subscribe((posts) => {
-      this.posts = posts
-    });
+    this.loadPost();
   }
 
   onPageChange(pageNumber: number) {
     this.currentPage = pageNumber;
     //Logic to call posts
+  }
+
+  loadPost(){
+    this.postService.getPosts()
+      .subscribe((posts) => {
+        this.posts = this.loadPostsTag(posts)
+    });
+  }
+
+  loadPostsTag(posts : Post[]) : Post[] {
+    for(let post of posts){
+        if(post.id && post.tags.length < 1){
+          this.postService.getTags(post.id).subscribe((tags) =>
+            post.tags = tags
+          ) 
+        }
+    }
+    return posts;
   }
 
 }

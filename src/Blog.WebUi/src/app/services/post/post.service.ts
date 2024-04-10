@@ -3,6 +3,7 @@ import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Post } from '../../interfaces/Post';
+import { Tag } from '../../interfaces/Tag';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,10 @@ export class PostService {
 
   getPosts(): Observable<Post[]> {
     return this.http.get<Post[]>(this.postUrl)
+  }
+
+  getTags(id: string): Observable<Tag[]> {
+    return this.http.get<Tag[]>(this.postUrl + '/tags/' + id)
   }
 
   getPost(id: string): Observable<Post> {

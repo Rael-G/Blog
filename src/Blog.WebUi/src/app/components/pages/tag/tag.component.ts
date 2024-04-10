@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Post } from '../../../interfaces/Post';
 import { ListPostComponent } from "../../list-post/list-post.component";
 import { PaginationComponent } from "../../pagination/pagination.component";
+import { PostService } from '../../../services/post/post.service';
 
 @Component({
     selector: 'app-tag',
@@ -22,7 +23,7 @@ export class TagComponent {
   protected posts: Post[] = []
   protected title: string = ''
 
-  constructor(private tagService: TagService, private route: ActivatedRoute) { }
+  constructor(private tagService: TagService, private postService: PostService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.loadTag()
@@ -30,7 +31,7 @@ export class TagComponent {
 
   init(tag: Tag){
     this.tag = tag
-    this.posts = tag.posts
+    this.posts = this.loadPostsTag(tag.posts)
     this.title = tag.name
   }
 
@@ -43,6 +44,17 @@ export class TagComponent {
           this.init(tag)
         });
       })
+  }
+
+  loadPostsTag(posts : Post[]) : Post[] {
+    for(let post of posts){
+        if(post.id && post.tags.length < 1){
+          this.postService.getTags(post.id).subscribe((tags) =>
+            post.tags = tags
+          ) 
+        }
+    }
+    return posts;
   }
 
   onPageChange(pageNumber: number) {
