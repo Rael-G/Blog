@@ -38,7 +38,14 @@ public class PostsController(IPostService postService, ITagService tagService)
     [HttpGet("tags/{postId}")]
     [ProducesResponseType(200)] // OK
     public async Task<IActionResult> GetTags(Guid postId)
-        => Ok(await _tagService.GetAll(postId));
+    {
+        var tags = await _postService.GetTags(postId);
+
+        if (tags is null)
+            return NotFound(postId);
+        
+        return Ok(tags);
+    } 
 
     /// <summary>
     /// Creates a new blog post.

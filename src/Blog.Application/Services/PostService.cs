@@ -15,4 +15,11 @@ public class PostService(IPostRepository postRepository, IMapper mapper)
         Repository.Update(post);
         await Repository.Commit();
     }
+
+    public async Task<IEnumerable<TagDto>?> GetTags(Guid postId)
+    {
+        var post = await Repository.Get(postId);
+
+        return Mapper.Map<IEnumerable<TagDto>>(post is not null? post.Tags.Select(pt => pt.Tag) : null);
+    }
 }
