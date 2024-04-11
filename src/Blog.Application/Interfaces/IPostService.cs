@@ -14,4 +14,7 @@ public interface IPostService : IBaseService<PostDto>
     /// <param name="postId">The id of the post</param>
     /// <returns>A collection of tags</returns>
     Task<IEnumerable<TagDto>?> GetTags(Guid postId);
+
+    Task<IEnumerable<PostDto>> GetPage(int page);
+    Task<int> GetPageCount();
 }

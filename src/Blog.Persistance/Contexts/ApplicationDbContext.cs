@@ -23,6 +23,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             post.Property(p => p.Title).IsRequired().HasMaxLength(256);
             post.Property(p => p.Content).IsRequired();
             post.HasIndex(p => p.Title).IsUnique();
+            post.HasIndex(p => p.CreatedTime);
         });
 
         ConfigureBaseEntity<Comment>(modelBuilder);

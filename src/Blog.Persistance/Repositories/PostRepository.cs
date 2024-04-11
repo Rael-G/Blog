@@ -8,11 +8,11 @@ public class PostRepository(ApplicationDbContext context)
 {
     public override async Task<Post?> Get(Guid id)
         => await Context.Posts
-        .AsNoTracking()
-        .Include(p => p.Comments)
-        .Include(p => p.Tags)
-        .ThenInclude(pt => pt.Tag)
-        .FirstOrDefaultAsync(p => p.Id == id);
+            .AsNoTracking()
+            .Include(p => p.Comments)
+            .Include(p => p.Tags)
+            .ThenInclude(pt => pt.Tag)
+            .FirstOrDefaultAsync(p => p.Id == id);
 
     public async Task UpdatePostTag(Post post) {
 
@@ -22,4 +22,15 @@ public class PostRepository(ApplicationDbContext context)
         Context.PostTag.RemoveRange(postTagsToDelete);
         Context.PostTag.AddRange(postTagsToCreate);
     }
+
+    public async Task<IEnumerable<Post>> GetPage(int page, int quantity)
+        => await Context.Posts
+            .OrderByDescending(p => p.CreatedTime)
+            .Select(p => p)
+            .Skip((page - 1) * quantity)
+            .Take(quantity)
+            .ToListAsync();
+
+    public async Task<int> GetCount()
+        => await Context.Posts.CountAsync();
 }

@@ -21,13 +21,22 @@ public class PostsController(IPostService postService)
         => await base.Get(id);
 
     /// <summary>
-    /// Retrieves all posts.
+    /// Retrieves a page of posts.
     /// </summary>
-    /// <returns>Returns a list of all posts.</returns>
+    /// <returns>Returns a list of posts within a page.</returns>
     [HttpGet]
     [ProducesResponseType(200)] // OK
-    public new async Task<IActionResult> GetAll()
-        => await base.GetAll();
+    public async Task<IActionResult> GetPage([FromQuery] int page)
+        => Ok(await _postService.GetPage(page));
+
+    /// <summary>
+    /// Retrieves a page count.
+    /// </summary>
+    /// <returns>Returns the count of pages.</returns>
+    [HttpGet("page-count")]
+    [ProducesResponseType(200)] // OK
+    public async Task<IActionResult> GetPageCount()
+        => Ok(await _postService.GetPageCount());
 
     /// <summary>
     /// Retrieves all tags related to a post by its id
