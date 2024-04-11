@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Tag } from '../../interfaces/Tag';
 
@@ -20,6 +20,14 @@ export class TagService {
 
   getTag(id: string): Observable<Tag> {
     return this.http.get<Tag>(this.tagsUrl + '/' + id)
+  }
+
+  getPage(id : string, page : number): Observable<Tag> {
+    return this.http.get<Tag>(this.tagsUrl + '/' + id + '/page', { params: new HttpParams().append("page", page) })
+  }
+
+  getPageCount(id : string) : Observable<number> {
+    return this.http.get<number>(this.tagsUrl + '/' + id + "/page-count")
   }
 
   createTag(tag: Tag): Observable<Tag> {

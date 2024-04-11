@@ -23,7 +23,6 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadPost()
-    this.loadPageCount()
   }
 
   onPageChange(pageNumber: number) {
@@ -31,30 +30,21 @@ export class HomeComponent implements OnInit {
     this.postService.getPosts(pageNumber).subscribe((posts) => 
       this.posts = posts)
     this.currentPage = pageNumber
-    this.loadPageCount(); 
+    this.loadPageCount()
   }
 
   loadPost(){
-    this.postService.getPosts(1)
+    this.postService.getPosts(this.currentPage)
       .subscribe((posts) => {
-        this.posts = this.loadPostsTag(posts)
+        this.posts = posts
+        this.loadPageCount()
     });
   }
 
   loadPageCount(){
-    this.postService.getPageCount().subscribe((count) =>
-      this.totalPages = count)
-    this.pageNumbers = PaginationComponent.SetPageNumbers(this.currentPage, this.totalPages)
-  }
-
-  loadPostsTag(posts : Post[]) : Post[] {
-    for(let post of posts){
-        if(post.id && post.tags.length < 1){
-          this.postService.getTags(post.id).subscribe((tags) =>
-            post.tags = tags
-          ) 
-        }
-    }
-    return posts;
+    this.postService.getPageCount().subscribe((count) => {
+      this.totalPages = count
+      this.pageNumbers = PaginationComponent.SetPageNumbers(this.currentPage, this.totalPages)
+    })
   }
 }

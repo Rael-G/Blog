@@ -5,7 +5,6 @@ import { ActivatedRoute } from '@angular/router';
 import { Post } from '../../../interfaces/Post';
 import { ListPostComponent } from "../../list-post/list-post.component";
 import { PaginationComponent } from "../../pagination/pagination.component";
-import { PostService } from '../../../services/post/post.service';
 
 @Component({
     selector: 'app-tag',
@@ -18,46 +17,47 @@ export class TagComponent {
   
   protected tag!: Tag
   protected currentPage: number = 1
-  protected totalPages: number = 100
+  protected totalPages: number = 0
+  protected pageNumbers : number[] = []
   protected posts: Post[] = []
   protected title: string = ''
 
-  constructor(private tagService: TagService, private postService: PostService, private route: ActivatedRoute) { }
+  constructor(private tagService: TagService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.loadTag()
+    this.load();
   }
 
-  init(tag: Tag){
-    this.tag = tag
-    this.posts = this.loadPostsTag(tag.posts)
-    this.title = tag.name
+  load(){
+    let id : string = ''
+    this.route.paramMap.subscribe((params) => {
+      id = params.get('id')!
+      this.loadTag(id, 1)
+    })
   }
 
-  loadTag(): void {
-    this.route.paramMap
-      .subscribe((params) => {
-        const id = params.get('id');
-        this.tagService.getTag(id ?? '')
-        .subscribe((tag) => {
-          this.init(tag)
-        });
+  loadTag(id : string, pageNumber : number): void {
+    this.tagService.getPage(id, pageNumber)
+    .subscribe((tag) => {
+      this.tag = tag
+      this.title = tag.name
+      this.posts = tag.posts
+      this.loadPageCount(tag.id!, pageNumber)
+    });
+  }
+
+  loadPageCount(id : string, page : number){
+    this.tagService.getPageCount(id)
+      .subscribe((count) =>{
+        this.totalPages = count
+        this.pageNumbers = PaginationComponent.SetPageNumbers(page, this.totalPages)
+        console.log(PaginationComponent.SetPageNumbers(page, count))
       })
-  }
-
-  loadPostsTag(posts : Post[]) : Post[] {
-    for(let post of posts){
-        if(post.id && post.tags.length < 1){
-          this.postService.getTags(post.id).subscribe((tags) =>
-            post.tags = tags
-          ) 
-        }
-    }
-    return posts;
+    
   }
 
   onPageChange(pageNumber: number) {
-    this.currentPage = pageNumber;
-    //Logic to call posts
+    this.currentPage = pageNumber
+    this.loadTag(this.tag.id!, pageNumber)
   }
 }

@@ -3,7 +3,6 @@ import { environment } from '../../../environments/environment';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Post } from '../../interfaces/Post';
-import { Tag } from '../../interfaces/Tag';
 
 @Injectable({
   providedIn: 'root'
@@ -21,10 +20,6 @@ export class PostService {
 
   getPost(id: string): Observable<Post> {
     return this.http.get<Post>(this.postUrl + '/' + id)
-  }
-
-  getTags(id: string): Observable<Tag[]> {
-    return this.http.get<Tag[]>(this.postUrl + '/tags/' + id)
   }
 
   getPageCount() : Observable<number> {
