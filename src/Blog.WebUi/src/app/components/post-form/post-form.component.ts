@@ -20,11 +20,7 @@ export class PostFormComponent implements OnInit {
   @Output() postSubmitted = new EventEmitter<Post>()
 
   constructor(private tagService : TagService) {
-    this.postForm = new FormGroup({
-      title: new FormControl('', [Validators.required, Validators.maxLength(255)]),
-      content: new FormControl('', [Validators.required]),
-      tags: new FormControl('', [Validators.required])
-    });
+    this.postForm = this.GenerateFormGroup()
   }
 
   ngOnInit() {
@@ -34,6 +30,9 @@ export class PostFormComponent implements OnInit {
 
   private getPostDetails() {
     let tagIds : string[] = []
+
+    if (!this.post)
+      return
 
     for(let tag of this.post?.tags){
       if (tag.id)
@@ -51,6 +50,14 @@ export class PostFormComponent implements OnInit {
     this.tagService.getTags().subscribe(tags => 
       this.tags = tags
     )
+  }
+
+  private GenerateFormGroup() : FormGroup {
+    return new FormGroup({
+      title: new FormControl('', [Validators.maxLength(255)]),
+      content: new FormControl(''),
+      tags: new FormControl('')
+    });
   }
 
   private mapTags()

@@ -30,8 +30,7 @@
   <div class="form-group">
     <label for="tags">Tags</label>
     <select class="form-control" formControlName="tags" required multiple>
-      <option value="">Select a tag</option>
-
+      
       @for(tag of tags; track tag){
       <option value={{tag.id}}>{{tag.name}}</option>
       }
@@ -40,7 +39,7 @@
 
     @if(submitted && postForm.get('tags')?.errors?.['required']){
     <div class="alert alert-danger">
-      Tag is required.
+      At least on tag is required.
     </div>
     }
     

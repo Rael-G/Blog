@@ -28,7 +28,7 @@ export class ManagementComponent implements OnInit {
   }
 
   getPosts() {
-    this.postService.getPosts().subscribe((posts) => {
+    this.postService.getPosts(1).subscribe((posts) => {
       this.posts = posts
       for(let post of posts){
         if (post.id){

@@ -18,8 +18,7 @@ export class TagComponent {
   
   protected tag!: Tag
   protected currentPage: number = 1
-  protected pageSize: number = 10
-  protected totalPosts: number = 100
+  protected totalPages: number = 100
   protected posts: Post[] = []
   protected title: string = ''
 

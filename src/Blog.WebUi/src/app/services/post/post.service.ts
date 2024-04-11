@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Post } from '../../interfaces/Post';
 import { Tag } from '../../interfaces/Tag';
@@ -15,16 +15,20 @@ export class PostService {
 
   constructor(private http: HttpClient) { }
 
-  getPosts(): Observable<Post[]> {
-    return this.http.get<Post[]>(this.postUrl)
+  getPosts(page : number): Observable<Post[]> {
+    return this.http.get<Post[]>(this.postUrl, { params: new HttpParams().append("page", page) })
+  }
+
+  getPost(id: string): Observable<Post> {
+    return this.http.get<Post>(this.postUrl + '/' + id)
   }
 
   getTags(id: string): Observable<Tag[]> {
     return this.http.get<Tag[]>(this.postUrl + '/tags/' + id)
   }
 
-  getPost(id: string): Observable<Post> {
-    return this.http.get<Post>(this.postUrl + '/' + id)
+  getPageCount() : Observable<number> {
+    return this.http.get<number>(this.postUrl + "/page-count")
   }
 
   createPost(post: Post): Observable<Post> {

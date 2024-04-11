@@ -9,33 +9,42 @@ import { RouterModule } from '@angular/router';
   styleUrl: './pagination.component.scss'
 })
 export class PaginationComponent {
-  @Input() currentPage: number = 0
-  @Input() totalItems: number = 0
-  @Input() itemsPerPage: number = 0
+  @Input() public currentPage: number = 0
+  @Input() public totalPages: number = 0
+  @Input() public pageNumbers : number[] = []
 
   @Output() pageChange = new EventEmitter<number>()
 
   constructor() { }
 
-  nextPage() {
-    if (this.currentPage < this.totalPages()) {
+  protected nextPage() {
+    if (this.currentPage < this.totalPages) {
       this.pageChange.emit(this.currentPage + 1)
     }
   }
 
-  previousPage() {
+  protected previousPage() {
     if (this.currentPage > 1) {
-      this.pageChange.emit(this.currentPage--)
+      this.pageChange.emit(this.currentPage - 1)
     }
   }
 
-  totalPages(): number {
-    return Math.ceil(this.totalItems / this.itemsPerPage)
-  }
-
-  goToPage(pageNumber: number) {
-    if (pageNumber > 0 && pageNumber <= this.totalPages()) {
+  protected goToPage(pageNumber: number) {
+    if (pageNumber > 0 && pageNumber <= this.totalPages) {
       this.pageChange.emit(pageNumber)
     }
+  }
+
+  public static SetPageNumbers(currentPage : number, totalPages : number) : number[]{
+    let page = currentPage - 2
+    let pageNumbers : number[] = []
+    for (let i = 0; i < 5; i++){
+      if (page > totalPages)
+        break
+      if(page > 0)
+        pageNumbers.push(page)
+      page++
+    }
+    return pageNumbers
   }
 }

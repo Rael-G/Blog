@@ -14,27 +14,37 @@ import { ListPostComponent } from '../../list-post/list-post.component';
 })
 export class HomeComponent implements OnInit {
   protected currentPage: number = 1
-  protected pageSize: number = 10
-  protected totalPosts: number = 100
+  protected totalPages: number = 0
+  protected pageNumbers : number[] = []
   protected posts: Post[] = []
   protected title: string = 'Latest Posts'
 
   constructor(private postService: PostService) { }
 
   ngOnInit(): void {
-    this.loadPost();
+    this.loadPost()
+    this.loadPageCount()
   }
 
   onPageChange(pageNumber: number) {
-    this.currentPage = pageNumber;
-    //Logic to call posts
+    this.posts = []
+    this.postService.getPosts(pageNumber).subscribe((posts) => 
+      this.posts = posts)
+    this.currentPage = pageNumber
+    this.loadPageCount(); 
   }
 
   loadPost(){
-    this.postService.getPosts()
+    this.postService.getPosts(1)
       .subscribe((posts) => {
         this.posts = this.loadPostsTag(posts)
     });
+  }
+
+  loadPageCount(){
+    this.postService.getPageCount().subscribe((count) =>
+      this.totalPages = count)
+    this.pageNumbers = PaginationComponent.SetPageNumbers(this.currentPage, this.totalPages)
   }
 
   loadPostsTag(posts : Post[]) : Post[] {
@@ -47,5 +57,4 @@ export class HomeComponent implements OnInit {
     }
     return posts;
   }
-
 }
