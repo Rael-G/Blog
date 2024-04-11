@@ -11,11 +11,10 @@ public class PostRepository(ApplicationDbContext context)
             .AsNoTracking()
             .Include(p => p.Comments)
             .Include(p => p.Tags)
-            .ThenInclude(pt => pt.Tag)
+                .ThenInclude(pt => pt.Tag)
             .FirstOrDefaultAsync(p => p.Id == id);
 
     public async Task UpdatePostTag(Post post) {
-
         var existentPostTags = await Context.PostTag.Where(pt => pt.PostId == post.Id).ToListAsync();
         var postTagsToDelete = existentPostTags.Except(post.Tags);
         var postTagsToCreate = post.Tags.Except(existentPostTags);
@@ -25,8 +24,10 @@ public class PostRepository(ApplicationDbContext context)
 
     public async Task<IEnumerable<Post>> GetPage(int page, int quantity)
         => await Context.Posts
+            .AsNoTracking()
             .OrderByDescending(p => p.CreatedTime)
-            .Select(p => p)
+            .Include(p => p.Tags)
+                .ThenInclude(pt => pt.Tag)
             .Skip((page - 1) * quantity)
             .Take(quantity)
             .ToListAsync();

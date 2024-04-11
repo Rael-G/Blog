@@ -27,6 +27,31 @@ public class TagsController(ITagService tagService) : BaseController<TagDto>(tag
         => await base.GetAll();
 
     /// <summary>
+    /// Retrieves a page of posts.
+    /// </summary>
+    /// <returns>Returns a list of posts within a page.</returns>
+    [HttpGet("{id}/page")]
+    [ProducesResponseType(200)] // OK
+    public async Task<IActionResult> GetPage(Guid id, [FromQuery] int page)
+    {
+        var tag = await tagService.GetTagPage(id, page);
+
+        if (tag is null)
+            return NotFound(id);
+
+        return Ok(tag);   
+    }
+
+    /// <summary>
+    /// Retrieves a page count.
+    /// </summary>
+    /// <returns>Returns the count of pages.</returns>
+    [HttpGet("{id}/page-count")]
+    [ProducesResponseType(200)] // OK
+    public async Task<IActionResult> GetPageCount(Guid id)
+        => Ok(await tagService.GetPageCount(id));
+
+    /// <summary>
     /// Creates a new tag.
     /// </summary>
     /// <param name="input">The input model containing data for the new tag.</param>

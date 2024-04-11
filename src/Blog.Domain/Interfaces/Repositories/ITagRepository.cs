@@ -8,4 +8,6 @@ public interface ITagRepository : IBaseRepository<Tag>
     /// <param name="name">The name of the tag to retrieve.</param>
     /// <returns>The retrieved tag, or null if not found.</returns>
     Task<Tag?> GetByName(string name);
+    Task<IEnumerable<Post>> GetTagPage(Guid id, int page, int quantity);
+    Task<int> GetPostCount(Guid id);
 }

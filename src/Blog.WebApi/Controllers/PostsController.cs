@@ -39,23 +39,6 @@ public class PostsController(IPostService postService)
         => Ok(await _postService.GetPageCount());
 
     /// <summary>
-    /// Retrieves all tags related to a post by its id
-    /// </summary>
-    /// <param name="postId">The id of the post</param>
-    /// <returns>A collection of tags</returns>
-    [HttpGet("tags/{postId}")]
-    [ProducesResponseType(200)] // OK
-    public async Task<IActionResult> GetTags(Guid postId)
-    {
-        var tags = await _postService.GetTags(postId);
-
-        if (tags is null)
-            return NotFound(postId);
-        
-        return Ok(tags);
-    } 
-
-    /// <summary>
     /// Creates a new blog post.
     /// </summary>
     /// <param name="input">The input model containing data for the new blog post.</param>
