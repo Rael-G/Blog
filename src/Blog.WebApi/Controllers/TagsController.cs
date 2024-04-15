@@ -27,11 +27,15 @@ public class TagsController(ITagService tagService) : BaseController<TagDto>(tag
         => await base.GetAll();
 
     /// <summary>
-    /// Retrieves a page of posts.
+    /// Retrieves a page of posts associated with a specific tag, identified by its ID, and returns them. 
     /// </summary>
-    /// <returns>Returns a list of posts within a page.</returns>
+    /// <param name="id">The ID of the tag.</param>
+    /// <param name="page">The page number.</param>
+    /// 200 (OK) response containing the tag with its associated posts on the specified page.
+    /// 404 (Not Found) if the tag with the specified ID does not exist.
     [HttpGet("{id}/page")]
     [ProducesResponseType(200)] // OK
+    [ProducesResponseType(404)] // Not Found
     public async Task<IActionResult> GetPage(Guid id, [FromQuery] int page)
     {
         var tag = await tagService.GetTagPage(id, page);
@@ -43,13 +47,25 @@ public class TagsController(ITagService tagService) : BaseController<TagDto>(tag
     }
 
     /// <summary>
-    /// Retrieves a page count.
+    /// Retrieves the total number of pages for posts associated with a specific tag, identified by its ID.
     /// </summary>
-    /// <returns>Returns the count of pages.</returns>
+    /// <param name="id">The ID of the tag.</param>
+    /// <returns>
+    /// 200 (OK) response containing the total number of pages for posts associated with the tag.
+    /// 404 (Not Found) if the tag with the specified ID does not exist.
+    /// </returns>
     [HttpGet("{id}/page-count")]
     [ProducesResponseType(200)] // OK
+    [ProducesResponseType(404)] // Not Found
     public async Task<IActionResult> GetPageCount(Guid id)
-        => Ok(await tagService.GetPageCount(id));
+    {
+        var tag = await tagService.Get(id);
+
+        if (tag is null)
+            return NotFound(id);
+
+        return Ok(await tagService.GetPageCount(id));
+    }
 
     /// <summary>
     /// Creates a new tag.
