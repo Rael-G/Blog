@@ -33,8 +33,11 @@ public class Post : BaseEntity
     /// </summary>
     public IEnumerable<PostTag> Tags { get; }
 
-    private string _title = "";
-    private string _content = "";
+    public User? User { get; }
+    public Guid UserId { get; }
+
+    private string _title = string.Empty;
+    private string _content = string.Empty;
 
     /// <summary>
     /// Initializes a new instance of the post class with the specified <see cref="Title">, <see cref="Content">.
@@ -43,13 +46,14 @@ public class Post : BaseEntity
     /// <param name="title">The <see cref="Title"> of the post.</param>
     /// <param name="content">The content of the post.</param>
     /// <exception cref="ArgumentException"></exception>
-    public Post(Guid id, string title, string content)
+    public Post(Guid id, string title, string content, Guid userId)
         : base(id)
     {
         Title = title;
         Content = content;
         Comments = new List<Comment>();
         Tags = new List<PostTag>();
+        UserId = userId;
     }
 
     private string ValidateTitle(string title)

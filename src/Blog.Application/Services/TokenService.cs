@@ -151,25 +151,3 @@ public static class TokenService
         return claimsIdentity;
     }
 }
-
-public class User : BaseEntity
-{
-    public User(Guid id) : base(id)
-    {
-        
-    }
-
-    public string UserName { get; set; }
-    public string PasswordHash { get; set; }
-    public string[] Roles { get; set; }
-    public string? RefreshToken { get; set; }
-    public DateTime? RefreshTokenExpiryTime { get; set; }
-}
-
-public class Token
-{
-    public string AccessToken { get; set; } = string.Empty;
-    public DateTime Creation { get; set; }
-    public DateTime Expiration { get; set; }
-    public string RefreshToken { get; set; }  = string.Empty;
-}
