@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Blog.Application;
 using Blog.Domain;
-using FluentAssertions;
 using Moq;
 
 namespace Blog.UnitTest.Application.Services;
@@ -24,7 +23,7 @@ public class PostServiceTests
     }
 
     [Fact]
-    public async void Update_Should_Call_Repository_UpdateAndCommit()
+    public async void Update_Should_Call_Repository_Update()
     {
         var dto = new PostDto();
 
@@ -34,6 +33,18 @@ public class PostServiceTests
         await _postService.Update(dto);
 
         _mockRepository.Verify(r => r.Update(_post), Times.Once);
+    }
+
+    [Fact]
+    public async void Update_Should_Call_Repository_Commit()
+    {
+        var dto = new PostDto();
+
+        _mockMapper.Setup(r => r.Map<Post>(It.IsAny<PostDto>()))
+            .Returns(_post);
+
+        await _postService.Update(dto);
+
         _mockRepository.Verify(r => r.Commit(), Times.Once);
     }
 
@@ -50,44 +61,39 @@ public class PostServiceTests
         _mockRepository.Verify(r => r.UpdatePostTag(_post), Times.Once);
     }
 
-            [Fact]
-        public async Task GetTags_Should_Call_Repository_Get()
-        {
-            var tags = new List<TagDto>();
+    [Fact]
+    public async void GetPage_Should_Call_Repository_GetPage_WithPageAndPageSize()
+    {
+        var page = 10;
 
-            _mockRepository.Setup(r => r.Get(It.IsAny<Guid>()))
-                .ReturnsAsync(_post);
-            _mockMapper.Setup(r => r.Map<IEnumerable<TagDto>>(It.IsAny<IEnumerable<Tag>>()))
-                .Returns(tags);
+        _mockMapper.Setup(r => r.Map<IEnumerable<PostDto>>(It.IsAny<IEnumerable<Post>>()))
+            .Returns([]);
 
-            var result = await _postService.GetTags(_post.Id);
+        await _postService.GetPage(page);
 
-            _mockRepository.Verify(r => r.Get(_post.Id), Times.Once);
-        }
+        _mockRepository.Verify(r => r.GetPage(page, PostService.PageSize), Times.Once);
+    }
 
-        [Fact]
-        public async Task GetTags_WhenPostExists_ShouldReturn_TagsDto()
-        {
-            var tags = new List<TagDto>();
+    [Theory]
+    [InlineData(0)]
+    [InlineData(1)]
+    [InlineData(100)]
+    [InlineData(687906)]
+    public async void GetPageCount_Should_Returns_CorrectPageCount_ForGivenTotalPosts(int count)
+    {
+        _mockRepository.Setup(r => r.GetCount())
+            .ReturnsAsync(count);
 
-            _mockRepository.Setup(r => r.Get(It.IsAny<Guid>()))
-                .ReturnsAsync(_post);
-            _mockMapper.Setup(r => r.Map<IEnumerable<TagDto>>(It.IsAny<IEnumerable<Tag>>()))
-                .Returns(tags);
+        var result = await _postService.GetPageCount();
 
-            var result = await _postService.GetTags(_post.Id);
+        var expectedResult = (int)Math.Ceiling(count / (float)TagService.PageSize);
+        Assert.Equal(result, expectedResult);
+    }
 
-            result.Should().BeSameAs(tags);
-        }
-
-        [Fact]
-        public async Task GetTags_WhenPostIsNull_ShouldReturn_Null()
-        {
-            _mockRepository.Setup(r => r.Get(It.IsAny<Guid>()))
-                .ReturnsAsync(() => null);
-
-            var result = await _postService.GetTags(_post.Id);
-
-            result.Should().BeNull();
-        }
+    [Fact]
+    public async void GetPageCount_Should_Call_Repository_GetCount()
+    {
+        await _postService.GetPageCount();
+        _mockRepository.Verify(r => r.GetCount(), Times.Once);
+    }
 }

@@ -19,27 +19,37 @@ public class PostsControllerTests
 
         _postDto = new PostDto { Id = Guid.NewGuid() };
     }
-     [Fact]
-    public async Task Get_WithValidId_ReturnsOkWithTags()
-    {
-        var tags = new List<TagDto>{ new TagDto{ Id = Guid.NewGuid() }, new TagDto{ Id = Guid.NewGuid() } };
-        _mockService.Setup(s => s.GetTags(It.IsAny<Guid>())).ReturnsAsync(tags);
 
-        var result = await _controller.GetTags(_postDto.Id);
+    [Fact]
+    public async Task GetPage_ReturnsOkWithDtos()
+    {
+        var page = 10;
+        var expectedDtos = new List<PostDto>
+        {
+            new PostDto{ Id = Guid.NewGuid()},
+            new PostDto{ Id = Guid.NewGuid()}
+        };
+        _mockService.Setup(s => s.GetPage(It.IsAny<int>()))
+            .ReturnsAsync(expectedDtos);
+
+        var result = await _controller.GetPage(page);
 
         var okResult = result.Should().BeOfType<OkObjectResult>().Subject;
-        var resultValue = okResult.Value.Should().BeAssignableTo<IEnumerable<TagDto>>().Subject;
-        resultValue.Should().BeEquivalentTo(tags);
+        var posts = okResult.Value.Should().BeAssignableTo<IEnumerable<PostDto>>().Subject;
+
+        posts.Should().BeEquivalentTo(expectedDtos);
     }
 
     [Fact]
-    public async Task Get_WithInvalidId_ReturnsNotFound()
+    public async Task GetPageCount_ReturnsOkWithCount()
     {
-        _mockService.Setup(s => s.Get(It.IsAny<Guid>())).ReturnsAsync(() => null);
+        var count = 19;
+        _mockService.Setup(s => s.GetPageCount())
+            .ReturnsAsync(count);
 
-        var result = await _controller.Get(_postDto.Id);
+        var result = await _controller.GetPageCount();
 
-        result.Should().BeOfType<NotFoundObjectResult>();
+        var okResult = result.Should().BeOfType<OkObjectResult>().Subject;
+        var resultCount = okResult.Value.Should().Be(count);
     }
-
 }
