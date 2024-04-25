@@ -4,5 +4,5 @@ public interface IInputModel<TDto>
 {
     TDto InputToDto();
 
-    void InputToDto(TDto postDto);
+    void InputToDto(TDto dto);
 }
