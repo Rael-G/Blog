@@ -16,6 +16,19 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     {
         base.OnModelCreating(modelBuilder);
 
+        ConfigureBaseEntity<User>(modelBuilder);
+        modelBuilder.Entity<User>(user =>
+        {
+            user.Property(u => u.UserName)
+                .IsRequired();
+            user.Property(u => u.PasswordHash)
+                .IsRequired();
+            user.Property(u => u.Roles)
+                .IsRequired();
+            user.HasIndex(u => u.UserName)
+                .IsUnique();
+        });
+
         ConfigureBaseEntity<Post>(modelBuilder);
         modelBuilder.Entity<Post>(post =>
         {
@@ -27,6 +40,10 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             post.HasIndex(p => p.Title)
                 .IsUnique();
             post.HasIndex(p => p.CreatedTime);
+            post.HasOne(p => p.User)
+                .WithMany(u => u.Posts)
+                .HasForeignKey(p => p.UserId)
+                .IsRequired();
         });
 
         ConfigureBaseEntity<Comment>(modelBuilder);
