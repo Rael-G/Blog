@@ -3,8 +3,8 @@
 
 public interface IAuthService
 {
-    Task<Token?> LoginAsync(UserDto userDto, string password);
+    Task<Token?> LoginAsync(UserDto userDto);
 
-    Task<Token?> RegenarateTokenAsync(string accessToken, string refreshToken);
+    Task<Token?> RegenarateTokenAsync(Token token);
 }
 

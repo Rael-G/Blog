@@ -8,21 +8,21 @@ public class AuthService : IAuthService
 {
     private readonly IUserRepository _repository;
 
-    public AuthService(IUserRepository repository, IMapper mapper)
+    public AuthService(IUserRepository repository)
     {
         _repository = repository;
     }
 
-    public async Task<Token?> LoginAsync(UserDto userDto, string password)
+    public async Task<Token?> LoginAsync(UserDto userDto)
     {
         var user = await _repository.GetByUserName(userDto.UserName);
 
-        if (user is null)
+        if (user is null || string.IsNullOrWhiteSpace(userDto.PasswordHash))
             return null;
 
         var passwordHasher = new PasswordHasher<User>();
         var result = passwordHasher
-            .VerifyHashedPassword(user, user.PasswordHash, password);
+            .VerifyHashedPassword(user, user.PasswordHash, userDto.PasswordHash);
 
         if (result != PasswordVerificationResult.Success)
             return null;
@@ -36,14 +36,14 @@ public class AuthService : IAuthService
         return token;
     }
 
-    public async Task<Token?> RegenarateTokenAsync(string accessToken, string refreshToken)
+    public async Task<Token?> RegenarateTokenAsync(Token tokenInput)
     {
-        var principal = TokenService.GetPrincipalFromToken(accessToken);
+        var principal = TokenService.GetPrincipalFromToken(tokenInput.AccessToken);
 
         var user = await _repository.GetByUserName(principal.Identity?.Name!);
 
         if (user == null ||
-            user.RefreshToken != refreshToken ||
+            user.RefreshToken != tokenInput.RefreshToken ||
             user.RefreshTokenExpiryTime < DateTime.UtcNow)
         {
             return null;
