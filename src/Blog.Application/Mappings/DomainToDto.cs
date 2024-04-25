@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-using System.Runtime.InteropServices;
-using AutoMapper;
+﻿using AutoMapper;
 using Blog.Domain;
 
 namespace Blog.Application;
@@ -9,6 +7,14 @@ public class DomainToDto : Profile
 {
     public DomainToDto()
     {
+        CreateMap<User, UserDto>()
+            .ForMember(dest => dest.Roles, opt => opt.Ignore())
+            .ReverseMap()
+            .ForMember(dest => dest.Roles, opt => opt.Ignore())
+            .ForMember(dest => dest.ModifiedTime, opt => opt.Ignore())
+            .ForMember(dest => dest.CreatedTime, opt => opt.Ignore());
+            
+
         CreateMap<Comment, CommentDto>()
             .ReverseMap()
             .ForMember(dest => dest.ModifiedTime, opt => opt.Ignore())

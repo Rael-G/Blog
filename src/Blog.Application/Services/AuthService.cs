@@ -7,12 +7,10 @@ namespace Blog.Application;
 public class AuthService : IAuthService
 {
     private readonly IUserRepository _repository;
-    private readonly IMapper _mapper;
 
     public AuthService(IUserRepository repository, IMapper mapper)
     {
         _repository = repository;
-        _mapper = mapper;
     }
 
     public async Task<Token?> LoginAsync(UserDto userDto, string password)
@@ -47,7 +45,9 @@ public class AuthService : IAuthService
         if (user == null ||
             user.RefreshToken != refreshToken ||
             user.RefreshTokenExpiryTime < DateTime.UtcNow)
+        {
             return null;
+        }
 
         var token = TokenService.GenerateToken(principal.Claims);
 
