@@ -2,7 +2,7 @@
 
 namespace Blog.WebApi;
 
-public class UserInputModel
+public class UserInputModel : IInputModel<UserDto>
 {
     public string UserName { get; set;} = string.Empty;
     public string Password { get; set;} = string.Empty;
