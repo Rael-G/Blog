@@ -1,5 +1,9 @@
-﻿using Blog.Persistance;
+﻿using System.Text;
+using Blog.Application;
+using Blog.Persistance;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Blog.WebApi
 {
@@ -23,6 +27,31 @@ namespace Blog.WebApi
                     .AllowAnyHeader()
                     .AllowAnyMethod();
             }));
+        }
+
+        public static void ConfigureAuth(this IServiceCollection services)
+        {
+            var key = Encoding.ASCII.GetBytes(TokenService.SecretKey);
+
+            services.AddAuthentication(a =>
+            {
+                a.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                a.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                a.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(j =>
+            {
+                j.RequireHttpsMetadata = false;
+                j.SaveToken = true;
+                j.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
+
+            services.AddAuthorization();
         }
     }
 }
