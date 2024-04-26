@@ -13,10 +13,10 @@ public class AuthController(IAuthService authService) : ControllerBase
     /// <summary>
     /// Logs in a user with provided credentials.
     /// </summary>
-    /// <param name="logInUser">The user credentials for login.</param>
+    /// <param name="userInput">The user credentials for login.</param>
     /// <returns>Returns the logged-in user information, including a token.</returns>
-    [HttpPost("login")]
     [AllowAnonymous]
+    [HttpPut("login")]
     [ProducesResponseType(typeof(Token), 200)]
     [ProducesResponseType(400)]
     public async Task<IActionResult> LogIn(UserInputModel userInput)
@@ -43,8 +43,8 @@ public class AuthController(IAuthService authService) : ControllerBase
     /// </summary>
     /// <param name="tokenInput">The input model containing the access and refresh tokens.</param>
     /// <returns>Returns the regenerated token information.</returns>
-    [HttpPost("regen-token")]
     [AllowAnonymous]
+    [HttpPut("regen-token")]
     [ProducesResponseType(typeof(Token), 200)]
     [ProducesResponseType(400)]
     public async Task<IActionResult> RegenerateToken(TokenInputModel tokenInput)
