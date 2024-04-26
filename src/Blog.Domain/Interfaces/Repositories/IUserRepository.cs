@@ -2,5 +2,5 @@
 
 public interface IUserRepository : IBaseRepository<User>
 {
-    public Task<User> GetByUserName(string userName);
+    public Task<User?> GetByUserName(string userName);
 }
