@@ -7,12 +7,12 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 
 builder.Services.ConfigurePersistance(builder.Configuration);
 builder.Services.ConfigureApplication(builder.Configuration);
 builder.Services.ConfigureCors();
 builder.Services.ConfigureAuth();
+builder.Services.ConfigureSwagger();
 
 var app = builder.Build();
 
