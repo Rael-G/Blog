@@ -4,14 +4,15 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.WebApi;
 
-public class UserController(IUserService userService) 
-    : BaseController<UserDto>(userService)
+public class UserController(IUserService _userService) 
+    : BaseController<UserDto>(_userService)
 {
     /// <summary>
     /// Retrieves a specific user by its ID.
     /// </summary>
     /// <param name="id">The ID of the user to retrieve.</param>
     /// <returns>Returns the user if found, otherwise returns a 404 Not Found.</returns>
+    [Authorize(Roles = Roles.Moderator)]
     [HttpGet("{id}")]
     [ProducesResponseType(200)] // OK
     [ProducesResponseType(404)] // Not Found
@@ -22,6 +23,7 @@ public class UserController(IUserService userService)
     /// Retrieves all user.
     /// </summary>
     /// <returns>Returns a list of all user.</returns>
+    [Authorize(Roles = Roles.Moderator)]
     [HttpGet]
     [ProducesResponseType(200)] // OK
     public new async Task<IActionResult> GetAll()
@@ -32,6 +34,7 @@ public class UserController(IUserService userService)
     /// </summary>
     /// <param name="input">The input model containing data for the new user.</param>
     /// <returns>Returns the newly created user.</returns>
+    [AllowAnonymous]
     [HttpPost]
     [ProducesResponseType(201)] // Created
     [ProducesResponseType(400)] // Bad Request
@@ -62,6 +65,7 @@ public class UserController(IUserService userService)
     /// <param name="id">The ID of the user to update.</param>
     /// <param name="input">The input model containing updated data for the user.</param>
     /// <returns>Returns 204 No Content if successful, otherwise returns a 404 Not Found or 400 Bad Request.</returns>
+    [Authorize]
     [HttpPut("{id}")]
     [ProducesResponseType(204)] // No Content
     [ProducesResponseType(400)] // Bad Request
@@ -69,11 +73,70 @@ public class UserController(IUserService userService)
     public async Task<IActionResult> Put(Guid id, [FromBody] UserInputModel input)
         => await base.Put(id, input);
 
+    [Authorize]
+    [HttpPut("reset-password/{id}")]
+    [ProducesResponseType(204)] // No Content
+    [ProducesResponseType(400)] // Bad Request
+    [ProducesResponseType(404)] // Not Found
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<IActionResult> ResetPassword(Guid id, [FromBody] UserInputModel input)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+
+        var entity = await Service.Get(id);
+        if (entity is null)
+            return NotFound(id);
+
+        if (TokenService.GetUserIdFromClaims(User) != entity.Id)
+            return Unauthorized();
+
+        input.InputToDto(entity);
+        try
+        {
+            await _userService.UpdatePassword(entity);
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+
+        return NoContent();
+    }
+
+    [Authorize(Roles = Roles.Admin)]
+    [HttpPut("roles/{id}")]
+    [ProducesResponseType(204)] // No Content
+    [ProducesResponseType(400)] // Bad Request
+    [ProducesResponseType(404)] // Not Found
+    public async Task<IActionResult> SetRoles(Guid id, [FromBody] string[] roles)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+
+        var entity = await Service.Get(id);
+        if (entity is null)
+            return NotFound(id);
+
+        entity.Roles = roles;
+        try
+        {
+            await _userService.UpdateRoles(entity);
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+
+        return NoContent();
+    }
+
     /// <summary>
     /// Deletes a user by its ID.
     /// </summary>
     /// <param name="id">The ID of the user to delete.</param>
     /// <returns>Returns 204 No Content if successful, otherwise returns a 404 Not Found.</returns>
+    [Authorize]
     [HttpDelete("{id}")]
     [ProducesResponseType(204)] // No Content
     [ProducesResponseType(404)] // Not Found
