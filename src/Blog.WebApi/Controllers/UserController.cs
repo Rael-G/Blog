@@ -36,7 +36,25 @@ public class UserController(IUserService userService)
     [ProducesResponseType(201)] // Created
     [ProducesResponseType(400)] // Bad Request
     public async Task<IActionResult> Post([FromBody] UserInputModel input)
-        => await base.Post(input);
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+
+        var entity = input.InputToDto();
+        try
+        {
+            await Service.Create(entity);
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+
+        entity.PasswordHash = null;
+        entity.RepeatPassword = null;
+
+        return CreatedAtAction(nameof(Get), new { entity.Id }, entity);
+    }
 
     /// <summary>
     /// Updates an existing user.

@@ -17,7 +17,7 @@ public class AuthController(IAuthService authService) : ControllerBase
     /// <returns>Returns the logged-in user information, including a token.</returns>
     [HttpPost("login")]
     [AllowAnonymous]
-    [ProducesResponseType(typeof(UserDto), 200)]
+    [ProducesResponseType(typeof(Token), 200)]
     [ProducesResponseType(400)]
     public async Task<IActionResult> LogIn(UserInputModel userInput)
     {
@@ -26,7 +26,7 @@ public class AuthController(IAuthService authService) : ControllerBase
             return BadRequest(ModelState);
         }
 
-        var userDto = new UserDto { UserName = userInput.UserName };
+        var userDto = userInput.InputToDto();
 
         var token = await _authService.LoginAsync(userDto);
 
