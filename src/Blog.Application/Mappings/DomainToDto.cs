@@ -9,6 +9,7 @@ public class DomainToDto : Profile
     {
         CreateMap<User, UserDto>()
             .ForMember(dest => dest.Roles, opt => opt.Ignore())
+            .ForMember(dest => dest.PasswordHash, opt => opt.Ignore())
             .ReverseMap()
             .ForMember(dest => dest.Roles, opt => opt.Ignore())
             .ForMember(dest => dest.ModifiedTime, opt => opt.Ignore())
