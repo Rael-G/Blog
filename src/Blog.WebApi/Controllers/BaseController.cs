@@ -12,22 +12,22 @@ public abstract class BaseController<TDto>(IBaseService<TDto> service)
     protected readonly IBaseService<TDto> Service = service;
 
     /// <summary>
-    /// Retrieves all <see cref="TDto">.
+    /// Retrieves all TEntities.
     /// </summary>
-    /// <returns>Returns a list of all <see cref="TDto">.</returns>
+    /// <returns>Returns a list of all TEntities.</returns>
     [HttpGet]
-    [ProducesResponseType(200)] // OK
+    [ProducesResponseType(StatusCodes.Status200OK)]
     protected async Task<IActionResult> GetAll()
         => Ok(await Service.GetAll());
 
     /// <summary>
-    /// Retrieves a specific <see cref="TDto"> post by its ID.
+    /// Retrieves a specific TEntity post by its ID.
     /// </summary>
-    /// <param name="id">The ID of the <see cref="TDto"> to retrieve.</param>
-    /// <returns>Returns the <see cref="TDto"> if found, otherwise returns a 404 Not Found.</returns>
+    /// <param name="id">The ID of the TEntity to retrieve.</param>
+    /// <returns>Returns the TEntity if found, otherwise returns a 404 Not Found.</returns>
     [HttpGet("{id}")]
-    [ProducesResponseType(200)] // OK
-    [ProducesResponseType(404)] // Not Found
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     protected async Task<IActionResult> Get(Guid id)
     {
         var entity = await Service.Get(id);
@@ -39,13 +39,13 @@ public abstract class BaseController<TDto>(IBaseService<TDto> service)
     }
 
     /// <summary>
-    /// Creates a new <see cref="TDto">.
+    /// Creates a new TEntity.
     /// </summary>
-    /// <param name="input">The input model containing data for the new <see cref="TDto">.</param>
-    /// <returns>Returns the newly created <see cref="TDto">.</returns>
+    /// <param name="input">The input model containing data for the new TEntity.</param>
+    /// <returns>Returns the newly created Post.</returns>
     [HttpPost]
-    [ProducesResponseType(201)] // Created
-    [ProducesResponseType(400)] // Bad Request
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     protected async Task<IActionResult> Post([FromBody] IInputModel<TDto> input)
     {
         if (!ModelState.IsValid)
@@ -65,15 +65,15 @@ public abstract class BaseController<TDto>(IBaseService<TDto> service)
     }
 
     /// <summary>
-    /// Updates an existing <see cref="TDto">.
+    /// Updates an existing TEntity.
     /// </summary>
-    /// <param name="id">The ID of the <see cref="TDto"> to update.</param>
-    /// <param name="input">The input model containing updated data for the <see cref="TDto">.</param>
+    /// <param name="id">The ID of the TEntity to update.</param>
+    /// <param name="input">The input model containing updated data for the TEntity.</param>
     /// <returns>Returns 204 No Content if successful, otherwise returns a 404 Not Found or 400 Bad Request.</returns>
     [HttpPut("{id}")]
-    [ProducesResponseType(204)] // No Content
-    [ProducesResponseType(400)] // Bad Request
-    [ProducesResponseType(404)] // Not Found
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     protected async Task<IActionResult> Put(Guid id, [FromBody] IInputModel<TDto> input)
     {
         if (!ModelState.IsValid)
@@ -97,13 +97,13 @@ public abstract class BaseController<TDto>(IBaseService<TDto> service)
     }
 
     /// <summary>
-    /// Deletes a <see cref="TDto"> by its ID.
+    /// Deletes a TEntity by its ID.
     /// </summary>
-    /// <param name="id">The ID of the <see cref="TDto"> to delete.</param>
+    /// <param name="id">The ID of the TEntity to delete.</param>
     /// <returns>Returns 204 No Content if successful, otherwise returns a 404 Not Found.</returns>
     [HttpDelete("{id}")]
-    [ProducesResponseType(204)] // No Content
-    [ProducesResponseType(404)] // Not Found
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     protected async Task<IActionResult> Delete(Guid id)
     {
         var post = await Service.Get(id);
