@@ -9,4 +9,5 @@ public class PostDto : IDto
     public string Content { get; set; } = string.Empty;
     public IEnumerable<CommentDto> Comments { get; set; } = [];
     public IEnumerable<TagDto> Tags { get; set; } = [];
+    public Guid UserId { get; set; }
 }

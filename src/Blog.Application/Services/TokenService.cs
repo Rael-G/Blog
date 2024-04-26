@@ -75,6 +75,15 @@ public static class TokenService
         return principal;
     }
 
+    public static Guid GetUserIdFromClaims(ClaimsPrincipal user)
+    {
+        var userId = user.Claims.FirstOrDefault(c => c.Type == "UserId")?.Value;
+        if (userId is null)
+            throw new ArgumentNullException(userId, "Unable to get UserId from ClaimsPrincipal");
+
+        return Guid.Parse(userId);
+    }
+
     private static Token GenerateToken(string accessToken)
     {
         var now = DateTime.UtcNow;
