@@ -7,6 +7,7 @@ import { ManagementComponent } from './components/pages/management/management.co
 import { CreatePostComponent } from './components/pages/create-post/create-post.component';
 import { EditPostComponent } from './components/pages/edit-post/edit-post.component';
 import { TagComponent } from './components/pages/tag/tag.component';
+import { LoginComponent } from './components/pages/login/login.component';
 
 export const routes: Routes =
     [
@@ -18,5 +19,6 @@ export const routes: Routes =
         { path: 'create-post', component: CreatePostComponent },
         { path: 'posts/:id', component: PostComponent },
         { path: 'edit-post/:id', component: EditPostComponent },
-        { path: 'tags/:id', component: TagComponent }
+        { path: 'tags/:id', component: TagComponent },
+        { path: 'login', component: LoginComponent}
     ];
