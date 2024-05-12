@@ -4,6 +4,8 @@ namespace Blog.Application;
 
 public interface IUserService : IBaseService<UserDto>
 {
+    public Task<UserDto> GetByUserName(string username);
+
     public Task UpdatePassword(UserDto userDto);
 
     public Task UpdateRoles(UserDto userDto);

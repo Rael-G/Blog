@@ -4,10 +4,14 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Blog.Application;
 
-public class UserService(IUserRepository repository, IMapper mapper) 
-    : BaseService<UserDto, User>(repository, mapper), IUserService
+public class UserService(IUserRepository _repository, IMapper mapper) 
+    : BaseService<UserDto, User>(_repository, mapper), IUserService
 {
     private PasswordHasher<User> _passwordHasher { get; set;} = new PasswordHasher<User>();
+
+    public async Task<UserDto> GetByUserName(string username)
+        => Mapper.Map<UserDto>(await _repository.GetByUserName(username));
+    
 
     public new async Task Create(UserDto userDto)
     {
