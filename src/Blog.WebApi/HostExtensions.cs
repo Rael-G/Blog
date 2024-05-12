@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using Blog.Application;
+using Blog.Domain;
 using Blog.Persistance;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -18,6 +19,29 @@ namespace Blog.WebApi
             var context = services.GetRequiredService<ApplicationDbContext>();
             if (context.Database.GetPendingMigrations().Any())
                 context.Database.Migrate();
+        }
+
+        //Temp
+        public static void SeedDb(this WebApplication app)
+        {
+            var admin = new UserDto()
+            {
+                Id = Guid.NewGuid(),
+                UserName = "admin",
+                PasswordHash = "Aadmin1!",
+                RepeatPassword = "Aadmin1!",
+                Roles = [Roles.Admin, Roles.Moderator]
+            };
+
+            using var scope = app.Services.CreateScope();
+            var services = scope.ServiceProvider;
+
+            var userService = services.GetRequiredService<IUserService>();
+            if (userService.GetByUserName(admin.UserName).Result != null)
+                return;
+
+            userService.Create(admin).Wait();
+            userService.UpdateRoles(admin).Wait();
         }
 
         public static void ConfigureCors(this IServiceCollection services)
@@ -48,7 +72,8 @@ namespace Blog.WebApi
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(key),
                     ValidateIssuer = false,
-                    ValidateAudience = false
+                    ValidateAudience = false,
+                    RequireExpirationTime = true
                 };
             });
 

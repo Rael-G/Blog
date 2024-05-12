@@ -22,7 +22,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 
+    //Temp
     app.InitializeDb();
+    app.SeedDb();
 }
 
 app.UseCors();
