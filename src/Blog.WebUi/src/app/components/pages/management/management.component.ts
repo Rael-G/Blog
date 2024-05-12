@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { PostService } from '../../../services/post/post.service';
 import { Post } from '../../../interfaces/Post';
 import { CommentService } from '../../../services/comment/comment.service';
 import { CreateTagComponent } from '../../create-tag/create-tag.component';
 import { TablePostComponent } from '../../table-post/table-post.component';
 import { PaginationComponent } from '../../pagination/pagination.component';
+import { AuthService } from '../../../services/auth/auth.service';
 
 @Component({
   selector: 'app-management',
@@ -20,10 +21,11 @@ export class ManagementComponent implements OnInit {
   protected totalPages: number = 0
   protected pageNumbers : number[] = []
   
-  constructor(private postService: PostService, private commentService : CommentService) { }
+  constructor(private postService: PostService, private commentService : CommentService, private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
     this.getPosts()
+    this.redirectToLogin()
   }
 
   protected onPageChange(pageNumber: number) {
@@ -54,5 +56,11 @@ export class ManagementComponent implements OnInit {
         }
         this.loadPageCount()
       })
+  }
+
+  redirectToLogin()
+  {
+    if(!this.authService.getToken())
+      this.router.navigateByUrl('login')
   }
 }
