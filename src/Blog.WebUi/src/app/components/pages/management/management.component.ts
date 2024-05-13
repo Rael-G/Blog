@@ -25,7 +25,6 @@ export class ManagementComponent implements OnInit {
 
   ngOnInit(): void {
     this.getPosts()
-    this.redirectToLogin()
   }
 
   protected onPageChange(pageNumber: number) {
@@ -56,11 +55,5 @@ export class ManagementComponent implements OnInit {
         }
         this.loadPageCount()
       })
-  }
-
-  redirectToLogin()
-  {
-    if(!this.authService.getToken())
-      this.router.navigateByUrl('login')
   }
 }

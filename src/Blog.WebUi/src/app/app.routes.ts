@@ -8,6 +8,7 @@ import { CreatePostComponent } from './components/pages/create-post/create-post.
 import { EditPostComponent } from './components/pages/edit-post/edit-post.component';
 import { TagComponent } from './components/pages/tag/tag.component';
 import { LoginComponent } from './components/pages/login/login.component';
+import { authGuard } from './guards/auth/auth.guard';
 
 export const routes: Routes =
     [
@@ -15,10 +16,10 @@ export const routes: Routes =
         { path: 'about', component: AboutComponent },
         { path: 'contact', component: ContactComponent },
         { path: 'posts/example', component: PostComponent },
-        { path: 'management', component: ManagementComponent },
-        { path: 'create-post', component: CreatePostComponent },
+        { path: 'management', component: ManagementComponent, canActivate: [authGuard] },
+        { path: 'create-post', component: CreatePostComponent, canActivate: [authGuard] },
         { path: 'posts/:id', component: PostComponent },
-        { path: 'edit-post/:id', component: EditPostComponent },
+        { path: 'edit-post/:id', component: EditPostComponent, canActivate: [authGuard] },
         { path: 'tags/:id', component: TagComponent },
         { path: 'login', component: LoginComponent}
     ];
