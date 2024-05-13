@@ -9,6 +9,7 @@ import { EditPostComponent } from './components/pages/edit-post/edit-post.compon
 import { TagComponent } from './components/pages/tag/tag.component';
 import { LoginComponent } from './components/pages/login/login.component';
 import { authGuard } from './guards/auth/auth.guard';
+import { SigninComponent } from './components/pages/signin/signin/signin.component';
 
 export const routes: Routes =
     [
@@ -21,5 +22,6 @@ export const routes: Routes =
         { path: 'posts/:id', component: PostComponent },
         { path: 'edit-post/:id', component: EditPostComponent, canActivate: [authGuard] },
         { path: 'tags/:id', component: TagComponent },
-        { path: 'login', component: LoginComponent}
+        { path: 'login', component: LoginComponent},
+        { path: 'signin', component: SigninComponent},
     ];
