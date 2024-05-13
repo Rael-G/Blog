@@ -1,6 +1,10 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { UserService } from '../../../services/user/user.service';
+import { MessageService } from '../../../services/message.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Color } from '../../../enums/Color';
 
 @Component({
   selector: 'app-signin',
@@ -13,7 +17,7 @@ export class SigninComponent {
   protected signinForm : FormGroup
   protected submitted : boolean = false
 
-  constructor(){
+  constructor(private userService : UserService, private messageService : MessageService, private router : Router){
     this.signinForm = new FormGroup({
       username: new FormControl('', Validators.required),
       password: new FormControl('', Validators.required),
@@ -26,12 +30,23 @@ export class SigninComponent {
       if (this.signinForm.invalid)
         return
 
-
+    this.userService.createUser(this.signinForm.value).subscribe({
+      next: () => { 
+        this.redirect()
+      },
+        error: (error : HttpErrorResponse) => {
+          this.messageService.add(error.error, Color.red)
+        }
+      })
   }
 
   protected isPasswordEqual(): boolean {
     return !this.signinForm.get('repeatPassword')?.errors && 
       this.signinForm.get('password')?.value === this.signinForm.get('repeatPassword')?.value;
+  }
+
+  redirect() {
+    this.router.navigateByUrl('management')
   }
 
 }

@@ -9,7 +9,7 @@ import { EditPostComponent } from './components/pages/edit-post/edit-post.compon
 import { TagComponent } from './components/pages/tag/tag.component';
 import { LoginComponent } from './components/pages/login/login.component';
 import { authGuard } from './guards/auth/auth.guard';
-import { SigninComponent } from './components/pages/signin/signin/signin.component';
+import { SigninComponent } from './components/pages/signin/signin.component';
 
 export const routes: Routes =
     [

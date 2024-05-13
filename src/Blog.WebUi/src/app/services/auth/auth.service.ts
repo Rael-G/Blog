@@ -1,7 +1,7 @@
 import { Injectable, PLATFORM_ID, inject } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { Login } from '../../models/Login';
+import { Login } from '../../interfaces/Login';
 import { Token } from '../../interfaces/Token';
 import { Router } from '@angular/router';
 import { Observable, catchError, map } from 'rxjs';
