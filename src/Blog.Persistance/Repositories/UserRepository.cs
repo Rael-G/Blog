@@ -10,16 +10,15 @@ public class UserRepository(ApplicationDbContext context)
         => await Context.Users.Where(u => u.UserName == userName).FirstOrDefaultAsync();
 
     public async Task<IEnumerable<Post>> GetPostPage(Guid id, int page, int quantity)
-        => await Context.PostTag
+        => await Context.Posts
             .AsNoTracking()
-            .Where(pt => pt.TagId == id)
-            .Include(pt => pt.Post!)
-                .ThenInclude(p => p.Tags)
-                    .ThenInclude(t => t.Tag)
-            .OrderByDescending(p => p.Post!.CreatedTime)
+            .Where(p => p.UserId == id)
+            .Include(p => p.User)
+            .Include(p => p.Tags)
+                .ThenInclude(pt => pt.Tag)
+            .OrderByDescending(p => p.CreatedTime)
             .Skip((page - 1) * quantity)
             .Take(quantity)
-            .Select(pt => pt.Post!)
             .ToListAsync();
 
     public async Task<int> GetPostCount(Guid id)

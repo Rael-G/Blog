@@ -6,11 +6,6 @@ namespace Blog.Persistance;
 public class TagRepository(ApplicationDbContext context)
     : BaseRepository<Tag>(context), ITagRepository
 {
-    public override async Task<Tag?> Get(Guid id)
-        => await Context.Tags
-        .AsNoTracking()
-        .FirstOrDefaultAsync(t => t.Id == id);
-
     public async Task<Tag?> GetByName(string name)
         => await Context.Tags
         .AsNoTracking()
@@ -20,6 +15,8 @@ public class TagRepository(ApplicationDbContext context)
         => await Context.PostTag
             .AsNoTracking()
             .Where(pt => pt.TagId == id)
+            .Include(pt => pt.Post!)
+                .ThenInclude(p => p.User)
             .Include(pt => pt.Post!)
                 .ThenInclude(p => p.Tags)
                     .ThenInclude(t => t.Tag)
