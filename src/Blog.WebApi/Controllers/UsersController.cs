@@ -20,6 +20,49 @@ public class UsersController(IUserService _userService)
         => await base.Get(id);
 
     /// <summary>
+    /// Retrieves a page of posts associated with a specific user, identified by its ID, and returns them. 
+    /// </summary>
+    /// <param name="id">The ID of the user.</param>
+    /// <param name="page">The page number.</param>
+    /// 200 (OK) response containing the user with its associated posts on the specified page.
+    /// 404 (Not Found) if the user with the specified ID does not exist.
+    [AllowAnonymous]
+    [HttpGet("{id}/page")]
+    [ProducesResponseType(200)] // OK
+    [ProducesResponseType(404)] // Not Found
+    public async Task<IActionResult> GetPage(Guid id, [FromQuery] int page)
+    {
+        var user = await _userService.GetUserPage(id, page);
+
+        if (user is null)
+            return NotFound(id);
+
+        return Ok(user);   
+    }
+
+    /// <summary>
+    /// Retrieves the total number of pages for posts associated with a specific user, identified by its ID.
+    /// </summary>
+    /// <param name="id">The ID of the user.</param>
+    /// <returns>
+    /// 200 (OK) response containing the total number of pages for posts associated with the user.
+    /// 404 (Not Found) if the user with the specified ID does not exist.
+    /// </returns>
+    [AllowAnonymous]
+    [HttpGet("{id}/page-count")]
+    [ProducesResponseType(200)] // OK
+    [ProducesResponseType(404)] // Not Found
+    public async Task<IActionResult> GetPageCount(Guid id)
+    {
+        var user = await _userService.Get(id);
+
+        if (user is null)
+            return NotFound(id);
+
+        return Ok(await _userService.GetPageCount(id));
+    }
+
+    /// <summary>
     /// Retrieves a specific user by its username.
     /// </summary>
     /// <param name="username">The username of the user to retrieve.</param>

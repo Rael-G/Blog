@@ -4,14 +4,31 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Blog.Application;
 
-public class UserService(IUserRepository _repository, IMapper mapper) 
-    : BaseService<UserDto, User>(_repository, mapper), IUserService
+public class UserService(IUserRepository _userRepository, IMapper mapper) 
+    : BaseService<UserDto, User>(_userRepository, mapper), IUserService
 {
+    public const int PageSize = 10;
     private PasswordHasher<User> _passwordHasher { get; set;} = new PasswordHasher<User>();
 
     public async Task<UserDto> GetByUserName(string username)
-        => Mapper.Map<UserDto>(await _repository.GetByUserName(username));
+        => Mapper.Map<UserDto>(await _userRepository.GetByUserName(username));
     
+    public async Task<UserDto?> GetUserPage(Guid id, int page)
+    {
+        var user = await Repository.Get(id);
+
+        if (user == null)
+            return null;
+
+        var posts = await _userRepository.GetPostPage(id, page, PageSize);
+        var userDto = Mapper.Map<UserDto>(user);
+        var postsDto = Mapper.Map<IEnumerable<PostDto>>(posts);
+        userDto.Posts = postsDto;
+        return userDto;
+    }
+
+    public async Task<int> GetPageCount(Guid id)
+        => (int)Math.Ceiling(await _userRepository.GetPostCount(id) / (float)PageSize);
 
     public new async Task Create(UserDto userDto)
     {
