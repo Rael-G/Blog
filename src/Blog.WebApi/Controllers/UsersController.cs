@@ -20,6 +20,25 @@ public class UsersController(IUserService _userService)
         => await base.Get(id);
 
     /// <summary>
+    /// Retrieves a specific user by its username.
+    /// </summary>
+    /// <param name="username">The username of the user to retrieve.</param>
+    /// <returns>Returns the user if found, otherwise returns a 404 Not Found.</returns>
+    [Authorize(Roles = Roles.Moderator)]
+    [HttpGet("username/{username}")]
+    [ProducesResponseType(200)] // OK
+    [ProducesResponseType(404)] // Not Found
+    public async Task<IActionResult> GetByUserName(string username)
+    {
+        var entity = await _userService.GetByUserName(username);
+
+        if (entity is null)
+            return NotFound(username);
+
+        return Ok(entity);
+    }
+
+    /// <summary>
     /// Retrieves all user.
     /// </summary>
     /// <returns>Returns a list of all user.</returns>
