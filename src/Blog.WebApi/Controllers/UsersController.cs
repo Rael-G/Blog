@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.WebApi;
 
-public class UserController(IUserService _userService) 
+public class UsersController(IUserService _userService) 
     : BaseController<UserDto>(_userService)
 {
     /// <summary>
@@ -23,7 +23,7 @@ public class UserController(IUserService _userService)
     /// Retrieves all user.
     /// </summary>
     /// <returns>Returns a list of all user.</returns>
-    [Authorize(Roles = Roles.Moderator)]
+    [Authorize(Roles = Roles.Admin)]
     [HttpGet]
     [ProducesResponseType(200)] // OK
     public new async Task<IActionResult> GetAll()
