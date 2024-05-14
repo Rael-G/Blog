@@ -6,6 +6,8 @@ import { Token } from '../../interfaces/Token';
 import { Router } from '@angular/router';
 import { Observable, catchError, map } from 'rxjs';
 import { isPlatformBrowser } from '@angular/common';
+import { User } from '../../interfaces/User';
+import { UserService } from '../user/user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,21 +17,26 @@ export class AuthService {
   private baseApiUrl = environment.baseApiUrl
   private loginUrl = `${this.baseApiUrl}/auth`
   private plataformId : object
+  private user : User | null = null
+  private token : Token | null = null
 
-  constructor(private http: HttpClient, private router: Router) 
+  constructor(private http: HttpClient, private router: Router, private userService : UserService) 
   {
     this.plataformId = inject(PLATFORM_ID);
   }
 
-  login(login: Login) : Observable<any> {
+  public login(login: Login) : Observable<any> {
    return this.http.put<Token>(this.loginUrl + '/login', login)
     .pipe(
-      map(response => {localStorage.setItem('token', JSON.stringify(response))}),
+      map(response => {
+        localStorage.setItem('token', JSON.stringify(response))
+        this.setUser(login.username)
+      }),
       catchError(error => { throw error })
     )
   }
 
-  refreshToken(token: Token) : Observable<Token> {
+  public refreshToken(token: Token) : Observable<Token> {
     return this.http.put<Token>(this.loginUrl + '/regen-token', token)
       .pipe(
         map(response => {
@@ -44,26 +51,45 @@ export class AuthService {
       )
   }
 
-  logOut(): void {
+  public logOut(): void {
     localStorage.clear();
     this.router.navigateByUrl('login')
   }
 
-  getToken() : Token | null{
-    let jsonToken : string = ''
-    if (isPlatformBrowser(this.plataformId)){
-      jsonToken = localStorage.getItem('token')?? ''
+  public getToken() : Token | null {
+    if(!this.token){
+      let jsonToken = ''
+      if (isPlatformBrowser(this.plataformId)){
+        jsonToken = localStorage.getItem('token')?? ''
+      }
+      try{
+        this.token = JSON.parse(jsonToken)
+      }
+      catch{ }
+    }
+  
+    return this.token
+  }
+
+  public getUser() : User | null {
+    if (!this.user){
+      let userJson  = ''
+      if (isPlatformBrowser(this.plataformId)){
+        userJson = localStorage.getItem('user')?? ''
+      }
+      try{
+        this.user = JSON.parse(userJson)
+      }
+      catch{}
     }
     
-    let token : Token | null
+    return this.user
+  }
 
-    try{
-      token = JSON.parse(jsonToken)
+  private setUser(username : string){
+    this.userService.getUserByUsername(username).subscribe({
+      next: (user) => {localStorage.setItem('user',  JSON.stringify(user)); console.log(user)}
     }
-    catch{
-      token = null
-    }
-
-    return token
+    )
   }
 }

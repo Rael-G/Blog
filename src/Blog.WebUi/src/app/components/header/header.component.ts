@@ -12,27 +12,28 @@ import { AuthService } from '../../services/auth/auth.service';
   styleUrl: './header.component.scss'
 })
 export class HeaderComponent {
-protected tags: Tag[] = []
-
+  protected tags: Tag[] = []
   constructor(private tagService: TagService, private authService: AuthService) { }
 
-ngOnInit(): void {
-  this.tagService.getTags().subscribe((tags) => {
-    this.tags = tags
-  });
+  ngOnInit(): void {
+    this.tagService.getTags().subscribe((tags) => {
+      this.tags = tags
+    });
+  }
 
+  showLogOutAndManagement() : boolean{
+    if(this.authService.getToken())
+      return true
+    return false
+  }
+
+  logOut() {
+    this.authService.logOut()
+  }
+
+  protected getUsername() : string{
+    console.log(this.authService.getUser())
+    return this.authService.getUser()?.userName!
+  }
   
-}
-
-showLogOutAndManagement() : boolean{
-  if(this.authService.getToken())
-    return true
-  return false
-}
-
-logOut()
-{
-  this.authService.logOut()
-}
-
 }
