@@ -32,8 +32,10 @@ export class HeaderComponent {
   }
 
   protected getUsername() : string{
-    console.log(this.authService.getUser())
-    return this.authService.getUser()?.userName!
+    let username : string = ''
+    this.authService.getUser().subscribe((user) => {username = user?.userName?? ''});
+
+    return username
   }
   
 }
