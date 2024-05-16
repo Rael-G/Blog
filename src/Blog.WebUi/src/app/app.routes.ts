@@ -10,6 +10,7 @@ import { TagComponent } from './components/pages/tag/tag.component';
 import { LoginComponent } from './components/pages/login/login.component';
 import { authGuard } from './guards/auth/auth.guard';
 import { SigninComponent } from './components/pages/signin/signin.component';
+import { UserComponent } from './components/pages/user/user.component';
 
 export const routes: Routes =
     [
@@ -24,4 +25,5 @@ export const routes: Routes =
         { path: 'tags/:id', component: TagComponent },
         { path: 'login', component: LoginComponent},
         { path: 'signin', component: SigninComponent},
+        { path: 'users/:id', component: UserComponent }
     ];
