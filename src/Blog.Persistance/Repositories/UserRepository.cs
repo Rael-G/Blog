@@ -22,8 +22,8 @@ public class UserRepository(ApplicationDbContext context)
             .ToListAsync();
 
     public async Task<int> GetPostCount(Guid id)
-        => await Context.PostTag
+        => await Context.Posts
             .AsNoTracking()
-            .Where(pt => pt.TagId == id)
+            .Where(p => p.UserId == id)
             .CountAsync();
 }
