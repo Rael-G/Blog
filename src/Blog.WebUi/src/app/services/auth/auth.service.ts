@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Login } from '../../interfaces/Login';
 import { Token } from '../../interfaces/Token';
 import { Router } from '@angular/router';
-import { Observable, catchError, map } from 'rxjs';
+import { BehaviorSubject, Observable, catchError, map, of } from 'rxjs';
 import { isPlatformBrowser } from '@angular/common';
 import { User } from '../../interfaces/User';
 import { UserService } from '../user/user.service';
@@ -17,8 +17,8 @@ export class AuthService {
   private baseApiUrl = environment.baseApiUrl
   private loginUrl = `${this.baseApiUrl}/auth`
   private plataformId : object
-  private user : User | null = null
   private token : Token | null = null
+  private userSubject = new BehaviorSubject<User | null>(null);
 
   constructor(private http: HttpClient, private router: Router, private userService : UserService) 
   {
@@ -28,8 +28,8 @@ export class AuthService {
   public login(login: Login) : Observable<any> {
    return this.http.put<Token>(this.loginUrl + '/login', login)
     .pipe(
-      map(response => {
-        localStorage.setItem('token', JSON.stringify(response))
+      map(token => {
+        localStorage.setItem('token', JSON.stringify(token))
         this.setUser(login.username)
       }),
       catchError(error => { throw error })
@@ -53,6 +53,7 @@ export class AuthService {
 
   public logOut(): void {
     localStorage.clear();
+    window.location.reload()
     this.router.navigateByUrl('login')
   }
 
@@ -71,25 +72,24 @@ export class AuthService {
     return this.token
   }
 
-  public getUser() : User | null {
-    if (!this.user){
-      let userJson  = ''
-      if (isPlatformBrowser(this.plataformId)){
-        userJson = localStorage.getItem('user')?? ''
+  public getUser(): Observable<User | null> {
+    let userJson = localStorage.getItem('user');
+
+    if (userJson && !this.userSubject.value) {
+      let user : User | null = null
+      try {
+        user = JSON.parse(userJson);
+      } catch {
       }
-      try{
-        this.user = JSON.parse(userJson)
-      }
-      catch{}
+      this.userSubject.next(user);
     }
-    
-    return this.user
+
+    return this.userSubject.asObservable();
   }
 
   private setUser(username : string){
     this.userService.getUserByUsername(username).subscribe({
-      next: (user) => {localStorage.setItem('user',  JSON.stringify(user)); console.log(user)}
-    }
-    )
+      next: (user) => localStorage.setItem('user',  JSON.stringify(user))
+    })
   }
 }
