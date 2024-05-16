@@ -8,19 +8,19 @@ public class DomainToDto : Profile
     public DomainToDto()
     {
         CreateMap<User, UserDto>()
-            .ForMember(dest => dest.Roles, opt => opt.Ignore())
             .ForMember(dest => dest.PasswordHash, opt => opt.Ignore())
             .ReverseMap()
             .ForMember(dest => dest.Roles, opt => opt.Ignore())
             .ForMember(dest => dest.ModifiedTime, opt => opt.Ignore())
             .ForMember(dest => dest.CreatedTime, opt => opt.Ignore());
-            
+
+        CreateMap<User, UserSummaryDto>()
+            .ReverseMap();
 
         CreateMap<Comment, CommentDto>()
             .ReverseMap()
             .ForMember(dest => dest.ModifiedTime, opt => opt.Ignore())
             .ForMember(dest => dest.CreatedTime, opt => opt.Ignore());
-
 
         CreateMap<Post, PostDto>()
             .ReverseMap()
@@ -28,18 +28,12 @@ public class DomainToDto : Profile
             .ForMember(dest => dest.ModifiedTime, opt => opt.Ignore())
             .ForMember(dest => dest.CreatedTime, opt => opt.Ignore());
 
-
         CreateMap<Tag, TagDto>()
             .ReverseMap()
-            .ForMember(dest => dest.Posts, opt => opt.MapFrom(src => src.Posts.Select(post => new PostTag(post.Id, src.Id))))
-            .ForMember(dest => dest.ModifiedTime, opt => opt.Ignore())
-            .ForMember(dest => dest.CreatedTime, opt => opt.Ignore());
-
+            .ForMember(dest => dest.Posts, opt => opt.MapFrom(src => src.Posts.Select(post => new PostTag(post.Id, src.Id))));
 
         CreateMap<PostTag, TagDto>()
             .ForMember(dest => dest.Id, opt => opt.MapFrom(src => (src.Tag != null) ? src.Tag.Id : Guid.Empty))
-            .ForMember(dest => dest.CreatedTime, opt => opt.MapFrom(src => (src.Tag != null) ? src.Tag.CreatedTime : DateTime.MinValue))
-            .ForMember(dest => dest.ModifiedTime, opt => opt.MapFrom(src => (src.Tag != null) ? src.Tag.ModifiedTime: DateTime.MinValue))
             .ForMember(dest => dest.Name, opt => opt.MapFrom(src => (src.Tag != null) ? src.Tag.Name : string.Empty))
             .ForMember(dest => dest.Posts, opt => opt.Ignore());
 

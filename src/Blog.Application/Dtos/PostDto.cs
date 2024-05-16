@@ -10,4 +10,5 @@ public class PostDto : IDto
     public IEnumerable<CommentDto> Comments { get; set; } = [];
     public IEnumerable<TagDto> Tags { get; set; } = [];
     public Guid UserId { get; set; }
+    public UserSummaryDto User { get; set; } = null!;
 }
