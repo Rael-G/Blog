@@ -1,7 +1,4 @@
 <div class="container">
-  <h1>Posts Management</h1>
-  <button class="btn btn-success" routerLink="/create-post">New Post</button>
-  <app-table-post [posts]="posts"></app-table-post>
-  <app-pagination [currentPage]="currentPage" [totalPages]="totalPages" [pageNumbers]="pageNumbers"(pageChange)="onPageChange($event)"></app-pagination>
+  <app-posts-management></app-posts-management>
   <app-create-tag></app-create-tag>
 </div>
