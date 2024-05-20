@@ -1,9 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { debug } from 'console';
-import { TagService } from '../../services/tag/tag.service';
-import { MessageService } from '../../services/message.service';
-import { Color } from '../../enums/Color';
+import { Tag } from '../../interfaces/Tag';
 
 @Component({
   selector: 'app-create-tag',
@@ -12,16 +9,26 @@ import { Color } from '../../enums/Color';
   templateUrl: './create-tag.component.html',
   styleUrl: './create-tag.component.scss'
 })
-export class CreateTagComponent {
+export class CreateTagComponent implements OnInit{
   protected expandForm : boolean = false
   protected tagForm: FormGroup
   protected submitted: boolean = false
+  @Input() tag : Tag | undefined
 
-  constructor(private tagService : TagService, private messageService : MessageService)
+  @Output() onSubmit = new EventEmitter<Tag>();
+
+  constructor()
   {
     this.tagForm = new FormGroup({
+      id: new FormControl(),
       name: new FormControl('', [Validators.required, Validators.maxLength(15), Validators.minLength(3)]),
     });
+  }
+  ngOnInit(): void {
+    this.tagForm.patchValue({
+      id: this.tag?.id,
+      name: this.tag?.name
+    })
   }
 
   protected submit(){
@@ -30,8 +37,7 @@ export class CreateTagComponent {
     if (this.tagForm.invalid)
       return
 
-    this.tagService.createTag(this.tagForm.value).subscribe()
-    this.messageService.add('Tag was successfully created.  Refresh to reflect the changes...', Color.green)
+    this.onSubmit.emit(this.tagForm.value)
   }
 
   protected toggleExpandForm()
