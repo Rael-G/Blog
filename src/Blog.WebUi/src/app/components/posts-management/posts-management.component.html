@@ -11,7 +11,7 @@
         <app-table-post [posts]="userPosts"></app-table-post>
         <app-pagination [currentPage]="userCurrentPage" [totalPages]="userTotalPages" [pageNumbers]="userPageNumbers" (pageChange)="userOnPageChange($event)"></app-pagination> 
     }
-    @if(isGlobal){
+    @else{
         <app-table-post [posts]="globalPosts"></app-table-post>
         <app-pagination [currentPage]="globalCurrentPage" [totalPages]="globalTotalPages" [pageNumbers]="globalPageNumbers" (pageChange)="globalOnPageChange($event)"></app-pagination> 
     }

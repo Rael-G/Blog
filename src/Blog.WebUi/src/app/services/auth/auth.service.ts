@@ -8,6 +8,7 @@ import { BehaviorSubject, Observable, catchError, map, of } from 'rxjs';
 import { isPlatformBrowser } from '@angular/common';
 import { User } from '../../interfaces/User';
 import { UserService } from '../user/user.service';
+import { resolveSoa } from 'node:dns';
 
 @Injectable({
   providedIn: 'root'
@@ -70,6 +71,14 @@ export class AuthService {
     }
   
     return this.token
+  }
+
+  public userIsInRole(role : string) : boolean{
+    let isInRole = false
+    this.getUser().subscribe((user) =>
+      isInRole = user?.roles.some((value) => value === role)?? false
+    )
+    return isInRole
   }
 
   public getUser(): Observable<User | null> {

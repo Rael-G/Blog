@@ -47,8 +47,7 @@ export class PostsManagementComponent implements OnInit {
   }
 
   protected isAdmin() : boolean{
-    console.log(this.user?.roles.some((value) => value === 'admin'))
-    return this.user?.roles.some((value) => value === 'admin')?? false
+    return this.authService.isAdmin()
   }
 
   protected toogleGlobal(){
