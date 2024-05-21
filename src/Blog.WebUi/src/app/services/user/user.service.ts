@@ -15,11 +15,24 @@ export class UserService {
 
   constructor(private http: HttpClient) { }
 
+  getUsers(): Observable<User[]> {
+    return this.http.get<User[]>(this.usersUrl)
+  }
+
   getUserByUsername(username : string): Observable<User>{
     return this.http.get<User>(this.usersUrl + `/username/${username}`)
   }
+
   createUser(user: Signin): Observable<any> {
     return this.http.post(this.usersUrl, user)
+  }
+
+  editUserRoles(id: string, roles: string[]) : Observable<any>{
+    return this.http.put(this.usersUrl + `/roles/${id}`, roles)
+  }
+
+  deleteUser(id: string): Observable<User> {
+    return this.http.delete<User>(this.usersUrl + '/' + id)
   }
 
   getPage(id : string, page : number): Observable<User> {

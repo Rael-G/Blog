@@ -1,4 +1,7 @@
 <div class="container">
   <app-posts-management></app-posts-management>
-  <app-create-tag></app-create-tag>
+  <app-tags-management></app-tags-management>
+  @if(isAdmin()){
+    <app-users-management></app-users-management>
+  }
 </div>
