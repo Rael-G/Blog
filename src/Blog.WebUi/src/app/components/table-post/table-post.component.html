@@ -18,8 +18,7 @@
         </td>
         <td>{{ post.title }}</td>
         <td><button class="btn btn-warning" routerLink="/edit-post/{{ post.id }}">Edit</button></td>
-        <td><button class="btn btn-danger" (click)="toggle(post.id ?? '', coolapseConfirmPostDelete)">Delete</button>
-        </td>
+        <td><button class="btn btn-danger" (click)="toggle(post.id ?? '', coolapseConfirmPostDelete)">Delete</button></td>
       </tr>
 
       @if(isActive(post.id ?? '', coolapseConfirmPostDelete)){
@@ -39,9 +38,8 @@
 
       @if(isActive(post.id ?? '', coolapseComments) && post.comments.length > 0){
       <tr>
-        <td colspan="4">
+        <td colspan="4 card">
           <div class="card">
-            <div>
               <div class="card-body">
                 <table class="table">
                   <thead>
@@ -81,7 +79,6 @@
                 </table>
               </div>
             </div>
-          </div>
         </td>
       </tr>
       }
