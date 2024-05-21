@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../../services/auth/auth.service';
 import { Router, RouterLink } from '@angular/router';
@@ -13,7 +13,7 @@ import { HttpErrorResponse } from '@angular/common/http';
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit{
   protected loginForm: FormGroup
   protected submitted: boolean = false
 
@@ -22,6 +22,11 @@ export class LoginComponent {
       username: new FormControl('', Validators.required),
       password: new FormControl('', Validators.required)
     });
+  }
+
+  public ngOnInit(): void {
+    if(this.authService.getToken())
+      this.redirect();
   }
 
   protected submit(){
@@ -39,7 +44,7 @@ export class LoginComponent {
     })
   }
 
-  redirect() {
+  private redirect() {
     this.router.navigateByUrl('management')
   }
 }
