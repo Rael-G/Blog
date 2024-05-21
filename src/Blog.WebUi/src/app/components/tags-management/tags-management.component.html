@@ -35,13 +35,11 @@
                 @if(isActive(tag.id ?? '', coolapseEditTag)){
                     <tr>
                         <td colspan="4">
-                        <div class="card">
-                            <div class="card-body">
-                            <app-create-tag [tag]="tag" (onSubmit)="onSubmitEdit($event)"></app-create-tag>
-                            <button class="btn btn-secondary mt-1"
-                                (click)="toggle(tag.id ?? '', coolapseEditTag)">Cancel</button>
+                            <div class="card">
+                                <div class="card-body">
+                                    <app-create-tag [tag]="tag" (onSubmit)="onSubmitEdit($event)"></app-create-tag>
+                                </div>
                             </div>
-                        </div>
                         </td>
                     </tr>
                 }  
