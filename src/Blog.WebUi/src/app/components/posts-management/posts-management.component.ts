@@ -8,6 +8,7 @@ import { UserService } from '../../services/user/user.service';
 import { User } from '../../interfaces/User';
 import { AuthService } from '../../services/auth/auth.service';
 import { RouterLink } from '@angular/router';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-posts-management',
@@ -47,7 +48,7 @@ export class PostsManagementComponent implements OnInit {
   }
 
   protected isAdmin() : boolean{
-    return this.authService.isAdmin()
+    return this.authService.userIsInRole(environment.roles.admin)
   }
 
   protected toogleGlobal(){
