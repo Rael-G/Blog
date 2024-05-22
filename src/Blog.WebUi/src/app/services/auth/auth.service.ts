@@ -9,6 +9,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { User } from '../../interfaces/User';
 import { UserService } from '../user/user.service';
 import { resolveSoa } from 'node:dns';
+import { get } from 'node:http';
 
 @Injectable({
   providedIn: 'root'
@@ -96,9 +97,12 @@ export class AuthService {
     return this.userSubject.asObservable();
   }
 
-  private setUser(username : string){
+  public setUser(username : string){
     this.userService.getUserByUsername(username).subscribe({
-      next: (user) => localStorage.setItem('user',  JSON.stringify(user))
+      next: (user) => {
+        localStorage.setItem('user',  JSON.stringify(user))
+        this.userSubject = new BehaviorSubject<User | null>(null)
+      }
     })
   }
 }

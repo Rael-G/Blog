@@ -11,6 +11,7 @@ import { LoginComponent } from './components/pages/login/login.component';
 import { authGuard } from './guards/auth/auth.guard';
 import { SigninComponent } from './components/pages/signin/signin.component';
 import { UserComponent } from './components/pages/user/user.component';
+import { ProfileComponent } from './components/pages/profile/profile.component';
 
 export const routes: Routes =
     [
@@ -25,5 +26,6 @@ export const routes: Routes =
         { path: 'tags/:id', component: TagComponent },
         { path: 'login', component: LoginComponent},
         { path: 'signin', component: SigninComponent},
-        { path: 'users/:id', component: UserComponent }
+        { path: 'users/:id', component: UserComponent },
+        { path: 'profile', component: ProfileComponent, canActivate: [authGuard]}
     ];

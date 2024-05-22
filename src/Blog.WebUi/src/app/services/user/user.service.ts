@@ -1,9 +1,10 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Signin } from '../../interfaces/Signin';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { User } from '../../interfaces/User';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -27,12 +28,20 @@ export class UserService {
     return this.http.post(this.usersUrl, user)
   }
 
+  editUser(id: string, user : User){
+    return this.http.put(this.usersUrl + '/' + id, user)
+  }
+
   editUserRoles(id: string, roles: string[]) : Observable<any>{
     return this.http.put(this.usersUrl + `/roles/${id}`, roles)
   }
 
-  deleteUser(id: string): Observable<User> {
-    return this.http.delete<User>(this.usersUrl + '/' + id)
+  resetPassword(id: string, user : Signin){
+    return this.http.put(this.usersUrl + '/reset-password/' + id, user)
+  }
+
+  deleteUser(id: string) {
+    return this.http.delete(this.usersUrl + '/' + id)
   }
 
   getPage(id : string, page : number): Observable<User> {

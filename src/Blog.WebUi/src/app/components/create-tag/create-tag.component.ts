@@ -37,6 +37,8 @@ export class CreateTagComponent implements OnInit{
     if (this.tagForm.invalid)
       return
 
+    this.tagForm.reset()
+    this.submitted = false
     this.onSubmit.emit(this.tagForm.value)
   }
 

@@ -22,15 +22,15 @@
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a routerLink="/about" class="nav-link">About</a>
+                    <a routerLink="about" class="nav-link">About</a>
                 </li>
                 <li class="nav-item">
-                    <a routerLink="/contact" class="nav-link">Contact</a>
+                    <a routerLink="contact" class="nav-link">Contact</a>
                 </li>
                 @if(showLogOutAndManagement())
                     {
                         <li class="nav-item">
-                            <a routerLink="/management" class="nav-link">Management</a>
+                            <a routerLink="management" class="nav-link">Management</a>
                         </li>
                     }
             </ul>
@@ -38,7 +38,7 @@
                 <li class="nav-item">
                     @if(showLogOutAndManagement())
                     {
-                        <a class="nav-link">
+                        <a routerLink="profile" class="nav-link">
                             Hello, {{getUsername()}}
                         </a>
                     }
