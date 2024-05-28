@@ -1,6 +1,14 @@
 <div class="container">
-  <app-posts-management></app-posts-management>
-  <app-tags-management></app-tags-management>
+  @if(isModerator()){
+    <app-posts-management></app-posts-management>
+    <app-tags-management></app-tags-management>
+  }
+  @else {
+    <div class="d-flex justify-content-center">
+      <p>You don't have the privileges to access this component</p>
+    </div>
+  }
+  
   @if(isAdmin()){
     <app-users-management></app-users-management>
   }

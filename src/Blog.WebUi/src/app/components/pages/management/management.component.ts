@@ -15,7 +15,12 @@ import { environment } from '../../../../environments/environment';
 export class ManagementComponent {
 
   constructor (private authService : AuthService) { }
+  
   protected isAdmin() : boolean{
     return this.authService.userIsInRole(environment.roles.admin)
+  }
+
+  protected isModerator() : boolean{
+    return this.authService.userIsInRole(environment.roles.moderator)
   }
 }
