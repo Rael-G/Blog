@@ -1,6 +1,6 @@
 <div class="container">
     <h1>Tags Management</h1>
-    <app-create-tag (onSubmit)="onSubmitCreate($event)"></app-create-tag>
+    <app-tag-form (onSubmit)="onSubmitCreate($event)"></app-tag-form>
     <table class="table table-striped">
         <thead>
           <tr>
@@ -37,7 +37,7 @@
                         <td colspan="4">
                             <div class="card">
                                 <div class="card-body">
-                                    <app-create-tag [tag]="tag" (onSubmit)="onSubmitEdit($event)"></app-create-tag>
+                                    <app-tag-form [tag]="tag" (onSubmit)="onSubmitEdit($event)"></app-tag-form>
                                 </div>
                             </div>
                         </td>

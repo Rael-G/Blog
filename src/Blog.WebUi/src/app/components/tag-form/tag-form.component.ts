@@ -3,13 +3,13 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { Tag } from '../../interfaces/Tag';
 
 @Component({
-  selector: 'app-create-tag',
+  selector: 'app-tag-form',
   standalone: true,
   imports: [ReactiveFormsModule],
-  templateUrl: './create-tag.component.html',
-  styleUrl: './create-tag.component.scss'
+  templateUrl: './tag-form.component.html',
+  styleUrl: './tag-form.component.scss'
 })
-export class CreateTagComponent implements OnInit{
+export class TagFormComponent implements OnInit{
   protected expandForm : boolean = false
   protected tagForm: FormGroup
   protected submitted: boolean = false

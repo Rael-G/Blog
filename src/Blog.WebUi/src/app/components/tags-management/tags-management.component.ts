@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { CreateTagComponent } from '../create-tag/create-tag.component';
 import { PaginationComponent } from '../pagination/pagination.component';
 import { Tag } from '../../interfaces/Tag';
 import { TagService } from '../../services/tag/tag.service';
 import { Color } from '../../enums/Color';
 import { MessageService } from '../../services/message/message.service';
+import { TagFormComponent } from '../tag-form/tag-form.component';
 
 @Component({
   selector: 'app-tags-management',
   standalone: true,
-  imports: [CreateTagComponent, PaginationComponent],
+  imports: [TagFormComponent, PaginationComponent],
   templateUrl: './tags-management.component.html',
   styleUrl: './tags-management.component.scss'
 })
