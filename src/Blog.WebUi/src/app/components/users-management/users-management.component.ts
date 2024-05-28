@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { PaginationComponent } from '../pagination/pagination.component';
 import { User } from '../../interfaces/User';
 import { UserService } from '../../services/user/user.service';
-import { MessageService } from '../../services/message.service';
+import { MessageService } from '../../services/message/message.service';
 import { Color } from '../../enums/Color';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { environment } from '../../../environments/environment';

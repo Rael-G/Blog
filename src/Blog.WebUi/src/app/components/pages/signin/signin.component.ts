@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { UserService } from '../../../services/user/user.service';
-import { MessageService } from '../../../services/message.service';
+import { MessageService } from '../../../services/message/message.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Color } from '../../../enums/Color';
 import { AuthService } from '../../../services/auth/auth.service';

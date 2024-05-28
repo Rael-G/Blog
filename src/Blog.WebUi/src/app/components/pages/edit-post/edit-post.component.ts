@@ -3,7 +3,7 @@ import { PostFormComponent } from '../../post-form/post-form.component'; // Impo
 import { PostService } from '../../../services/post/post.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Post } from '../../../interfaces/Post';
-import { MessageService } from '../../../services/message.service';
+import { MessageService } from '../../../services/message/message.service';
 import { Color } from '../../../enums/Color';
 
 @Component({

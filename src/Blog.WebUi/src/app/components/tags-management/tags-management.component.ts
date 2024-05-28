@@ -4,7 +4,7 @@ import { PaginationComponent } from '../pagination/pagination.component';
 import { Tag } from '../../interfaces/Tag';
 import { TagService } from '../../services/tag/tag.service';
 import { Color } from '../../enums/Color';
-import { MessageService } from '../../services/message.service';
+import { MessageService } from '../../services/message/message.service';
 
 @Component({
   selector: 'app-tags-management',

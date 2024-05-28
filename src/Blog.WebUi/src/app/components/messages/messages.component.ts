@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MessageService } from '../../services/message.service';
+import { MessageService } from '../../services/message/message.service';
 import { Color } from '../../enums/Color';
 
 @Component({
