@@ -17,7 +17,11 @@
 
         </td>
         <td>{{ post.title }}</td>
-        <td><button class="btn btn-warning" routerLink="/edit-post/{{ post.id }}">Edit</button></td>
+        <td>
+          @if(showEdit){
+            <button class="btn btn-warning" routerLink="/edit-post/{{ post.id }}">Edit</button>
+          }
+        </td>
         <td><button class="btn btn-danger" (click)="toggle(post.id ?? '', coolapseConfirmPostDelete)">Delete</button></td>
       </tr>
 

@@ -8,7 +8,7 @@
         
     </div>
     @if(!isGlobal){
-        <app-table-post [posts]="userPosts"></app-table-post>
+        <app-table-post [posts]="userPosts" [showEdit]="true"></app-table-post>
         <app-pagination [currentPage]="userCurrentPage" [totalPages]="userTotalPages" [pageNumbers]="userPageNumbers" (pageChange)="userOnPageChange($event)"></app-pagination> 
     }
     @else{
