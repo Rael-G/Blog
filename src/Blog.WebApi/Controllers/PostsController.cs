@@ -82,23 +82,58 @@ public class PostsController(IPostService postService)
     /// <param name="id">The ID of the blog post to update.</param>
     /// <param name="input">The input model containing updated data for the blog post.</param>
     /// <returns>Returns 204 No Content if successful, otherwise returns a 404 Not Found or 400 Bad Request.</returns>
-    [Authorize(Roles = Roles.Moderator)]
+    [Authorize]
     [HttpPut("{id}")]
     [ProducesResponseType(204)] // No Content
     [ProducesResponseType(400)] // Bad Request
     [ProducesResponseType(404)] // Not Found
     public async Task<IActionResult> Put(Guid id, [FromBody] PostInputModel input)
-        => await base.Put(id, input);
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+
+        var entity = await Service.Get(id);
+        if (entity is null)
+            return NotFound(id);
+
+        if(TokenService.GetUserIdFromClaims(User) != entity.UserId)
+            return Forbid();
+
+        input.InputToDto(entity);
+        try
+        {
+            await Service.Update(entity);
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+
+        return NoContent();   
+    }
 
     /// <summary>
     /// Deletes a post by its ID.
     /// </summary>
     /// <param name="id">The ID of the post to delete.</param>
     /// <returns>Returns 204 No Content if successful, otherwise returns a 404 Not Found.</returns>
-    [Authorize(Roles = Roles.Moderator)]
+    [Authorize]
     [HttpDelete("{id}")]
     [ProducesResponseType(204)] // No Content
     [ProducesResponseType(404)] // Not Found
     public new async Task<IActionResult> Delete(Guid id)
-        => await base.Delete(id);
+    {
+        var post = await Service.Get(id);
+
+        if (post is null)
+            return NotFound(id);
+        
+        var claimId = TokenService.GetUserIdFromClaims(User);
+        if(claimId != post.UserId && !User.IsInRole(Roles.Admin))
+            return Forbid();
+
+        await Service.Delete(post);
+
+        return NoContent();
+    }
 }
