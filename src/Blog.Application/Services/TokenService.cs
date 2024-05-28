@@ -77,11 +77,14 @@ public static class TokenService
 
     public static Guid GetUserIdFromClaims(ClaimsPrincipal user)
     {
-        var userId = user.Claims.FirstOrDefault(c => c.Type == "UserId")?.Value;
-        if (userId is null)
-            throw new ArgumentNullException(userId, "Unable to get UserId from ClaimsPrincipal");
-
+        var userId = user.Claims.FirstOrDefault(c => c.Type == "UserId")?.Value!;
         return Guid.Parse(userId);
+    }
+
+    public static string GetUserNameFromClaims(ClaimsPrincipal user)
+    {
+        var userName = user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value!;
+        return userName;
     }
 
     private static Token GenerateToken(string accessToken)

@@ -12,12 +12,18 @@ public class UsersController(IUserService _userService)
     /// </summary>
     /// <param name="id">The ID of the user to retrieve.</param>
     /// <returns>Returns the user if found, otherwise returns a 404 Not Found.</returns>
-    [Authorize(Roles = Roles.Moderator)]
+    [Authorize]
     [HttpGet("{id}")]
     [ProducesResponseType(200)] // OK
     [ProducesResponseType(404)] // Not Found
     public new async Task<IActionResult> Get(Guid id)
-        => await base.Get(id);
+    {
+        var claimId = TokenService.GetUserIdFromClaims(User);
+        if(claimId != id && !User.IsInRole(Roles.Admin))
+            return Forbid();
+
+        return await base.Get(id);
+    }
 
     /// <summary>
     /// Retrieves a page of posts associated with a specific user, identified by its ID, and returns them. 
@@ -67,12 +73,16 @@ public class UsersController(IUserService _userService)
     /// </summary>
     /// <param name="username">The username of the user to retrieve.</param>
     /// <returns>Returns the user if found, otherwise returns a 404 Not Found.</returns>
-    [Authorize(Roles = Roles.Moderator)]
+    [Authorize]
     [HttpGet("username/{username}")]
     [ProducesResponseType(200)] // OK
     [ProducesResponseType(404)] // Not Found
     public async Task<IActionResult> GetByUserName(string username)
     {
+        var claimUsername = TokenService.GetUserNameFromClaims(User);
+        if(claimUsername != username && !User.IsInRole(Roles.Admin))
+            return Forbid();
+
         var entity = await _userService.GetByUserName(username);
 
         if (entity is null)
@@ -131,27 +141,35 @@ public class UsersController(IUserService _userService)
     [HttpPut("{id}")]
     [ProducesResponseType(204)] // No Content
     [ProducesResponseType(400)] // Bad Request
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(404)] // Not Found
     public async Task<IActionResult> Put(Guid id, [FromBody] UserInputModel input)
-        => await base.Put(id, input);
+    {
+        var claimId = TokenService.GetUserIdFromClaims(User);
+        if(claimId != id)
+            return Forbid();
+
+        return await base.Put(id, input);
+    }
 
     [Authorize]
     [HttpPut("reset-password/{id}")]
     [ProducesResponseType(204)] // No Content
     [ProducesResponseType(400)] // Bad Request
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(404)] // Not Found
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> ResetPassword(Guid id, [FromBody] UserInputModel input)
     {
+        var claimId = TokenService.GetUserIdFromClaims(User);
+        if(claimId != id)
+            return Forbid();
+
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
         var entity = await Service.Get(id);
         if (entity is null)
             return NotFound(id);
-
-        if (TokenService.GetUserIdFromClaims(User) != entity.Id)
-            return Unauthorized();
 
         input.InputToDto(entity);
         try
@@ -203,5 +221,11 @@ public class UsersController(IUserService _userService)
     [ProducesResponseType(204)] // No Content
     [ProducesResponseType(404)] // Not Found
     public new async Task<IActionResult> Delete(Guid id)
-        => await base.Delete(id);
+    {    
+        var claimId = TokenService.GetUserIdFromClaims(User);
+        if(claimId != id && !User.IsInRole(Roles.Admin))
+            return Forbid();
+            
+        return await base.Delete(id);
+    }
 }
