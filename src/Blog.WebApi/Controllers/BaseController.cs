@@ -56,7 +56,7 @@ public abstract class BaseController<TDto>(IBaseService<TDto> service)
         {
             await Service.Create(entity);
         }
-        catch (ArgumentException ex)
+        catch (Exception ex)
         {
             return BadRequest(ex);
         }
@@ -88,7 +88,7 @@ public abstract class BaseController<TDto>(IBaseService<TDto> service)
         {
             await Service.Update(entity);
         }
-        catch (ArgumentException ex)
+        catch (Exception ex)
         {
             return BadRequest(ex);
         }

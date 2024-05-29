@@ -127,7 +127,7 @@ public class UsersController(IUserService _userService)
         {
             await Service.Create(user);
         }
-        catch (ArgumentException ex)
+        catch (Exception ex)
         {
             return BadRequest(ex);
         }
@@ -168,7 +168,7 @@ public class UsersController(IUserService _userService)
         {
             await Service.Update(user);
         }
-        catch (ArgumentException ex)
+        catch (Exception ex)
         {
             return BadRequest(ex);
         }
@@ -193,16 +193,16 @@ public class UsersController(IUserService _userService)
 
         var user = await Service.Get(id);
         if (user is null)
-            return NotFound(id);
+            return NotFound(new { Id = id });
 
         input.InputToDto(user);
         try
         {
             await _userService.UpdatePassword(user);
         }
-        catch (ArgumentException ex)
+        catch (Exception ex)
         {
-            return BadRequest(ex.Message);
+            return BadRequest(ex);
         }
 
         return NoContent();
@@ -220,16 +220,16 @@ public class UsersController(IUserService _userService)
 
         var user = await Service.Get(id);
         if (user is null)
-            return NotFound(id);
+            return NotFound(new {Id = id});
 
         user.Roles = roles;
         try
         {
             await _userService.UpdateRoles(user);
         }
-        catch (ArgumentException ex)
+        catch (Exception ex)
         {
-            return BadRequest(ex.Message);
+            return BadRequest(ex);
         }
 
         return NoContent();

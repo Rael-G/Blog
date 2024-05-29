@@ -65,10 +65,9 @@ public class PostsController(IPostService postService)
         entity.UserId = TokenService.GetUserIdFromClaims(User);
         try
         {
-            
             await Service.Create(entity);
         }
-        catch (ArgumentException ex)
+        catch (Exception ex)
         {
             return BadRequest(ex);
         }
@@ -104,7 +103,7 @@ public class PostsController(IPostService postService)
         {
             await Service.Update(entity);
         }
-        catch (ArgumentException ex)
+        catch (Exception ex)
         {
             return BadRequest(ex);
         }
