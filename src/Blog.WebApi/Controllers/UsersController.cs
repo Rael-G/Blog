@@ -22,7 +22,12 @@ public class UsersController(IUserService _userService)
         if(claimId != id && !User.IsInRole(Roles.Admin))
             return Forbid();
 
-        return await base.Get(id);
+        var user = await Service.Get(id);
+
+        if (user is null)
+            return NotFound(id);
+
+        return Ok(new UserOutputModel(user));
     }
 
     /// <summary>
@@ -43,7 +48,7 @@ public class UsersController(IUserService _userService)
         if (user is null)
             return NotFound(id);
 
-        return Ok(user);   
+        return Ok(new UserOutputModel(user));   
     }
 
     /// <summary>
@@ -83,12 +88,12 @@ public class UsersController(IUserService _userService)
         if(claimUsername != username && !User.IsInRole(Roles.Admin))
             return Forbid();
 
-        var entity = await _userService.GetByUserName(username);
+        var user = await _userService.GetByUserName(username);
 
-        if (entity is null)
+        if (user is null)
             return NotFound(username);
 
-        return Ok(entity);
+        return Ok(new UserOutputModel(user));
     }
 
     /// <summary>
@@ -99,7 +104,9 @@ public class UsersController(IUserService _userService)
     [HttpGet]
     [ProducesResponseType(200)] // OK
     public new async Task<IActionResult> GetAll()
-        => await base.GetAll();
+    {
+        return Ok(UserOutputModel.MapRange(await Service.GetAll()));
+    }
         
     /// <summary>
     /// Creates a new user.
@@ -110,25 +117,25 @@ public class UsersController(IUserService _userService)
     [HttpPost]
     [ProducesResponseType(201)] // Created
     [ProducesResponseType(400)] // Bad Request
-    public async Task<IActionResult> Post([FromBody] UserInputModel input)
+    public async Task<IActionResult> Post([FromBody] SigninInputModel input)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var entity = input.InputToDto();
+        var user = input.InputToDto();
         try
         {
-            await Service.Create(entity);
+            await Service.Create(user);
         }
         catch (ArgumentException ex)
         {
             return BadRequest(ex.Message);
         }
 
-        entity.PasswordHash = null;
-        entity.RepeatPassword = null;
+        user.PasswordHash = null;
+        user.RepeatPassword = null;
 
-        return CreatedAtAction(nameof(Get), new { entity.Id }, entity);
+        return CreatedAtAction(nameof(Get), new { user.Id }, new UserOutputModel(user));
     }
 
     /// <summary>
@@ -149,7 +156,24 @@ public class UsersController(IUserService _userService)
         if(claimId != id)
             return Forbid();
 
-        return await base.Put(id, input);
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+
+        var user = await Service.Get(id);
+        if (user is null)
+            return NotFound(id);
+
+        input.InputToDto(user);
+        try
+        {
+            await Service.Update(user);
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+
+        return NoContent();
     }
 
     [Authorize]
@@ -158,7 +182,7 @@ public class UsersController(IUserService _userService)
     [ProducesResponseType(400)] // Bad Request
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(404)] // Not Found
-    public async Task<IActionResult> ResetPassword(Guid id, [FromBody] UserInputModel input)
+    public async Task<IActionResult> ResetPassword(Guid id, [FromBody] SigninInputModel input)
     {
         var claimId = TokenService.GetUserIdFromClaims(User);
         if(claimId != id)
@@ -167,14 +191,14 @@ public class UsersController(IUserService _userService)
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var entity = await Service.Get(id);
-        if (entity is null)
+        var user = await Service.Get(id);
+        if (user is null)
             return NotFound(id);
 
-        input.InputToDto(entity);
+        input.InputToDto(user);
         try
         {
-            await _userService.UpdatePassword(entity);
+            await _userService.UpdatePassword(user);
         }
         catch (ArgumentException ex)
         {
@@ -194,14 +218,14 @@ public class UsersController(IUserService _userService)
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var entity = await Service.Get(id);
-        if (entity is null)
+        var user = await Service.Get(id);
+        if (user is null)
             return NotFound(id);
 
-        entity.Roles = roles;
+        user.Roles = roles;
         try
         {
-            await _userService.UpdateRoles(entity);
+            await _userService.UpdateRoles(user);
         }
         catch (ArgumentException ex)
         {
