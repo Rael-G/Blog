@@ -19,7 +19,7 @@ public class AuthController(IAuthService authService) : ControllerBase
     [HttpPut("login")]
     [ProducesResponseType(typeof(Token), 200)]
     [ProducesResponseType(400)]
-    public async Task<IActionResult> LogIn(UserInputModel userInput)
+    public async Task<IActionResult> LogIn(LoginInputModel userInput)
     {
         if (!ModelState.IsValid)
         {
@@ -32,7 +32,7 @@ public class AuthController(IAuthService authService) : ControllerBase
 
         if (token is null)
         {
-            return BadRequest("Wrong User or Password.");
+            return Unauthorized("Wrong Username or Password.");
         }
 
         return Ok(token);
@@ -58,7 +58,7 @@ public class AuthController(IAuthService authService) : ControllerBase
 
         if (token is null)
         {
-            return BadRequest("Invalid Token");
+            return Forbid("Invalid Token");
         }
 
         return Ok(token);
