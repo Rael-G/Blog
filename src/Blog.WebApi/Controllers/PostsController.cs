@@ -70,7 +70,7 @@ public class PostsController(IPostService postService)
         }
         catch (ArgumentException ex)
         {
-            return BadRequest(ex.Message);
+            return BadRequest(ex);
         }
 
         return CreatedAtAction(nameof(Get), new { entity.Id }, entity);
@@ -94,7 +94,7 @@ public class PostsController(IPostService postService)
 
         var entity = await Service.Get(id);
         if (entity is null)
-            return NotFound(id);
+            return NotFound(new { Id = id });
 
         if(TokenService.GetUserIdFromClaims(User) != entity.UserId)
             return Forbid();
@@ -106,7 +106,7 @@ public class PostsController(IPostService postService)
         }
         catch (ArgumentException ex)
         {
-            return BadRequest(ex.Message);
+            return BadRequest(ex);
         }
 
         return NoContent();   
@@ -126,7 +126,7 @@ public class PostsController(IPostService postService)
         var post = await Service.Get(id);
 
         if (post is null)
-            return NotFound(id);
+            return NotFound(new { Id = id });
         
         var claimId = TokenService.GetUserIdFromClaims(User);
         if(claimId != post.UserId && !User.IsInRole(Roles.Admin))

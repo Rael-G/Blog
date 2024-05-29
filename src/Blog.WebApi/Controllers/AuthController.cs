@@ -32,7 +32,7 @@ public class AuthController(IAuthService authService) : ControllerBase
 
         if (token is null)
         {
-            return Unauthorized("Wrong Username or Password.");
+            return Unauthorized(new {Message = "Wrong Username or Password."});
         }
 
         return Ok(token);
@@ -58,7 +58,7 @@ public class AuthController(IAuthService authService) : ControllerBase
 
         if (token is null)
         {
-            return Forbid("Invalid Token");
+            return Unauthorized(new { Message = "Invalid Token"});
         }
 
         return Ok(token);

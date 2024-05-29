@@ -24,7 +24,7 @@ public class CommentsController(ICommentService commentsService, IPostService po
     {
         var post = await _postService.Get(postId);
         if (post is null)
-            return NotFound(postId);
+            return NotFound(new { Id = postId });
 
         return Ok(await _commentService.GetAll(postId));
     }
@@ -58,7 +58,7 @@ public class CommentsController(ICommentService commentsService, IPostService po
 
         var post = await _postService.Get(input.PostId);
         if (post is null)
-            return NotFound(input.PostId);
+            return NotFound(new { Id = input.PostId });
 
         return await base.Post(input);
     }

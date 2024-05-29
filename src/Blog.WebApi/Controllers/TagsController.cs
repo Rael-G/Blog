@@ -45,7 +45,7 @@ public class TagsController(ITagService tagService) : BaseController<TagDto>(tag
         var tag = await tagService.GetTagPage(id, page);
 
         if (tag is null)
-            return NotFound(id);
+            return NotFound(new { Id = id });
 
         return Ok(tag);   
     }
@@ -67,7 +67,7 @@ public class TagsController(ITagService tagService) : BaseController<TagDto>(tag
         var tag = await tagService.Get(id);
 
         if (tag is null)
-            return NotFound(id);
+            return NotFound(new { Id = id });
 
         return Ok(await tagService.GetPageCount(id));
     }

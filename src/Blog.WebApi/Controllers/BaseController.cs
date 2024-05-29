@@ -33,7 +33,7 @@ public abstract class BaseController<TDto>(IBaseService<TDto> service)
         var entity = await Service.Get(id);
 
         if (entity is null)
-            return NotFound(id);
+            return NotFound(new {Id = id});
 
         return Ok(entity);
     }
@@ -58,7 +58,7 @@ public abstract class BaseController<TDto>(IBaseService<TDto> service)
         }
         catch (ArgumentException ex)
         {
-            return BadRequest(ex.Message);
+            return BadRequest(ex);
         }
 
         return CreatedAtAction(nameof(Get), new { entity.Id }, entity);
@@ -81,7 +81,7 @@ public abstract class BaseController<TDto>(IBaseService<TDto> service)
 
         var entity = await Service.Get(id);
         if (entity is null)
-            return NotFound(id);
+            return NotFound(new {Id = id});
 
         input.InputToDto(entity);
         try
@@ -90,7 +90,7 @@ public abstract class BaseController<TDto>(IBaseService<TDto> service)
         }
         catch (ArgumentException ex)
         {
-            return BadRequest(ex.Message);
+            return BadRequest(ex);
         }
 
         return NoContent();
@@ -109,7 +109,7 @@ public abstract class BaseController<TDto>(IBaseService<TDto> service)
         var post = await Service.Get(id);
 
         if (post is null)
-            return NotFound(id);
+            return NotFound(new {Id = id});
 
         await Service.Delete(post);
 

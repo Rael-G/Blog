@@ -25,7 +25,7 @@ public class UsersController(IUserService _userService)
         var user = await Service.Get(id);
 
         if (user is null)
-            return NotFound(id);
+            return NotFound(new { Id = id });
 
         return Ok(new UserOutputModel(user));
     }
@@ -46,7 +46,7 @@ public class UsersController(IUserService _userService)
         var user = await _userService.GetUserPage(id, page);
 
         if (user is null)
-            return NotFound(id);
+            return NotFound(new { Id = id });
 
         return Ok(new UserOutputModel(user));   
     }
@@ -68,7 +68,7 @@ public class UsersController(IUserService _userService)
         var user = await _userService.Get(id);
 
         if (user is null)
-            return NotFound(id);
+            return NotFound(new { Id = id });
 
         return Ok(await _userService.GetPageCount(id));
     }
@@ -91,7 +91,7 @@ public class UsersController(IUserService _userService)
         var user = await _userService.GetByUserName(username);
 
         if (user is null)
-            return NotFound(username);
+            return NotFound(new { UserName = username });
 
         return Ok(new UserOutputModel(user));
     }
@@ -129,7 +129,7 @@ public class UsersController(IUserService _userService)
         }
         catch (ArgumentException ex)
         {
-            return BadRequest(ex.Message);
+            return BadRequest(ex);
         }
 
         user.PasswordHash = null;
@@ -161,7 +161,7 @@ public class UsersController(IUserService _userService)
 
         var user = await Service.Get(id);
         if (user is null)
-            return NotFound(id);
+            return NotFound(new { Id = id });
 
         input.InputToDto(user);
         try
@@ -170,7 +170,7 @@ public class UsersController(IUserService _userService)
         }
         catch (ArgumentException ex)
         {
-            return BadRequest(ex.Message);
+            return BadRequest(ex);
         }
 
         return NoContent();
