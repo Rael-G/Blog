@@ -1,10 +1,11 @@
-﻿using AutoMapper;
+﻿using System.Text.RegularExpressions;
+using AutoMapper;
 using Blog.Domain;
 using Microsoft.AspNetCore.Identity;
 
 namespace Blog.Application;
 
-public class UserService(IUserRepository _userRepository, IMapper mapper) 
+public partial class UserService(IUserRepository _userRepository, IMapper mapper) 
     : BaseService<UserDto, User>(_userRepository, mapper), IUserService
 {
     public const int PageSize = 10;
@@ -17,8 +18,7 @@ public class UserService(IUserRepository _userRepository, IMapper mapper)
     {
         var user = await Repository.Get(id);
 
-        if (user == null)
-            return null;
+        if (user == null) return null;
 
         var posts = await _userRepository.GetPostPage(id, page, PageSize);
         var userDto = Mapper.Map<UserDto>(user);
@@ -42,10 +42,7 @@ public class UserService(IUserRepository _userRepository, IMapper mapper)
 
     public new async Task Update(UserDto userDto)
     {
-        var user = await Repository.Get(userDto.Id);
-        if (user == null)
-            throw new ArgumentException("User not Found");
-
+        var user = await Repository.Get(userDto.Id) ?? throw new ArgumentException("User not Found");
         MapUser(user, userDto);
         Repository.Update(user);
         await Repository.Commit();
@@ -53,10 +50,7 @@ public class UserService(IUserRepository _userRepository, IMapper mapper)
 
     public async Task UpdatePassword(UserDto userDto)
     {
-        var user = await Repository.Get(userDto.Id);
-        if (user == null)
-            throw new ArgumentException("User not Found");
-
+        var user = await Repository.Get(userDto.Id) ?? throw new ArgumentException("User not Found");
         MapUserPassword(user, userDto);
         Repository.Update(user);
         await Repository.Commit();
@@ -64,10 +58,7 @@ public class UserService(IUserRepository _userRepository, IMapper mapper)
 
     public async Task UpdateRoles(UserDto userDto)
     {
-        var user = await Repository.Get(userDto.Id);
-        if (user == null)
-            throw new ArgumentException("User not Found");
-
+        var user = await Repository.Get(userDto.Id) ?? throw new ArgumentException("User not Found");
         MapUserRoles(user, userDto);
         Repository.Update(user);
         await Repository.Commit();
@@ -80,11 +71,16 @@ public class UserService(IUserRepository _userRepository, IMapper mapper)
 
     private void MapUserPassword(User user, UserDto userDto)
     {
-        if (userDto.PasswordHash == null 
-            || userDto.PasswordHash != userDto.RepeatPassword)
-        {
+        if (!PasswordIsValid(userDto.PasswordHash))
+            throw new ArgumentException
+            (
+                @"Password must contain 1 number (0-9), 1 uppercase letters, 1 lowercase letters, 
+                1 non-alpha numeric number and must has more than 8 characters with no space"
+            );
+
+        if (!PasswordAreEqual(userDto.PasswordHash, userDto.RepeatPassword))
             throw new ArgumentException("Password and Repeat Password must be equal");
-        }
+        
 
         var passwordHash = _passwordHasher
             .HashPassword(user, userDto.PasswordHash!);
@@ -92,9 +88,26 @@ public class UserService(IUserRepository _userRepository, IMapper mapper)
         user.PasswordHash = passwordHash;
     }
 
-    private void MapUserRoles(User user, UserDto userDto)
+    private static void MapUserRoles(User user, UserDto userDto)
     {
         if (userDto.Roles != null)
             user.Roles = userDto.Roles;
     }
+
+    private static bool PasswordAreEqual(string? password, string? repeatPassword)
+    {
+        if (password is null) return false;
+
+        return password == repeatPassword;
+    }
+
+    private static bool PasswordIsValid(string? password)
+    {
+        if (password is null) return false;
+
+        return PasswordRegex().Match(password).Success;
+    }
+
+    [GeneratedRegex(@"^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[^\w\d\s:])([^\s]){8,}$")]
+    private static partial Regex PasswordRegex();
 }
