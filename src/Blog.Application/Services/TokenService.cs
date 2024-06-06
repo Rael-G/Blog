@@ -81,12 +81,6 @@ public static class TokenService
         return Guid.Parse(userId);
     }
 
-    public static string GetUserNameFromClaims(ClaimsPrincipal user)
-    {
-        var userName = user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value!;
-        return userName;
-    }
-
     private static Token GenerateToken(string accessToken)
     {
         var now = DateTime.UtcNow;
