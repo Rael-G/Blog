@@ -2,6 +2,8 @@
 
 public interface IPostRepository : IBaseRepository<Post>
 {
+    Task<Post?> GetByTitle(string title);
+
     /// <summary>
     /// Updates the tags of a post.
     /// </summary>

@@ -6,6 +6,10 @@ namespace Blog.Persistance;
 public class PostRepository(ApplicationDbContext context)
     : BaseRepository<Post>(context), IPostRepository
 {
+    public async Task<Post?> GetByTitle(string title)
+        => await Context.Posts.Where(p => p.Title == title)
+            .FirstOrDefaultAsync();
+
     public override async Task<Post?> Get(Guid id)
         => await Context.Posts
             .AsNoTracking()
