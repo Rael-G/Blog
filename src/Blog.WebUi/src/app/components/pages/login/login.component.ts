@@ -39,7 +39,7 @@ export class LoginComponent implements OnInit{
       this.redirect() 
     },
       error: (error : HttpErrorResponse) => {
-        this.messageService.add(error.error, Color.red)
+        this.messageService.add(error.error.message, Color.red)
       }
     })
   }
