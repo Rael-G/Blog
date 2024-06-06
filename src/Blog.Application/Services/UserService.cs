@@ -72,14 +72,14 @@ public partial class UserService(IUserRepository _userRepository, IMapper mapper
     private void MapUserPassword(User user, UserDto userDto)
     {
         if (!PasswordIsValid(userDto.PasswordHash))
-            throw new ArgumentException
+            throw new DomainException
             (
-                @"Password must contain 1 number (0-9), 1 uppercase letters, 1 lowercase letters, 
-                1 non-alpha numeric number and must has more than 8 characters with no space"
+                "Password must contain 1 number (0-9), 1 uppercase letters, 1 lowercase letters, " +
+                "1 non-alpha numeric number and must has more than 8 characters with no space"
             );
 
         if (!PasswordAreEqual(userDto.PasswordHash, userDto.RepeatPassword))
-            throw new ArgumentException("Password and Repeat Password must be equal");
+            throw new DomainException("Password and Repeat Password must be equal");
         
 
         var passwordHash = _passwordHasher
