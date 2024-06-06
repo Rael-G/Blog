@@ -37,9 +37,9 @@ export class TagFormComponent implements OnInit{
     if (this.tagForm.invalid)
       return
 
+    this.onSubmit.emit(this.tagForm.value)
     this.tagForm.reset()
     this.submitted = false
-    this.onSubmit.emit(this.tagForm.value)
   }
 
   protected toggleExpandForm()
