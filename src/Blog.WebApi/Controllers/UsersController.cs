@@ -84,14 +84,14 @@ public class UsersController(IUserService _userService)
     [ProducesResponseType(404)] // Not Found
     public async Task<IActionResult> GetByUserName(string username)
     {
-        var claimUsername = TokenService.GetUserNameFromClaims(User);
-        if(claimUsername != username && !User.IsInRole(Roles.Admin))
-            return Forbid();
-
         var user = await _userService.GetByUserName(username);
 
         if (user is null)
             return NotFound(new { UserName = username });
+
+        var claimId = TokenService.GetUserIdFromClaims(User);
+        if(claimId != user.Id && !User.IsInRole(Roles.Admin))
+            return Forbid();
 
         return Ok(new UserOutputModel(user));
     }
