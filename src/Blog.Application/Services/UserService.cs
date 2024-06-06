@@ -32,6 +32,9 @@ public partial class UserService(IUserRepository _userRepository, IMapper mapper
 
     public new async Task Create(UserDto userDto)
     {
+        if (await _userRepository.GetByUserName(userDto.UserName) is not null) 
+            throw new DomainException("UserName must be unique");
+
         var user = Mapper.Map<User>(userDto);
 
         MapUserPassword(user, userDto);
@@ -42,6 +45,10 @@ public partial class UserService(IUserRepository _userRepository, IMapper mapper
 
     public new async Task Update(UserDto userDto)
     {
+        var existentUser = await _userRepository.GetByUserName(userDto.UserName);
+        if (existentUser is not null && existentUser.Id != existentUser.Id) 
+            throw new DomainException("UserName must be unique");
+
         var user = await Repository.Get(userDto.Id) ?? throw new ArgumentException("User not Found");
         MapUser(user, userDto);
         Repository.Update(user);
