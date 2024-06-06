@@ -13,14 +13,13 @@ public class Post : BaseEntity
     /// <summary>
     /// Gets or sets the title of the post.
     /// </summary>
-    /// <exception cref="ArgumentNullException">Thrown when title is null or empty,.</exception>
-    /// <exception cref="ArgumentException">Thrown when title exceeds {TitleMaxLength} characters.</exception>
+    /// <exception cref="DomainException">Thrown when title exceeds {TitleMaxLength} characters.</exception>
     public string Title { get => _title; set => _title = ValidateTitle(value); }
 
     /// <summary>
     /// Gets or sets the content of the post.
     /// </summary>
-    /// <exception cref="ArgumentNullException">Thrown when the content is null or empty.</exception>
+    /// <exception cref="DomainException">Thrown when the content is null or empty.</exception>
     public string Content { get => _content; set => _content = ValidateContent(value); }
 
     /// <summary>
@@ -45,7 +44,7 @@ public class Post : BaseEntity
     /// <param name="id">The identifier of the post.</param>
     /// <param name="title">The <see cref="Title"> of the post.</param>
     /// <param name="content">The content of the post.</param>
-    /// <exception cref="ArgumentException"></exception>
+    /// <exception cref="DomainException"></exception>
     public Post(Guid id, string title, string content, Guid userId)
         : base(id)
     {
@@ -59,10 +58,10 @@ public class Post : BaseEntity
     private string ValidateTitle(string title)
     {
         if (string.IsNullOrWhiteSpace(title))
-            throw new ArgumentNullException($"{nameof(title)} must contain a value", nameof(title));
+            throw new DomainException($"{nameof(title)} must contain a value");
 
         if (title.Length > TitleMaxLength)
-            throw new ArgumentException($"{nameof(title)} max length is {TitleMaxLength}", nameof(title));
+            throw new DomainException($"{nameof(title)} max length is {TitleMaxLength}");
 
         return title;
     }
@@ -70,7 +69,7 @@ public class Post : BaseEntity
     private string ValidateContent(string content)
     {
         if (string.IsNullOrWhiteSpace(content))
-            throw new ArgumentNullException($"{nameof(content)} must contain a value", nameof(content));
+            throw new DomainException($"{nameof(content)} must contain a value");
 
         return content;
     }

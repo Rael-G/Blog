@@ -18,8 +18,7 @@ public class Tag : BaseEntity
     /// <summary>
     /// Gets or sets the name of the tag.
     /// </summary>
-    /// <exception cref="ArgumentNullException">Thrown when name is null or empty.</exception>
-    /// <exception cref="ArgumentException">Thrown when name exceeds the maximum length.</exception>
+    /// <exception cref="DomainException">Thrown when name exceeds the maximum length.</exception>
     public string Name { get => _name; set => _name = ValidateName(value); }
 
     /// <summary>
@@ -34,8 +33,7 @@ public class Tag : BaseEntity
     /// </summary>
     /// <param name="id">The identifier of the tag.</param>
     /// <param name="name">The name of the tag.</param>
-    /// <exception cref="ArgumentNullException"></exception>
-    /// <exception cref="ArgumentException"></exception>
+    /// <exception cref="DomainException"></exception>
     public Tag(Guid id, string name) : base(id)
     {
         Name = name;
@@ -45,13 +43,13 @@ public class Tag : BaseEntity
     private string ValidateName(string name)
     {
         if (string.IsNullOrWhiteSpace(name))
-            throw new ArgumentNullException($"{nameof(name)} must contain a value", nameof(name));
+            throw new DomainException($"{nameof(name)} must contain a value");
 
         if (name.Length < NameMinLength)
-            throw new ArgumentException($"{nameof(name)} minimum length is {NameMinLength}", nameof(name));
+            throw new DomainException($"{nameof(name)} minimum length is {NameMinLength}");
 
         if (name.Length > NameMaxLength)
-            throw new ArgumentException($"{nameof(name)} maximum length is {NameMaxLength}", nameof(name));
+            throw new DomainException($"{nameof(name)} maximum length is {NameMaxLength}");
 
         return name;
     }

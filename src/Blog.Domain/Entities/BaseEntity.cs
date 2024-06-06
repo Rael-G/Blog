@@ -7,17 +7,18 @@ public abstract class BaseEntity
     /// <summary>
     /// Gets the unique identifier of the entity.
     /// </summary>
-    /// <exception cref="ArgumentNullException">Thrown when <see cref="Id"/> is null or empty.</exception>
     public Guid Id { get => _id; private set => _id = ValidateId(value); }
 
     /// <summary>
     /// Gets or sets the created time of the entity.
     /// </summary>
+    /// <exception cref="DomainException"></exception>
     public DateTime CreatedTime { get => _createdTime; set => _createdTime = ValidateTime(value); }
 
     /// <summary>
     /// Gets the modified time of the entity.
     /// </summary>
+    /// <exception cref="DomainException"></exception>
     public DateTime ModifiedTime { get => _modifiedTime; set => _modifiedTime = ValidateTime(value); }
 
     private Guid _id = Guid.Empty;
@@ -28,7 +29,7 @@ public abstract class BaseEntity
     /// Constructor for the BaseEntity class.
     /// </summary>
     /// <param name="id">The unique identifier of the entity.</param>
-    /// <exception cref="ArgumentNullException"></exception>
+    /// <exception cref="DomainException"></exception>
     public BaseEntity(Guid id)
     {
         var now = DateTime.UtcNow;
@@ -41,14 +42,14 @@ public abstract class BaseEntity
     private static DateTime ValidateTime(DateTime dateTime)
     {
         if (dateTime == DateTime.MinValue)
-            throw new ArgumentNullException(nameof(dateTime));
+            throw new DomainException(nameof(dateTime));
         return dateTime;
     }
 
     private static Guid ValidateId(Guid id)
     {
         if (id == Guid.Empty)
-            throw new ArgumentNullException(nameof(id));
+            throw new DomainException(nameof(id));
 
         return id;
     }

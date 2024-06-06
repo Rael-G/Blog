@@ -24,7 +24,7 @@ public partial class User : BaseEntity
     private static string ValidateUsername(string username)
     {
         if (!UserNameRegex().Match(username).Success)
-            throw new ArgumentException("Username must be alphanumeric and between 3 and 30 characters long");
+            throw new DomainException("Username must be alphanumeric and between 3 and 30 characters long");
 
         return username;
     }

@@ -18,14 +18,13 @@ public class Comment : BaseEntity
     /// <summary>
     /// Gets or sets the author of the comment.
     /// </summary>
-    /// <exception cref="ArgumentNullException">Thrown when author is null or empty.</exception>
-    /// <exception cref="ArgumentException">Thrown when author exceeds {AuthorMaxLength} characters.</exception>
+    /// <exception cref="DomainException">Thrown when author exceeds {AuthorMaxLength} characters.</exception>
     public string Author { get => _author; set => _author = ValidateAuthor(value); }
 
     /// <summary>
     /// Gets or sets the content of the comment.
     /// </summary>
-    /// <exception cref="ArgumentException">Thrown when content is null or empty.</exception>
+    /// <exception cref="DomainException">Thrown when content is null or empty.</exception>
     public string Content { get => _content; set => _content = ValidateContent(value); }
 
     /// <summary>
@@ -48,8 +47,7 @@ public class Comment : BaseEntity
     /// <param name="author">The author of the comment.</param>
     /// <param name="content">The content of the comment.</param>
     /// <param name="post">The associated post of the comment.</param>
-    /// <exception cref="ArgumentException"></exception>
-    /// <exception cref="ArgumentNullException"></exception>
+    /// <exception cref="DomainException"></exception>
     public Comment(Guid id, string author, string content, Guid postId) : base(id)
     {
         Author = author;
@@ -60,10 +58,10 @@ public class Comment : BaseEntity
     private static string ValidateAuthor(string author)
     {
         if (string.IsNullOrWhiteSpace(author))
-            throw new ArgumentNullException($"{nameof(author)} must contain a value", nameof(author));
+            throw new DomainException($"{nameof(author)} must contain a value");
 
         if (author.Length > AuthorMaxLength)
-            throw new ArgumentException($"{nameof(author)} max length is {AuthorMaxLength}", nameof(author));
+            throw new DomainException($"{nameof(author)} max length is {AuthorMaxLength}");
 
         return author;
     }
@@ -71,10 +69,10 @@ public class Comment : BaseEntity
     private static string ValidateContent(string content)
     {
         if (string.IsNullOrWhiteSpace(content))
-            throw new ArgumentNullException($"{nameof(content)} must contain a value", nameof(content));
+            throw new DomainException($"{nameof(content)} must contain a value");
 
         if (content.Length > ContentMaxLength)
-            throw new ArgumentException($"{nameof(content)} max length is {ContentMaxLength}", nameof(content));
+            throw new DomainException($"{nameof(content)} max length is {ContentMaxLength}");
 
         return content;
     }
