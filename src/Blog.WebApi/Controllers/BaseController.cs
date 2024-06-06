@@ -1,4 +1,5 @@
 ﻿using Blog.Application;
+using Blog.Domain;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.WebApi;
@@ -56,9 +57,9 @@ public abstract class BaseController<TDto>(IBaseService<TDto> service)
         {
             await Service.Create(entity);
         }
-        catch (Exception ex)
+        catch (DomainException ex)
         {
-            return BadRequest(ex);
+            return BadRequest(new { ex.Message });
         }
 
         return CreatedAtAction(nameof(Get), new { entity.Id }, entity);
@@ -88,9 +89,9 @@ public abstract class BaseController<TDto>(IBaseService<TDto> service)
         {
             await Service.Update(entity);
         }
-        catch (Exception ex)
+        catch (DomainException ex)
         {
-            return BadRequest(ex);
+            return BadRequest(new { ex.Message });
         }
 
         return NoContent();

@@ -2,6 +2,7 @@
 using Blog.Application;
 using Blog.WebApi.Models.Input;
 using Microsoft.AspNetCore.Authorization;
+using Blog.Domain;
 
 namespace Blog.WebApi.Controllers;
 
@@ -67,9 +68,9 @@ public class PostsController(IPostService postService)
         {
             await Service.Create(entity);
         }
-        catch (Exception ex)
+        catch (DomainException ex)
         {
-            return BadRequest(ex);
+            return BadRequest(new { ex.Message });
         }
 
         return CreatedAtAction(nameof(Get), new { entity.Id }, entity);
@@ -103,9 +104,9 @@ public class PostsController(IPostService postService)
         {
             await Service.Update(entity);
         }
-        catch (Exception ex)
+        catch (DomainException ex)
         {
-            return BadRequest(ex);
+            return BadRequest(new { ex.Message });
         }
 
         return NoContent();   

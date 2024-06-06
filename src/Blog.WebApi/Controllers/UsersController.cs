@@ -1,4 +1,5 @@
 ﻿using Blog.Application;
+using Blog.Domain;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -127,9 +128,9 @@ public class UsersController(IUserService _userService)
         {
             await Service.Create(user);
         }
-        catch (Exception ex)
+        catch (DomainException ex)
         {
-            return BadRequest(ex);
+            return BadRequest(new { ex.Message });
         }
 
         user.PasswordHash = null;
@@ -168,9 +169,9 @@ public class UsersController(IUserService _userService)
         {
             await Service.Update(user);
         }
-        catch (Exception ex)
+        catch (DomainException ex)
         {
-            return BadRequest(ex);
+            return BadRequest(new { ex.Message });
         }
 
         return NoContent();
@@ -200,9 +201,9 @@ public class UsersController(IUserService _userService)
         {
             await _userService.UpdatePassword(user);
         }
-        catch (Exception ex)
+        catch (DomainException ex)
         {
-            return BadRequest(ex);
+            return BadRequest(new { ex.Message });
         }
 
         return NoContent();
@@ -227,9 +228,9 @@ public class UsersController(IUserService _userService)
         {
             await _userService.UpdateRoles(user);
         }
-        catch (Exception ex)
+        catch (DomainException ex)
         {
-            return BadRequest(ex);
+            return BadRequest(new { ex.Message });
         }
 
         return NoContent();
