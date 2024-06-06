@@ -182,7 +182,7 @@ public class UsersController(IUserService _userService)
     [ProducesResponseType(400)] // Bad Request
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(404)] // Not Found
-    public async Task<IActionResult> ResetPassword(Guid id, [FromBody] SigninInputModel input)
+    public async Task<IActionResult> ResetPassword(Guid id, [FromBody] ResetPasswordInputModel input)
     {
         var claimId = TokenService.GetUserIdFromClaims(User);
         if(claimId != id)
