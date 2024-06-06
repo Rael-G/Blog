@@ -32,10 +32,12 @@ export class AddCommentComponent {
 
   createHandler(comment: Comment) {
     const postId = this.route.snapshot.paramMap.get('id');
-    comment.postId = postId?? '';
-    this.commentService.createComment(comment).subscribe()
+    comment.postId = postId?? ''
 
-    this.reset(comment);
+    console.log(comment)
+    this.commentService.createComment(comment).subscribe(
+      (response) => this.reset(response)
+    )
   }
 
   submit() {

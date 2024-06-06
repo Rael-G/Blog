@@ -25,7 +25,9 @@ export class TagsManagementComponent implements OnInit{
   }
 
   protected onSubmitCreate(tag : Tag){
-    this.tagService.createTag(tag).subscribe()
+    this.tagService.createTag(tag).subscribe(
+      (response) => {this.tags.push(response)}
+    )
     this.messageService.add('Tag was successfully created.  Refresh to reflect the changes...', Color.green)
   }
 
