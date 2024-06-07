@@ -2,13 +2,15 @@ import { ApplicationConfig } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { provideClientHydration } from '@angular/platform-browser';
-import { provideHttpClient, withFetch, withInterceptors} from '@angular/common/http';
-import { authInterceptor } from './inteceptors/auth/auth.interceptor';
+import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
+import { authInterceptor } from './interceptors/auth/auth.interceptor';
+import { refreshInterceptor } from './interceptors/refresh/refresh.interceptor';
+import { logoutInterceptor } from './interceptors/logout/logout.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideRouter(routes), 
-    provideClientHydration(), 
-    provideHttpClient(withInterceptors([authInterceptor]), withFetch())
+    provideRouter(routes),
+    provideClientHydration(),
+    provideHttpClient(withInterceptors([authInterceptor, refreshInterceptor, logoutInterceptor]), withFetch())
   ]
 };
