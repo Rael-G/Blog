@@ -17,11 +17,17 @@
                 <div class="form-group">
                     <label>Password</label>
                     <input type="password" formControlName="password" class="form-control" placeholder="Password">
-                    @if(submitted && signinForm.get('password')?.errors){
+                    @if(submitted && signinForm.get('password')?.errors?.['required']){
                         <div class="alert alert-danger">
                             Password is required.
                         </div>
                     }
+                    @if(submitted && signinForm.get('password')?.errors?.['pattern']){
+                        <div class="alert alert-danger">
+                            Password must contain 1 number (0-9), 1 uppercase letters, 1 lowercase letters,
+                            1 non-alpha numeric number and must has more than 8 characters with no space
+                          </div>
+                      }
                 </div>
                 <div class="form-group">
                     <label>Repeat Password</label>

@@ -30,12 +30,18 @@
                   <label for="password" class="form-label">Password</label>
                   <input type="password" class="form-control" id="password" formControlName="password" aria-describedby="passwordHelp">
                   <small id="passwordHelp" class="form-text text-muted">Enter a strong password.</small>
-                  @if(editPasswordSubmitted && passwordForm.get('password')?.errors){
+                  @if(editPasswordSubmitted && passwordForm.get('password')?.errors?.['required']){
                       <div class="alert alert-danger">
                           Password is required.
                         </div>
                   }
-                  
+                  @if(editPasswordSubmitted && passwordForm.get('password')?.errors?.['pattern']){
+                    <div class="alert alert-danger">
+                      Password must contain 1 number (0-9), 1 uppercase letters, 1 lowercase letters,
+                      1 non-alpha numeric number and must has more than 8 characters with no space
+                      </div>
+                  }
+
                 </div>
                 <div class="mb-3">
                   <label for="repeatPassword" class="form-label">Repeat Password</label>

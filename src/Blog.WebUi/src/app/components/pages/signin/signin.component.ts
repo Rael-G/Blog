@@ -6,6 +6,7 @@ import { MessageService } from '../../../services/message/message.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Color } from '../../../enums/Color';
 import { AuthService } from '../../../services/auth/auth.service';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-signin',
@@ -21,7 +22,7 @@ export class SigninComponent implements OnInit {
   constructor(private userService : UserService, private authService : AuthService, private messageService : MessageService, private router : Router){
     this.signinForm = new FormGroup({
       username: new FormControl('', Validators.required),
-      password: new FormControl('', Validators.required),
+      password: new FormControl('', [Validators.required, Validators.pattern(environment.passwordPattern)]),
       repeatPassword: new FormControl('', Validators.required)
     });
   }

@@ -3,6 +3,7 @@ import { AuthService } from '../../../services/auth/auth.service';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { User } from '../../../interfaces/User';
 import { UserService } from '../../../services/user/user.service';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-profile',
@@ -26,8 +27,8 @@ export class ProfileComponent implements OnInit {
     })
 
     this.passwordForm = new FormGroup({
-      password: new FormControl('', Validators.required),
-      repeatPassword: new FormControl('', Validators.required)
+      password: new FormControl('', [Validators.required, Validators.pattern(environment.passwordPattern)]),
+      repeatPassword: new FormControl('', [Validators.required])
     })
 
    }
