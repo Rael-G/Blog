@@ -1,15 +1,15 @@
-<div class="container">
-  @if(isModerator()){
-    <app-posts-management></app-posts-management>
-    <app-tags-management></app-tags-management>
+<div>
+  @if(isModerator() || isAdmin()){
+  <app-posts-management-section></app-posts-management-section>
+  <app-tags-management></app-tags-management>
   }
   @else {
-    <div class="d-flex justify-content-center">
-      <p>You don't have the privileges to access this component</p>
-    </div>
+  <div class="d-flex justify-content-center">
+    <p>You don't have the privileges to access this component</p>
+  </div>
   }
-  
+
   @if(isAdmin()){
-    <app-users-management></app-users-management>
+  <app-users-management></app-users-management>
   }
 </div>

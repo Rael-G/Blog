@@ -1,18 +1,13 @@
-<div class="container">
-    <h1>Posts Management</h1>
+<div>
+    <h1>{{title}}</h1>
     <div class="d-flex justify-content-between">
         <button class="btn btn-success" routerLink="/create-post">New Post</button>
-        @if(isAdmin()){
-            <button class="btn btn-secondary" (click)="toogleGlobal()">{{toogleMessage()}}</button>
-        }
-        
     </div>
-    @if(!isGlobal){
-        <app-table-post [posts]="userPosts" [showEdit]="true"></app-table-post>
-        <app-pagination [currentPage]="userCurrentPage" [totalPages]="userTotalPages" [pageNumbers]="userPageNumbers" (pageChange)="userOnPageChange($event)"></app-pagination> 
-    }
-    @else{
-        <app-table-post [posts]="globalPosts"></app-table-post>
-        <app-pagination [currentPage]="globalCurrentPage" [totalPages]="globalTotalPages" [pageNumbers]="globalPageNumbers" (pageChange)="globalOnPageChange($event)"></app-pagination> 
+    @if(totalPages > 0){
+    <div class="table-section">
+        <app-table-post [posts]="posts" [showEdit]="showEdit"></app-table-post>
+        <app-pagination [currentPage]="currentPage" [totalPages]="totalPages" [pageNumbers]="pageNumbers"
+            (pageChange)="onPageChange($event)"></app-pagination>
+    </div>
     }
 </div>
