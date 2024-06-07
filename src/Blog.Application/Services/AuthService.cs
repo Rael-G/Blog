@@ -40,7 +40,7 @@ public class AuthService : IAuthService
     {
         var principal = TokenService.GetPrincipalFromToken(tokenInput.AccessToken);
 
-        var user = await _repository.GetByUserName(principal.Identity?.Name!);
+        var user = await _repository.Get(TokenService.GetUserIdFromClaims(principal));
 
         if (user == null ||
             user.RefreshToken != tokenInput.RefreshToken ||
