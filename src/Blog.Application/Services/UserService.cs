@@ -112,9 +112,6 @@ public partial class UserService(IUserRepository _userRepository, IMapper mapper
     {
         if (password is null) return false;
 
-        return PasswordRegex().Match(password).Success;
+        return User.PasswordRegex().Match(password).Success;
     }
-
-    [GeneratedRegex(@"^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[^\w\d\s:])([^\s]){8,}$")]
-    private static partial Regex PasswordRegex();
 }

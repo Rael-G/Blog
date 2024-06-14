@@ -29,6 +29,11 @@ public partial class User : BaseEntity
         return username;
     }
 
+    [GeneratedRegex(@"^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[^\w\d\s:])([^\s]){8,}$")]
+    public static partial Regex PasswordRegex();
+
     [GeneratedRegex(@"^([a-zA-Z0-9-_]){3,30}$")]
     private static partial Regex UserNameRegex();
+
+    
 }
