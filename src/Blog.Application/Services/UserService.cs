@@ -49,7 +49,7 @@ public partial class UserService(IUserRepository _userRepository, IMapper mapper
         if (existentUser is not null && userDto.Id != existentUser.Id) 
             throw new DomainException("UserName must be unique");
 
-        var user = await Repository.Get(userDto.Id) ?? throw new ArgumentException("User not Found");
+        var user = await Repository.Get(userDto.Id) ?? throw new DomainException("User not Found");
         MapUser(user, userDto);
         Repository.Update(user);
         await Repository.Commit();
@@ -57,7 +57,7 @@ public partial class UserService(IUserRepository _userRepository, IMapper mapper
 
     public async Task UpdatePassword(UserDto userDto)
     {
-        var user = await Repository.Get(userDto.Id) ?? throw new ArgumentException("User not Found");
+        var user = await Repository.Get(userDto.Id) ?? throw new DomainException("User not Found");
         MapUserPassword(user, userDto);
         Repository.Update(user);
         await Repository.Commit();
@@ -65,7 +65,7 @@ public partial class UserService(IUserRepository _userRepository, IMapper mapper
 
     public async Task UpdateRoles(UserDto userDto)
     {
-        var user = await Repository.Get(userDto.Id) ?? throw new ArgumentException("User not Found");
+        var user = await Repository.Get(userDto.Id) ?? throw new DomainException("User not Found");
         MapUserRoles(user, userDto);
         Repository.Update(user);
         await Repository.Commit();
