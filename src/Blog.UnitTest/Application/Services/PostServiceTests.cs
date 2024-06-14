@@ -19,7 +19,7 @@ public class PostServiceTests
         _mockMapper = new Mock<IMapper>();
         _postService = new PostService(_mockRepository.Object, _mockMapper.Object);
 
-        _post = new Post(Guid.NewGuid(), "Title", "Content");
+        _post = new Post(Guid.NewGuid(), "Title", "Content", Guid.NewGuid());
     }
 
     [Fact]

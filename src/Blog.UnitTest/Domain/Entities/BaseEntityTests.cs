@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using Blog.Domain;
+using FluentAssertions;
 
 namespace Blog.UnitTest.Domain.Entities;
 
@@ -12,12 +13,12 @@ public class BaseEntityTests
     }
 
     [Fact]
-    public void BaseEntity_Initialization_IdEmpty_ThrowsArgumentNullException()
+    public void BaseEntity_Initialization_IdEmpty_ThrowsDomainException()
     {
         var id = Guid.Empty;
         var updated = DateTime.UtcNow;
 
-        Assert.Throws<ArgumentNullException>(() => new TestEntity(id));
+        Assert.Throws<DomainException>(() => new TestEntity(id));
     }
 
     [Fact]

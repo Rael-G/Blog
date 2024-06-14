@@ -45,7 +45,8 @@ public class TagsControllerTests
         var result = await _controller.GetPage(_tagDto.Id, page);
 
         var notFoundResult = result.Should().BeOfType<NotFoundObjectResult>().Subject;
-        notFoundResult.Value.Should().Be(_tagDto.Id);
+        var resultId = notFoundResult.Value;
+        resultId.Should().BeEquivalentTo(new { _tagDto.Id });
     }
 
     [Fact]
@@ -57,7 +58,7 @@ public class TagsControllerTests
         var result = await _controller.GetPageCount(_tagDto.Id);
 
         var notFoundResult = result.Should().BeOfType<NotFoundObjectResult>().Subject;
-        notFoundResult.Value.Should().Be(_tagDto.Id);
+        notFoundResult.Value.Should().BeEquivalentTo(new { _tagDto.Id });
     }
 
     [Fact]
