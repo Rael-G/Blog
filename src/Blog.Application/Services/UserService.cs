@@ -46,7 +46,7 @@ public partial class UserService(IUserRepository _userRepository, IMapper mapper
     public new async Task Update(UserDto userDto)
     {
         var existentUser = await _userRepository.GetByUserName(userDto.UserName);
-        if (existentUser is not null && existentUser.Id != existentUser.Id) 
+        if (existentUser is not null && userDto.Id != existentUser.Id) 
             throw new DomainException("UserName must be unique");
 
         var user = await Repository.Get(userDto.Id) ?? throw new ArgumentException("User not Found");
