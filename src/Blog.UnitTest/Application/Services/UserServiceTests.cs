@@ -246,7 +246,7 @@ public class UserServiceTests
 
         Func<Task> act = async () => await _userService.Update(userDto);
 
-        await act.Should().ThrowAsync<ArgumentException>().WithMessage("User not Found");
+        await act.Should().ThrowAsync<DomainException>().WithMessage("User not Found");
         _mockRepository.Verify(repo => repo.Get(userDto.Id), Times.Once);
         _mockRepository.Verify(repo => repo.Update(It.IsAny<User>()), Times.Never);
         _mockRepository.Verify(repo => repo.Commit(), Times.Never);
@@ -278,7 +278,7 @@ public class UserServiceTests
 
         Func<Task> act = async () => await _userService.UpdatePassword(userDto);
 
-        await act.Should().ThrowAsync<ArgumentException>().WithMessage("User not Found");
+        await act.Should().ThrowAsync<DomainException>().WithMessage("User not Found");
         _mockRepository.Verify(repo => repo.Get(userDto.Id), Times.Once);
         _mockRepository.Verify(repo => repo.Update(It.IsAny<User>()), Times.Never);
         _mockRepository.Verify(repo => repo.Commit(), Times.Never);
@@ -309,7 +309,7 @@ public class UserServiceTests
 
         Func<Task> act = async () => await _userService.UpdateRoles(userDto);
 
-        await act.Should().ThrowAsync<ArgumentException>().WithMessage("User not Found");
+        await act.Should().ThrowAsync<DomainException>().WithMessage("User not Found");
         _mockRepository.Verify(repo => repo.Get(userDto.Id), Times.Once);
         _mockRepository.Verify(repo => repo.Update(It.IsAny<User>()), Times.Never);
         _mockRepository.Verify(repo => repo.Commit(), Times.Never);
