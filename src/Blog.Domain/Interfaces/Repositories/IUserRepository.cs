@@ -2,6 +2,13 @@
 
 public interface IUserRepository : IBaseRepository<User>
 {
+    /// <summary>
+    /// Retrieves a user based on the specified username.
+    /// </summary>
+    /// <param name="userName">The username of the user to retrieve.</param>
+    /// <returns>
+    /// The user entity that matches the specified username, or null if not found.
+    /// </returns>
     public Task<User?> GetByUserName(string userName);
 
     /// <summary>
