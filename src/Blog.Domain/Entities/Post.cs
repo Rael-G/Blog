@@ -55,7 +55,7 @@ public class Post : BaseEntity
         UserId = userId;
     }
 
-    private string ValidateTitle(string title)
+    private static string ValidateTitle(string title)
     {
         if (string.IsNullOrWhiteSpace(title))
             throw new DomainException($"{nameof(title)} must contain a value");
@@ -66,7 +66,7 @@ public class Post : BaseEntity
         return title;
     }
 
-    private string ValidateContent(string content)
+    private static string ValidateContent(string content)
     {
         if (string.IsNullOrWhiteSpace(content))
             throw new DomainException($"{nameof(content)} must contain a value");
