@@ -9,7 +9,7 @@ public partial class UserService(IUserRepository _userRepository, IMapper mapper
     : BaseService<UserDto, User>(_userRepository, mapper), IUserService
 {
     public const int PageSize = 10;
-    private PasswordHasher<User> _passwordHasher { get; set;} = new PasswordHasher<User>();
+    private PasswordHasher<User> PasswordHasher { get; } = new PasswordHasher<User>();
 
     public async Task<UserDto> GetByUserName(string username)
         => Mapper.Map<UserDto>(await _userRepository.GetByUserName(username));
@@ -71,7 +71,7 @@ public partial class UserService(IUserRepository _userRepository, IMapper mapper
         await Repository.Commit();
     }
 
-    private void MapUser(User user, UserDto userDto)
+    private static void MapUser(User user, UserDto userDto)
     {
         user.UserName = userDto.UserName;
     }
@@ -89,7 +89,7 @@ public partial class UserService(IUserRepository _userRepository, IMapper mapper
             throw new DomainException("Password and Repeat Password must be equal");
         
 
-        var passwordHash = _passwordHasher
+        var passwordHash = PasswordHasher
             .HashPassword(user, userDto.PasswordHash!);
 
         user.PasswordHash = passwordHash;
