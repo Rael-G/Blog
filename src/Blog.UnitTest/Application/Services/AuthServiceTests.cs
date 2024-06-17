@@ -21,7 +21,8 @@ public class AuthServiceTests
     {
         _mockRepository = new Mock<IUserRepository>();
         _authService = new AuthService(_mockRepository.Object);
-        TokenService.SecretKey = Guid.NewGuid().ToString();
+        if (string.IsNullOrWhiteSpace(TokenService.SecretKey))
+            TokenService.SecretKey = Guid.NewGuid().ToString();
 
        _userDto = new(){Id = Guid.NewGuid(), UserName = "nonexistentuser", PasswordHash = "password" };
        _user = new (_userDto.Id, _userDto.UserName, _userDto.PasswordHash);
