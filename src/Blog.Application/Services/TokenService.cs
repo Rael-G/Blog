@@ -75,6 +75,13 @@ public static class TokenService
         return principal;
     }
 
+    /// <summary>
+    /// Retrieves the user ID from the claims principal.
+    /// </summary>
+    /// <param name="user">The claims principal containing the user's claims.</param>
+    /// <returns>The user ID extracted from the claims.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when the user or the user ID claim is null.</exception>
+    /// <exception cref="FormatException">Thrown when the user ID claim cannot be parsed as a GUID.</exception>
     public static Guid GetUserIdFromClaims(ClaimsPrincipal user)
     {
         var userId = user.Claims.FirstOrDefault(c => c.Type == "UserId")?.Value!;
