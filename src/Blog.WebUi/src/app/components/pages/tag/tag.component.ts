@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Tag } from '../../../interfaces/Tag';
 import { TagService } from '../../../services/tag/tag.service';
 import { ActivatedRoute } from '@angular/router';
@@ -13,7 +13,7 @@ import { PaginationComponent } from "../../pagination/pagination.component";
     styleUrl: './tag.component.scss',
     imports: [ListPostComponent, PaginationComponent]
 })
-export class TagComponent {
+export class TagComponent implements OnInit {
   
   protected tag!: Tag
   protected currentPage: number = 1
@@ -51,7 +51,6 @@ export class TagComponent {
       .subscribe((count) =>{
         this.totalPages = count
         this.pageNumbers = PaginationComponent.SetPageNumbers(page, this.totalPages)
-        console.log(PaginationComponent.SetPageNumbers(page, count))
       })
     
   }

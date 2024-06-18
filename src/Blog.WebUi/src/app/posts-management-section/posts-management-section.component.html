@@ -1,0 +1,11 @@
+<div class="container">
+    <app-posts-management [title]="userTitle" [showEdit]="true" [posts]="userPosts" [currentPage]="userCurrentPage"
+        [totalPages]="userTotalPages" [pageNumbers]="userPageNumbers"
+        (pageChange)="userOnPageChange($event)"></app-posts-management>
+
+    @if(isAdmin()){
+    <app-posts-management [title]="globalTitle" [posts]="globalPosts" [currentPage]="globalCurrentPage"
+        [totalPages]="globalTotalPages" [pageNumbers]="globalPageNumbers"
+        (pageChange)="globalOnPageChange($event)"></app-posts-management>
+    }
+</div>

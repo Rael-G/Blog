@@ -1,0 +1,13 @@
+<div>
+    <h1>{{title}}</h1>
+    <div class="d-flex justify-content-between">
+        <button class="btn btn-success" routerLink="/create-post">New Post</button>
+    </div>
+    @if(totalPages > 0){
+    <div class="table-section">
+        <app-table-post [posts]="posts" [showEdit]="showEdit"></app-table-post>
+        <app-pagination [currentPage]="currentPage" [totalPages]="totalPages" [pageNumbers]="pageNumbers"
+            (pageChange)="onPageChange($event)"></app-pagination>
+    </div>
+    }
+</div>

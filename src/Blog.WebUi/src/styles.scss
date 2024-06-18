@@ -2,3 +2,16 @@
 
 /* Importing Bootstrap SCSS file. */
 @import 'bootstrap/scss/bootstrap';
+
+.login-card {
+  width: 400px;
+  padding-top: 15%;
+}
+
+.no-underline {
+  text-decoration: none;
+}
+
+.table-section {
+  min-height: 60vh;
+}

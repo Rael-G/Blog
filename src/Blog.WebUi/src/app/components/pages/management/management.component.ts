@@ -1,58 +1,26 @@
-import { Component, OnInit } from '@angular/core';
-import { RouterLink } from '@angular/router';
-import { PostService } from '../../../services/post/post.service';
-import { Post } from '../../../interfaces/Post';
-import { CommentService } from '../../../services/comment/comment.service';
-import { CreateTagComponent } from '../../create-tag/create-tag.component';
-import { TablePostComponent } from '../../table-post/table-post.component';
-import { PaginationComponent } from '../../pagination/pagination.component';
+import { Component } from '@angular/core';
+import { TagsManagementComponent } from '../../tags-management/tags-management.component';
+import { UsersManagementComponent } from '../../users-management/users-management.component';
+import { AuthService } from '../../../services/auth/auth.service';
+import { environment } from '../../../../environments/environment';
+import { PostsManagementSectionComponent } from '../../../posts-management-section/posts-management-section.component';
 
 @Component({
   selector: 'app-management',
   standalone: true,
-  imports: [RouterLink, CreateTagComponent, TablePostComponent, PaginationComponent],
+  imports: [PostsManagementSectionComponent, TagsManagementComponent, UsersManagementComponent],
   templateUrl: './management.component.html',
   styleUrl: './management.component.scss'
 })
-export class ManagementComponent implements OnInit {
-  protected posts: Post[] = []
-  protected currentPage: number = 1
-  protected totalPages: number = 0
-  protected pageNumbers : number[] = []
-  
-  constructor(private postService: PostService, private commentService : CommentService) { }
+export class ManagementComponent {
 
-  ngOnInit(): void {
-    this.getPosts()
+  constructor(private authService: AuthService) { }
+
+  protected isAdmin(): boolean {
+    return this.authService.userIsInRole(environment.roles.admin)
   }
 
-  protected onPageChange(pageNumber: number) {
-    this.posts = []
-    this.postService.getPosts(pageNumber).subscribe((posts) => 
-      this.posts = posts)
-    this.currentPage = pageNumber
-    this.loadPageCount()
-  }
-
-  protected loadPageCount(){
-    this.postService.getPageCount().subscribe((count) => {
-      this.totalPages = count
-      this.pageNumbers = PaginationComponent.SetPageNumbers(this.currentPage, this.totalPages)
-    })
-  }
-
-  protected getPosts() {
-    this.postService.getPosts(this.currentPage)
-      .subscribe((posts) => {
-        this.posts = posts
-        for(let post of posts){
-          if (post.id){
-            this.commentService.getComments(post.id).subscribe((comments) => {
-              post.comments = comments
-            })
-          }
-        }
-        this.loadPageCount()
-      })
+  protected isModerator(): boolean {
+    return this.authService.userIsInRole(environment.roles.moderator)
   }
 }

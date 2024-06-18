@@ -1,0 +1,68 @@
+<div class="container mt-3">
+    <div class="card shadow rounded">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="card-title mb-0">{{ getUsername() }}</h5>
+        <div class="d-flex gap-2">
+          <button class="btn btn-sm btn-outline-primary" (click)="toogleEditPassword()">Change Password</button>
+        </div>
+      </div>
+      <div class="card-body">
+        @if(!editPassword){
+            <form [formGroup]="userForm" (ngSubmit)="onSubmitUser()">
+                <div class="mb-3">
+                  <label for="username" class="form-label">Username</label>
+                  <input type="text" class="form-control" id="username" formControlName="username" aria-describedby="usernameHelp">
+                  @if(editUserSubmitted && userForm.get('username')?.errors)
+                  {
+                  <div class="alert alert-danger">
+                      Username is required.
+                  </div>
+                  }
+                  
+                </div>
+                <button type="submit" class="btn btn-primary">Save</button>
+              </form>
+        }
+        
+        @if(editPassword){
+            <form [formGroup]="passwordForm" (ngSubmit)="onSubmitPassword()">
+                <div class="mb-3">
+                  <label for="password" class="form-label">Password</label>
+                  <input type="password" class="form-control" id="password" formControlName="password" aria-describedby="passwordHelp">
+                  <small id="passwordHelp" class="form-text text-muted">Enter a strong password.</small>
+                  @if(editPasswordSubmitted && passwordForm.get('password')?.errors?.['required']){
+                      <div class="alert alert-danger">
+                          Password is required.
+                        </div>
+                  }
+                  @if(editPasswordSubmitted && passwordForm.get('password')?.errors?.['pattern']){
+                    <div class="alert alert-danger">
+                      Password must contain 1 number (0-9), 1 uppercase letters, 1 lowercase letters,
+                      1 non-alpha numeric number and must has more than 8 characters with no space
+                      </div>
+                  }
+
+                </div>
+                <div class="mb-3">
+                  <label for="repeatPassword" class="form-label">Repeat Password</label>
+                  <input type="password" class="form-control" id="repeatPassword" formControlName="repeatPassword">
+                  @if(editPasswordSubmitted && passwordForm.get('repeatPassword')?.errors){
+                      <div class="alert alert-danger">
+                          Repeat password is required.
+                        </div>
+                  }
+                  @if(editPasswordSubmitted && !isPasswordEqual()){
+                      <div class="alert alert-danger">
+                          Passwords need to be equal.
+                        </div>
+                  }
+                  
+                </div>
+                <button type="submit" class="btn btn-primary">Save</button>
+              </form>
+        }
+        
+      </div>
+    </div>
+  </div>
+  

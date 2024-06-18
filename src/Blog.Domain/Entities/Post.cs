@@ -13,14 +13,13 @@ public class Post : BaseEntity
     /// <summary>
     /// Gets or sets the title of the post.
     /// </summary>
-    /// <exception cref="ArgumentNullException">Thrown when title is null or empty,.</exception>
-    /// <exception cref="ArgumentException">Thrown when title exceeds {TitleMaxLength} characters.</exception>
+    /// <exception cref="DomainException">Thrown when title exceeds {TitleMaxLength} characters.</exception>
     public string Title { get => _title; set => _title = ValidateTitle(value); }
 
     /// <summary>
     /// Gets or sets the content of the post.
     /// </summary>
-    /// <exception cref="ArgumentNullException">Thrown when the content is null or empty.</exception>
+    /// <exception cref="DomainException">Thrown when the content is null or empty.</exception>
     public string Content { get => _content; set => _content = ValidateContent(value); }
 
     /// <summary>
@@ -33,8 +32,18 @@ public class Post : BaseEntity
     /// </summary>
     public IEnumerable<PostTag> Tags { get; }
 
-    private string _title = "";
-    private string _content = "";
+    /// <summary>
+    /// Gets the user who created the post.
+    /// </summary>
+    public User? User { get; }
+
+    /// <summary>
+    /// Gets the user ID associated with the post.
+    /// </summary>
+    public Guid UserId { get; }
+
+    private string _title = string.Empty;
+    private string _content = string.Empty;
 
     /// <summary>
     /// Initializes a new instance of the post class with the specified <see cref="Title">, <see cref="Content">.
@@ -42,31 +51,33 @@ public class Post : BaseEntity
     /// <param name="id">The identifier of the post.</param>
     /// <param name="title">The <see cref="Title"> of the post.</param>
     /// <param name="content">The content of the post.</param>
-    /// <exception cref="ArgumentException"></exception>
-    public Post(Guid id, string title, string content)
+    /// <param name="userId">The user ID associated with the post.</param>
+    /// <exception cref="DomainException"></exception>
+    public Post(Guid id, string title, string content, Guid userId)
         : base(id)
     {
         Title = title;
         Content = content;
         Comments = new List<Comment>();
         Tags = new List<PostTag>();
+        UserId = userId;
     }
 
-    private string ValidateTitle(string title)
+    private static string ValidateTitle(string title)
     {
         if (string.IsNullOrWhiteSpace(title))
-            throw new ArgumentNullException($"{nameof(title)} must contain a value", nameof(title));
+            throw new DomainException($"{nameof(title)} must contain a value");
 
         if (title.Length > TitleMaxLength)
-            throw new ArgumentException($"{nameof(title)} max length is {TitleMaxLength}", nameof(title));
+            throw new DomainException($"{nameof(title)} max length is {TitleMaxLength}");
 
         return title;
     }
 
-    private string ValidateContent(string content)
+    private static string ValidateContent(string content)
     {
         if (string.IsNullOrWhiteSpace(content))
-            throw new ArgumentNullException($"{nameof(content)} must contain a value", nameof(content));
+            throw new DomainException($"{nameof(content)} must contain a value");
 
         return content;
     }

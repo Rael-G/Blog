@@ -3,6 +3,15 @@
 public interface IPostRepository : IBaseRepository<Post>
 {
     /// <summary>
+    /// Retrieves a post based on the specified title.
+    /// </summary>
+    /// <param name="title">The title of the post to retrieve.</param>
+    /// <returns>
+    /// The post entity that matches the specified title, or null if no post is found.
+    /// </returns>
+    Task<Post?> GetByTitle(string title);
+
+    /// <summary>
     /// Updates the tags of a post.
     /// </summary>
     /// <param name="post">The post to be updated.</param>

@@ -4,7 +4,7 @@ import { Comment } from '../../interfaces/Comment'
 import { RouterLink } from '@angular/router';
 import { PostService } from '../../services/post/post.service';
 import { CommentService } from '../../services/comment/comment.service';
-import { MessageService } from '../../services/message.service';
+import { MessageService } from '../../services/message/message.service';
 import { Color } from '../../enums/Color';
 
 @Component({
@@ -16,6 +16,7 @@ import { Color } from '../../enums/Color';
 })
 export class TablePostComponent {
   @Input() public posts : Post[] = []
+  @Input() public showEdit : boolean = false;
   protected coolapseComments: Map<string, boolean> = new Map<string, boolean>()
   protected coolapseConfirmPostDelete: Map<string, boolean> = new Map<string, boolean>()
   protected coolapseConfirmCommentDelete: Map<string, boolean> = new Map<string, boolean>()

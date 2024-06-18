@@ -20,7 +20,7 @@ namespace Blog.UnitTest.Application.Services
             _mockMapper = new Mock<IMapper>();
             _commentService = new CommentService(_mockRepository.Object, _mockMapper.Object);
 
-            _post = new(Guid.NewGuid(), "Title", "Content");
+            _post = new(Guid.NewGuid(), "Title", "Content", Guid.NewGuid());
         }
 
         [Fact]

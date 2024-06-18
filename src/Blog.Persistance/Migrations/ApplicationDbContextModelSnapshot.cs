@@ -75,12 +75,17 @@ namespace Blog.Persistance.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("character varying(256)");
 
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CreatedTime");
 
                     b.HasIndex("Title")
                         .IsUnique();
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Posts");
                 });
@@ -124,6 +129,44 @@ namespace Blog.Persistance.Migrations
                     b.ToTable("Tags");
                 });
 
+            modelBuilder.Entity("Blog.Domain.User", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("ModifiedTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("RefreshToken")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("RefreshTokenExpiryTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string[]>("Roles")
+                        .IsRequired()
+                        .HasColumnType("text[]");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserName")
+                        .IsUnique();
+
+                    b.ToTable("Users");
+                });
+
             modelBuilder.Entity("Blog.Domain.Comment", b =>
                 {
                     b.HasOne("Blog.Domain.Post", "Post")
@@ -133,6 +176,17 @@ namespace Blog.Persistance.Migrations
                         .IsRequired();
 
                     b.Navigation("Post");
+                });
+
+            modelBuilder.Entity("Blog.Domain.Post", b =>
+                {
+                    b.HasOne("Blog.Domain.User", "User")
+                        .WithMany("Posts")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Blog.Domain.PostTag", b =>
@@ -162,6 +216,11 @@ namespace Blog.Persistance.Migrations
                 });
 
             modelBuilder.Entity("Blog.Domain.Tag", b =>
+                {
+                    b.Navigation("Posts");
+                });
+
+            modelBuilder.Entity("Blog.Domain.User", b =>
                 {
                     b.Navigation("Posts");
                 });

@@ -4,7 +4,7 @@ import { PostService } from '../../../services/post/post.service';
 import { Router } from '@angular/router';
 import { PostFormComponent } from '../../post-form/post-form.component';
 import { Color } from '../../../enums/Color';
-import { MessageService } from '../../../services/message.service';
+import { MessageService } from '../../../services/message/message.service';
 
 @Component({
   selector: 'app-create-post',

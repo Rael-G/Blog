@@ -1,0 +1,53 @@
+<div class="login-card mx-auto">
+    <div class="card">
+        <div class="card-header text-center">
+        Signin
+        </div>
+        <div class="card-body">
+            <form [formGroup]="signinForm" (submit)="submit()">
+                <div class="form-group">
+                    <label>User Name</label>
+                    <input class="form-control" formControlName="username" placeholder="Enter user name">
+                    @if(submitted && signinForm.get('username')?.errors){
+                        <div class="alert alert-danger">
+                            User name is required.
+                        </div>
+                    }
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" formControlName="password" class="form-control" placeholder="Password">
+                    @if(submitted && signinForm.get('password')?.errors?.['required']){
+                        <div class="alert alert-danger">
+                            Password is required.
+                        </div>
+                    }
+                    @if(submitted && signinForm.get('password')?.errors?.['pattern']){
+                        <div class="alert alert-danger">
+                            Password must contain 1 number (0-9), 1 uppercase letters, 1 lowercase letters,
+                            1 non-alpha numeric number and must has more than 8 characters with no space
+                          </div>
+                      }
+                </div>
+                <div class="form-group">
+                    <label>Repeat Password</label>
+                    <input type="password" formControlName="repeatPassword" class="form-control" placeholder="Password">
+                    @if(submitted && signinForm.get('repeatPassword')?.errors){
+                        <div class="alert alert-danger">
+                            Repeat password is required.
+                        </div>
+                    }
+                    @else if(submitted && !isPasswordEqual()){
+                        <div class="alert alert-danger">
+                            Passwords need to be equal.
+                        </div>
+                    }
+                </div>
+                <div class="d-flex justify-content-center">
+                    <button type="submit" class="btn btn-secondary mt-2">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="d-flex justify-content-center"><a routerLink="/login" class="no-underline p-2">Login</a></div>
+  </div>

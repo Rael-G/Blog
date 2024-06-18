@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { RouterLink, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { Tag } from '../../interfaces/Tag';
 import { TagService } from '../../services/tag/tag.service';
+import { AuthService } from '../../services/auth/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -11,14 +12,30 @@ import { TagService } from '../../services/tag/tag.service';
   styleUrl: './header.component.scss'
 })
 export class HeaderComponent {
-protected tags: Tag[] = []
+  protected tags: Tag[] = []
+  constructor(private tagService: TagService, private authService: AuthService) { }
 
-  constructor(private tagService: TagService) { }
+  ngOnInit(): void {
+    this.tagService.getTags().subscribe((tags) => {
+      this.tags = tags
+    });
+  }
 
-ngOnInit(): void {
-  this.tagService.getTags().subscribe((tags) => {
-    this.tags = tags
-  });
-}
+  showLogOutAndManagement() : boolean{
+    if(this.authService.getToken())
+      return true
+    return false
+  }
 
+  logOut() {
+    this.authService.logOut()
+  }
+
+  protected getUsername() : string{
+    let username : string = ''
+    this.authService.getUser().subscribe((user) => {username = user?.userName?? ''});
+
+    return username
+  }
+  
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Blog.Application;
 using Blog.WebApi.Models.Input;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Blog.WebApi.Controllers;
 
@@ -15,6 +16,7 @@ public class CommentsController(ICommentService commentsService, IPostService po
     /// </summary>
     /// <param name="postId">The ID of the post.</param>
     /// <returns>Returns a list of comments for the specified post.</returns>
+    [AllowAnonymous]
     [HttpGet]
     [ProducesResponseType(200)] // OK
     [ProducesResponseType(404)] // Not Found
@@ -22,7 +24,7 @@ public class CommentsController(ICommentService commentsService, IPostService po
     {
         var post = await _postService.Get(postId);
         if (post is null)
-            return NotFound(postId);
+            return NotFound(new { Id = postId });
 
         return Ok(await _commentService.GetAll(postId));
     }
@@ -32,6 +34,7 @@ public class CommentsController(ICommentService commentsService, IPostService po
     /// </summary>
     /// <param name="id">The ID of the comment to retrieve.</param>
     /// <returns>Returns the comment if found, otherwise returns a 404 Not Found.</returns>
+    [AllowAnonymous]
     [HttpGet("{id}")]
     [ProducesResponseType(200)] // OK
     [ProducesResponseType(404)] // Not Found
@@ -43,6 +46,7 @@ public class CommentsController(ICommentService commentsService, IPostService po
     /// </summary>
     /// <param name="input">The input model containing data for the new comment.</param>
     /// <returns>Returns the newly created comment.</returns>
+    [AllowAnonymous]
     [HttpPost]
     [ProducesResponseType(201)] // Created
     [ProducesResponseType(400)] // Bad Request
@@ -54,29 +58,17 @@ public class CommentsController(ICommentService commentsService, IPostService po
 
         var post = await _postService.Get(input.PostId);
         if (post is null)
-            return NotFound(input.PostId);
+            return NotFound(new { Id = input.PostId });
 
         return await base.Post(input);
     }
-
-    /// <summary>
-    /// Updates an existing comment.
-    /// </summary>
-    /// <param name="id">The ID of the comment to update.</param>
-    /// <param name="input">The input model containing updated data for the comment.</param>
-    /// <returns>Returns 204 No Content if successful, otherwise returns a 400 Bad Request or 404 Not Found.</returns>
-    [HttpPut("{id}")]
-    [ProducesResponseType(204)] // No Content
-    [ProducesResponseType(400)] // Bad Request
-    [ProducesResponseType(404)] // Not Found
-    public async Task<IActionResult> Put(Guid id, [FromBody] CommentInputModel input)
-        => await base.Put(id, input);
 
     /// <summary>
     /// Deletes a comment by its ID.
     /// </summary>
     /// <param name="id">The ID of the comment to delete.</param>
     /// <returns>Returns 204 No Content if successful, otherwise returns a 404 Not Found.</returns>
+    [Authorize(Roles = Roles.Moderator)]
     [HttpDelete("{id}")]
     [ProducesResponseType(204)] // No Content
     [ProducesResponseType(404)] // Not Found
