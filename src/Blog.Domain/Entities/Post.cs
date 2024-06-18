@@ -32,7 +32,14 @@ public class Post : BaseEntity
     /// </summary>
     public IEnumerable<PostTag> Tags { get; }
 
+    /// <summary>
+    /// Gets the user who created the post.
+    /// </summary>
     public User? User { get; }
+
+    /// <summary>
+    /// Gets the user ID associated with the post.
+    /// </summary>
     public Guid UserId { get; }
 
     private string _title = string.Empty;
@@ -44,6 +51,7 @@ public class Post : BaseEntity
     /// <param name="id">The identifier of the post.</param>
     /// <param name="title">The <see cref="Title"> of the post.</param>
     /// <param name="content">The content of the post.</param>
+    /// <param name="userId">The user ID associated with the post.</param>
     /// <exception cref="DomainException"></exception>
     public Post(Guid id, string title, string content, Guid userId)
         : base(id)
