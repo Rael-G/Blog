@@ -15,8 +15,8 @@ public class UsersController(IUserService _userService)
     /// <returns>Returns the user if found, otherwise returns a 404 Not Found.</returns>
     [Authorize]
     [HttpGet("{id}")]
-    [ProducesResponseType(200)] // OK
-    [ProducesResponseType(404)] // Not Found
+    [ProducesResponseType(typeof(UserOutputModel), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public new async Task<IActionResult> Get(Guid id)
     {
         var claimId = TokenService.GetUserIdFromClaims(User);
@@ -40,8 +40,8 @@ public class UsersController(IUserService _userService)
     /// 404 (Not Found) if the user with the specified ID does not exist.
     [AllowAnonymous]
     [HttpGet("{id}/page")]
-    [ProducesResponseType(200)] // OK
-    [ProducesResponseType(404)] // Not Found
+    [ProducesResponseType(typeof(UserOutputModel), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetPage(Guid id, [FromQuery] int page)
     {
         var user = await _userService.GetUserPage(id, page);
@@ -62,8 +62,8 @@ public class UsersController(IUserService _userService)
     /// </returns>
     [AllowAnonymous]
     [HttpGet("{id}/page-count")]
-    [ProducesResponseType(200)] // OK
-    [ProducesResponseType(404)] // Not Found
+    [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetPageCount(Guid id)
     {
         var user = await _userService.Get(id);
@@ -81,8 +81,8 @@ public class UsersController(IUserService _userService)
     /// <returns>Returns the user if found, otherwise returns a 404 Not Found.</returns>
     [Authorize]
     [HttpGet("username/{username}")]
-    [ProducesResponseType(200)] // OK
-    [ProducesResponseType(404)] // Not Found
+    [ProducesResponseType(typeof(UserOutputModel), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetByUserName(string username)
     {
         var user = await _userService.GetByUserName(username);
@@ -103,12 +103,10 @@ public class UsersController(IUserService _userService)
     /// <returns>Returns a list of all user.</returns>
     [Authorize(Roles = Roles.Admin)]
     [HttpGet]
-    [ProducesResponseType(200)] // OK
+    [ProducesResponseType(typeof(IEnumerable<UserOutputModel>), StatusCodes.Status200OK)]
     public new async Task<IActionResult> GetAll()
-    {
-        return Ok(UserOutputModel.MapRange(await Service.GetAll()));
-    }
-        
+        => Ok(UserOutputModel.MapRange(await Service.GetAll()));
+    
     /// <summary>
     /// Creates a new user.
     /// </summary>
@@ -116,8 +114,8 @@ public class UsersController(IUserService _userService)
     /// <returns>Returns the newly created user.</returns>
     [AllowAnonymous]
     [HttpPost]
-    [ProducesResponseType(201)] // Created
-    [ProducesResponseType(400)] // Bad Request
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Post([FromBody] SigninInputModel input)
     {
         if (!ModelState.IsValid)
@@ -147,10 +145,10 @@ public class UsersController(IUserService _userService)
     /// <returns>Returns 204 No Content if successful, otherwise returns a 404 Not Found or 400 Bad Request.</returns>
     [Authorize]
     [HttpPut("{id}")]
-    [ProducesResponseType(204)] // No Content
-    [ProducesResponseType(400)] // Bad Request
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
-    [ProducesResponseType(404)] // Not Found
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Put(Guid id, [FromBody] UserInputModel input)
     {
         var claimId = TokenService.GetUserIdFromClaims(User);
@@ -179,10 +177,10 @@ public class UsersController(IUserService _userService)
 
     [Authorize]
     [HttpPut("reset-password/{id}")]
-    [ProducesResponseType(204)] // No Content
-    [ProducesResponseType(400)] // Bad Request
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
-    [ProducesResponseType(404)] // Not Found
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> ResetPassword(Guid id, [FromBody] ResetPasswordInputModel input)
     {
         var claimId = TokenService.GetUserIdFromClaims(User);
@@ -211,9 +209,9 @@ public class UsersController(IUserService _userService)
 
     [Authorize(Roles = Roles.Admin)]
     [HttpPut("roles/{id}")]
-    [ProducesResponseType(204)] // No Content
-    [ProducesResponseType(400)] // Bad Request
-    [ProducesResponseType(404)] // Not Found
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> SetRoles(Guid id, [FromBody] string[] roles)
     {
         if (!ModelState.IsValid)
@@ -243,8 +241,8 @@ public class UsersController(IUserService _userService)
     /// <returns>Returns 204 No Content if successful, otherwise returns a 404 Not Found.</returns>
     [Authorize]
     [HttpDelete("{id}")]
-    [ProducesResponseType(204)] // No Content
-    [ProducesResponseType(404)] // Not Found
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public new async Task<IActionResult> Delete(Guid id)
     {    
         var claimId = TokenService.GetUserIdFromClaims(User);
