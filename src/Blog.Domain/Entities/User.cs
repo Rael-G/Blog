@@ -86,7 +86,7 @@ public partial class User : BaseEntity
 
     /// <summary>
     /// Gets the regular expression used to validate usernames.
-    /// The username must be alphanumeric and between 3 and 30 characters long.
+    /// The username must be alphanumeric and between 3 and 30 characters long, no whitespaces between.
     /// </summary>
     /// <returns>The username validation regular expression.</returns>
     [GeneratedRegex(@"^([a-zA-Z0-9-_]){3,30}$")]
