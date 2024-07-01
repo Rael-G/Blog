@@ -7,10 +7,9 @@ using Blog.Domain;
 namespace Blog.WebApi.Controllers;
 
 [ApiController]
-public class PostsController(IPostService postService)
-    : BaseController<PostDto>(postService)
+public class PostsController(IPostService PostService)
+    : BaseController<PostDto>(PostService)
 {
-    private readonly IPostService _postService = postService;
     /// <summary>
     /// Retrieves a specific post by its ID.
     /// </summary>
@@ -21,7 +20,14 @@ public class PostsController(IPostService postService)
     [ProducesResponseType(200)] // OK
     [ProducesResponseType(404)] // Not Found
     public new async Task<IActionResult> Get(Guid id)
-        => await base.Get(id);
+    {
+        var post = await Service.Get(id);
+
+        if (post is null)
+            return NotFound(new {Id = id});
+
+        return Ok(new PostOutputModel(post));
+    }
 
     /// <summary>
     /// Retrieves a page of posts, according to the specified page number.
@@ -34,7 +40,7 @@ public class PostsController(IPostService postService)
     [HttpGet]
     [ProducesResponseType(200)] // OK
     public async Task<IActionResult> GetPage([FromQuery] int page)
-        => Ok(await _postService.GetPage(page));
+        => Ok(PostOutputModel.MapRange(await PostService.GetPage(page)));
 
     /// <summary>
     /// Retrieves the total number of pages for all posts.
@@ -46,7 +52,7 @@ public class PostsController(IPostService postService)
     [HttpGet("page-count")]
     [ProducesResponseType(200)] // OK
     public async Task<IActionResult> GetPageCount()
-        => Ok(await _postService.GetPageCount());
+        => Ok(await PostService.GetPageCount());
 
     /// <summary>
     /// Creates a new blog post.
@@ -73,7 +79,7 @@ public class PostsController(IPostService postService)
             return BadRequest(new { ex.Message });
         }
 
-        return CreatedAtAction(nameof(Get), new { entity.Id }, entity);
+        return CreatedAtAction(nameof(Get), new { entity.Id }, new PostOutputModel(entity));
     }
 
     /// <summary>
