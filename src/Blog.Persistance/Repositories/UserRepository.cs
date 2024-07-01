@@ -7,7 +7,9 @@ public class UserRepository(ApplicationDbContext context)
     : BaseRepository<User>(context), IUserRepository
 {
     public async Task<User?> GetByUserName(string userName)
-        => await Context.Users.Where(u => u.UserName == userName).FirstOrDefaultAsync();
+        => await Context.Users.Where(u => u.UserName == userName)
+        .AsNoTracking()
+        .FirstOrDefaultAsync();
 
     public async Task<IEnumerable<Post>> GetPostPage(Guid id, int page, int quantity)
         => await Context.Posts
