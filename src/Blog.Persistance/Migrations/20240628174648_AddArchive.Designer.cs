@@ -3,6 +3,7 @@ using System;
 using Blog.Persistance;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Blog.Persistance.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240628174648_AddArchive")]
+    partial class AddArchive
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -43,18 +46,10 @@ namespace Blog.Persistance.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<bool>("IsPublic")
-                        .HasColumnType("boolean");
-
                     b.Property<DateTime>("ModifiedTime")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("OwnerId")
-                        .HasColumnType("uuid");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("OwnerId");
 
                     b.ToTable("Archive");
                 });
@@ -204,15 +199,6 @@ namespace Blog.Persistance.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("Blog.Domain.Archive", b =>
-                {
-                    b.HasOne("Blog.Domain.User", null)
-                        .WithMany("Archives")
-                        .HasForeignKey("OwnerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Blog.Domain.Comment", b =>
                 {
                     b.HasOne("Blog.Domain.Post", "Post")
@@ -268,8 +254,6 @@ namespace Blog.Persistance.Migrations
 
             modelBuilder.Entity("Blog.Domain.User", b =>
                 {
-                    b.Navigation("Archives");
-
                     b.Navigation("Posts");
                 });
 #pragma warning restore 612, 618

@@ -12,6 +12,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<Tag> Tags { get; set; }
     public DbSet<PostTag> PostTag { get; set; }
     public DbSet<User> Users { get; set; }
+    public DbSet<Archive> Archive { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -80,6 +81,23 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             postTag.HasOne(pt => pt.Tag)
                 .WithMany(t => t.Posts)
                 .HasForeignKey(pt => pt.TagId);
+        });
+
+        ConfigureBaseEntity<Archive>(modelBuilder);
+        modelBuilder.Entity<Archive>(archive =>
+        {
+            archive.Property(a => a.FileName)
+                .IsRequired();
+            archive.Property(a => a.ContentUrl)
+                .IsRequired();
+            archive.Property(a => a.ContentType)
+                .IsRequired();
+            archive.Property(a => a.IsPublic)
+                .IsRequired();
+            archive.HasOne<User>()
+            .WithMany(u => u.Archives)
+            .HasForeignKey(a => a.OwnerId);
+            archive.Ignore(a => a.Stream);
         });
             
     }

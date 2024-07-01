@@ -26,5 +26,12 @@ public static class PersistanceExtensions
         services.AddScoped<ICommentRepository, CommentRepository>();
         services.AddScoped<ITagRepository, TagRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IArchiveRepository, ArchiveRepository>();
+
+        var filesDirectory = configuration["StoragePath"] ?? 
+            throw new ArgumentNullException("StoragePath", "StoragePath is not defined in appsettings.");
+        services.AddScoped<IFileStorage>(provider =>
+            new LocalFileStorage(filesDirectory));
+
     }
 }
