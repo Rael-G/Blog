@@ -84,7 +84,8 @@ public static class TokenService
     /// <exception cref="FormatException">Thrown when the user ID claim cannot be parsed as a GUID.</exception>
     public static Guid GetUserIdFromClaims(ClaimsPrincipal user)
     {
-        var userId = user.Claims.FirstOrDefault(c => c.Type == "UserId")?.Value!;
+        var userId = user.Claims.FirstOrDefault(c => c.Type == "UserId")?.Value ??
+            throw new AppException("ClaimsPrincipal is Invalid");
         return Guid.Parse(userId);
     }
 
