@@ -14,20 +14,23 @@ public class LocalFileStorage : IFileStorage
 
     public Task<Stream?> GetByPathAsync(string fullPath)
     {
-        if (File.Exists(fullPath))
-            return Task.FromResult<Stream?>(new FileStream(fullPath, FileMode.Open));
+        return Task.Run(() => 
+        {
+            if (File.Exists(Path.Combine(_path, fullPath)))
+                return (Stream) new FileStream(fullPath, FileMode.Open);
         
-        return Task.FromResult<Stream?>(null);
+            return null;
+        });
     }
 
     public async Task<string> StoreAsync(Stream file)
     {
-        Guid fileName = Guid.NewGuid();
-        string fullPath = Path.Combine(_path, fileName.ToString());
+        string filePath = Guid.NewGuid().ToString();
+        string fullPath = Path.Combine(_path, filePath);
         using var fileStream = new FileStream(fullPath, FileMode.Create);
         await file.CopyToAsync(fileStream);
 
-        return fullPath;
+        return filePath;
     }
 
     public async Task<bool> DeleteAsync(string path)
