@@ -1,5 +1,4 @@
 ﻿using Blog.Application;
-using Blog.Domain;
 
 namespace Blog.WebApi;
 
