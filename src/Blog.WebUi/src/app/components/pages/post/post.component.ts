@@ -1,14 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, SecurityContext } from '@angular/core';
 import { Post } from '../../../interfaces/Post';
 import { PostService } from '../../../services/post/post.service';
 import { ActivatedRoute } from '@angular/router';
 import { AddCommentComponent } from './add-comment/add-comment.component';
 import { Comment } from '../../../interfaces/Comment'
+import { MarkdownComponent, MarkdownModule } from 'ngx-markdown';
 
 @Component({
   selector: 'app-post',
   standalone: true,
-  imports: [AddCommentComponent],
+  imports: [
+    AddCommentComponent,
+    MarkdownComponent
+  ],
   templateUrl: './post.component.html',
   styleUrl: './post.component.scss'
 })

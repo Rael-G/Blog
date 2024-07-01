@@ -6,11 +6,13 @@ import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/
 import { authInterceptor } from './interceptors/auth/auth.interceptor';
 import { refreshInterceptor } from './interceptors/refresh/refresh.interceptor';
 import { logoutInterceptor } from './interceptors/logout/logout.interceptor';
+import { provideMarkdown } from 'ngx-markdown';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
     provideClientHydration(),
-    provideHttpClient(withInterceptors([authInterceptor, refreshInterceptor, logoutInterceptor]), withFetch())
+    provideHttpClient(withInterceptors([authInterceptor, refreshInterceptor, logoutInterceptor]), withFetch()),
+    provideMarkdown()
   ]
 };
