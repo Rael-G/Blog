@@ -8,6 +8,7 @@ public class PostRepository(ApplicationDbContext context)
 {
     public async Task<Post?> GetByTitle(string title)
         => await Context.Posts.Where(p => p.Title == title)
+            .AsNoTracking()
             .FirstOrDefaultAsync();
 
     public override async Task<Post?> Get(Guid id)
