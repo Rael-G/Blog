@@ -107,12 +107,12 @@ public abstract class BaseController<TDto>(IBaseService<TDto> service)
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     protected async Task<IActionResult> Delete(Guid id)
     {
-        var post = await Service.Get(id);
+        var entity = await Service.Get(id);
 
-        if (post is null)
+        if (entity is null)
             return NotFound(new {Id = id});
 
-        await Service.Delete(post);
+        await Service.Delete(entity);
 
         return NoContent();
     }
