@@ -44,6 +44,8 @@ public partial class User : BaseEntity
     /// </summary>
     public IEnumerable<Post> Posts { get; }
 
+    public IEnumerable<Archive> Archives { get; }
+
     /// <summary>
     /// Initializes a new instance of the <see cref="User"/> class.
     /// </summary>
@@ -59,6 +61,7 @@ public partial class User : BaseEntity
         PasswordHash = passwordHash;
         Roles = roles ?? new List<string>();
         Posts = new List<Post>();
+        Archives = [];
     }
 
     /// <summary>
