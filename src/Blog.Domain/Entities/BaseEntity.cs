@@ -7,7 +7,7 @@ public abstract class BaseEntity
     /// <summary>
     /// Gets the unique identifier of the entity.
     /// </summary>
-    public Guid Id { get => _id; private set => _id = ValidateId(value); }
+    public Guid Id { get => _id; private set => _id = ValidateId(value, nameof(Id)); }
 
     /// <summary>
     /// Gets or sets the created time of the entity.
@@ -39,6 +39,36 @@ public abstract class BaseEntity
         ModifiedTime = now;
     }
 
+    /// <summary>
+    /// Validates that a string is neither null nor consists only of white-space characters.
+    /// </summary>
+    /// <param name="value">The string value to validate.</param>
+    /// <param name="parameterName">The name of the parameter being validated, used in the exception message.</param>
+    /// <returns>The validated string value if it is not null or white-space.</returns>
+    /// <exception cref="DomainException">Thrown when the string is null or consists only of white-space characters.</exception>
+    protected static string ValidateStringNullOrWhiteSpace(string value, string parameterName)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+            throw new DomainException($"{parameterName} must contain a value.");
+
+        return value;
+    }
+
+    /// <summary>
+    /// Validates that a GUID is not empty.
+    /// </summary>
+    /// <param name="id">The GUID value to validate.</param>
+    /// <param name="parameterName">The name of the parameter being validated, used in the exception message.</param>
+    /// <returns>The validated GUID if it is not empty.</returns>
+    /// <exception cref="DomainException">Thrown when the GUID is empty.</exception>
+    protected static Guid ValidateId(Guid id, string parameterName)
+    {
+        if (id == Guid.Empty)
+            throw new DomainException($"{parameterName} must not be empty.");
+
+        return id;
+    }
+
     private static DateTime ValidateTime(DateTime dateTime)
     {
         if (dateTime == DateTime.MinValue)
@@ -46,11 +76,5 @@ public abstract class BaseEntity
         return dateTime;
     }
 
-    private static Guid ValidateId(Guid id)
-    {
-        if (id == Guid.Empty)
-            throw new DomainException(nameof(id));
-
-        return id;
-    }
+    
 }
