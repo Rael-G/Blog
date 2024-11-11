@@ -1,4 +1,5 @@
 ﻿using Blog.Application;
+using Blog.WebApi;
 using Blog.WebApi.Controllers;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
@@ -35,9 +36,9 @@ public class PostsControllerTests
         var result = await _controller.GetPage(page);
 
         var okResult = result.Should().BeOfType<OkObjectResult>().Subject;
-        var posts = okResult.Value.Should().BeAssignableTo<IEnumerable<PostDto>>().Subject;
+        var posts = okResult.Value.Should().BeAssignableTo<IEnumerable<PostOutputModel>>().Subject;
 
-        posts.Should().BeEquivalentTo(expectedDtos);
+        posts.Should().BeEquivalentTo(PostOutputModel.MapRange(expectedDtos));
     }
 
     [Fact]

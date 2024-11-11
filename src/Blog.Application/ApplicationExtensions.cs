@@ -24,7 +24,6 @@ namespace Blog.Application
             services.AddScoped<ITagService, TagService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IAuthService, AuthService>();
-            services.AddScoped<IArchiveService, ArchiveService>();
         }
     }
 }

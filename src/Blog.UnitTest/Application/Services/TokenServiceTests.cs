@@ -1,6 +1,7 @@
 ﻿using System.Security.Claims;
 using Blog.Application;
 using Blog.Domain;
+using FluentAssertions;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Blog.UnitTest.Application.Services;
@@ -75,5 +76,48 @@ public class TokenServiceTests
         Assert.Throws<SecurityTokenSignatureKeyNotFoundException>(() => TokenService.GetPrincipalFromToken(invalidToken.AccessToken));
 
         TokenService.SecretKey = previousToken;
+    }
+
+     [Fact]
+    public void GetUserIdFromClaims_ValidClaims_ReturnsUserId()
+    {
+        // Arrange
+        var claims = new List<Claim>
+        {
+            new Claim("UserId", _user.Id.ToString()),
+            new Claim(ClaimTypes.Name, _user.UserName),
+            // Adicionar outras claims se necessário para outros testes
+        };
+
+        var identity = new ClaimsIdentity(claims, "TestAuthType");
+        var claimsPrincipal = new ClaimsPrincipal(identity);
+
+        // Act
+        Action act = () => TokenService.GetUserIdFromClaims(claimsPrincipal);
+
+        // Assert
+        act.Should().NotThrow(); // Verifica se não ocorre exceção
+        Guid userId = TokenService.GetUserIdFromClaims(claimsPrincipal);
+        userId.Should().Be(_user.Id); // Verifica se o ID retornado corresponde ao ID do usuário
+    }
+
+    [Fact]
+    public void GetUserIdFromClaims_ClaimsWithoutUserId_ThrowsAppException()
+    {
+        // Arrange
+        var claims = new List<Claim>
+        {
+            new Claim(ClaimTypes.Name, _user.UserName),
+            // Adicionar outras claims se necessário para outros testes
+        };
+
+        var identity = new ClaimsIdentity(claims, "TestAuthType");
+        var claimsPrincipal = new ClaimsPrincipal(identity);
+
+        // Act
+        Action act = () => TokenService.GetUserIdFromClaims(claimsPrincipal);
+
+        // Assert
+        act.Should().Throw<AppException>().WithMessage("ClaimsPrincipal is Invalid");
     }
 }

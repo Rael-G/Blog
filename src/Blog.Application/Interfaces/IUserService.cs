@@ -1,10 +1,5 @@
-﻿using Blog.Domain;
+﻿namespace Blog.Application;
 
-namespace Blog.Application;
-
-/// <summary>
-/// Interface defining operations related to user management in the application layer.
-/// </summary>
 public interface IUserService : IBaseService<UserDto>
 {
     /// <summary>

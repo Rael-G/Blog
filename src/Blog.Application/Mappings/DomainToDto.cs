@@ -45,8 +45,5 @@ public class DomainToDto : Profile
             .ForMember(dest => dest.Content, opt => opt.MapFrom(src => (src.Post != null) ? src.Post.Content : string.Empty))
             .ForMember(dest => dest.Comments, opt => opt.MapFrom(src => (src.Post != null) ? src.Post.Comments : new List<Comment>()))
             .ForMember(dest => dest.Tags, opt => opt.Ignore());
-
-        CreateMap<Archive, ArchiveDto>()
-            .ReverseMap();
     }
 }
