@@ -1,4 +1,4 @@
-FROM node:lts-alpine AS builder
+FROM node:21-alpine AS builder
 
 WORKDIR /app
 COPY ["src/Blog.WebUi/package.json", "./"]
