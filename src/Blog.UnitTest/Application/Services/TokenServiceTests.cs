@@ -30,19 +30,20 @@ public class TokenServiceTests
     }
 
     [Fact]
-    public void GenerateToken_Claims_ReturnsToken()
+    public void RegenToken_ReturnsToken()
     {
         var claims = new List<Claim>
         {
             new("UserId", _user.Id.ToString()),
             new(ClaimTypes.Name, _user.UserName),
         };
+        var refreshToken = Guid.NewGuid().ToString();
 
-        var result = TokenService.GenerateToken(claims);
+        var result = TokenService.RegenToken(claims, refreshToken);
 
         Assert.NotNull(result);
         Assert.NotNull(result.AccessToken);
-        Assert.NotNull(result.RefreshToken);
+        Assert.Equal(result.RefreshToken, refreshToken);
         Assert.True(result.Creation != default);
         Assert.True(result.Expiration != default);
     }

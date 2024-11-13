@@ -37,15 +37,16 @@ public static class TokenService
     }
 
     /// <summary>
-    /// Generates an authentication token based on the provided claims.
+    /// Regen an authentication token based on the provided claims and refresh token.
     /// </summary>
     /// <param name="claims">The claims to include in the token.</param>
+    /// <param name="refreshToken">The refreshToken to include in the token</param>
     /// <returns>The generated authentication token.</returns>
-    public static Token GenerateToken(IEnumerable<Claim> claims)
+    public static Token RegenToken(IEnumerable<Claim> claims, string refreshToken)
     {
         var accessToken = GenerateAccessToken(claims);
 
-        return GenerateToken(accessToken);
+        return GenerateToken(accessToken, refreshToken);
     }
 
     /// <summary>
@@ -89,13 +90,13 @@ public static class TokenService
         return Guid.Parse(userId);
     }
 
-    private static Token GenerateToken(string accessToken)
+    private static Token GenerateToken(string accessToken, string? refreshToken = null)
     {
         var now = DateTime.UtcNow;
         return new Token
         {
             AccessToken = accessToken,
-            RefreshToken = GenerateRefreshToken(),
+            RefreshToken = refreshToken?? GenerateRefreshToken(),
             Creation = now,
             Expiration = now.AddMinutes(MinutesToExpiry)
         };

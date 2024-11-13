@@ -49,8 +49,8 @@ public class AuthService : IAuthService
             return null;
         }
 
-        var token = TokenService.GenerateToken(principal.Claims);
-
+        var token = TokenService.RegenToken(principal.Claims, user.RefreshToken);
+    
         user.RefreshTokenExpiryTime = token.Creation.AddDays(TokenService.DaysToExpiry);
 
         _repository.Update(user);
