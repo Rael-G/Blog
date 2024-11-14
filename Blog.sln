@@ -5,15 +5,15 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{86CD1393-786D-4676-B96D-DCA5D88E32C6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blog.Domain", "src\Blog.Domain\Blog.Domain.csproj", "{B109602B-BE8C-4E29-885B-B70844E4FD4E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blog.Domain", "Blog.Domain\Blog.Domain.csproj", "{B109602B-BE8C-4E29-885B-B70844E4FD4E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blog.UnitTest", "src\Blog.UnitTest\Blog.UnitTest.csproj", "{388B4289-E3CC-4162-B960-5C0042B2B624}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blog.UnitTest", "Blog.UnitTest\Blog.UnitTest.csproj", "{388B4289-E3CC-4162-B960-5C0042B2B624}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blog.Persistance", "src\Blog.Persistance\Blog.Persistance.csproj", "{E1F29BF4-2F0E-4F62-93BF-5E4B39059D61}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blog.Persistance", "Blog.Persistance\Blog.Persistance.csproj", "{E1F29BF4-2F0E-4F62-93BF-5E4B39059D61}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blog.Application", "src\Blog.Application\Blog.Application.csproj", "{4D5CF084-C63B-42A9-918D-95BC6D4E6037}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blog.Application", "Blog.Application\Blog.Application.csproj", "{4D5CF084-C63B-42A9-918D-95BC6D4E6037}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blog.WebApi", "src\Blog.WebApi\Blog.WebApi.csproj", "{0793570D-8774-4AF6-A1A9-22AB9DA82C2F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blog.WebApi", "Blog.WebApi\Blog.WebApi.csproj", "{0793570D-8774-4AF6-A1A9-22AB9DA82C2F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

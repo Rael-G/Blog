@@ -38,7 +38,7 @@ services:
     restart: always
     build:
       context: .
-      dockerfile: src/Blog.WebApi/Dockerfile
+      dockerfile: Blog.WebApi/Dockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80;
@@ -50,6 +50,6 @@ services:
   app:
     build:
       context: .
-      dockerfile: src/Blog.WebUi/Dockerfile
+      dockerfile: Blog.WebUi/Dockerfile
     networks:
       - blog-network
