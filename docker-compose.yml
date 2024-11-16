@@ -7,21 +7,8 @@ volumes:
 
 services:
 
-  server:
-    ports:
-      - 9999:80
-      - 3000:3000
-    image: nginx
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro
-    networks:
-      - blog-network
-    depends_on: 
-      - app
-      - api
-
   db:
-    image: postgres
+    image: postgres:16
     ports:
       - 5432:5432
     restart: always
@@ -35,21 +22,47 @@ services:
       - blog-network
 
   api:
+    ports:
+      - 3000:80
     restart: always
     build:
       context: .
       dockerfile: Blog.WebApi/Dockerfile
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=http://+:80;
+      - ConnectionStrings__Postgres=server=db; port=5432; user id=blog; password=blog; database=blog
+      - Secrets__SecretKey=50a1b6e3-bfdb-448f-850f-17ff478f833d
+    networks:
+      - blog-network
     depends_on: 
       - db
-    networks:
-      - blog-network
 
   app:
+    ports:
+      - 8000:80
+    restart: always
     build:
-      context: .
-      dockerfile: Blog.WebUi/Dockerfile
+      context: Blog.WebUi
+      dockerfile: Dockerfile
+      args:
+        API_URL: 
+    environment:
+      - PORT=80
     networks:
       - blog-network
+    depends_on: 
+      - api
+
+  server:
+    image: nginx
+    ports:
+      - 9999:80
+    restart: always
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    networks:
+      - blog-network
+    depends_on: 
+      - app
+      - api
