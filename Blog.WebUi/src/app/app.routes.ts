@@ -14,7 +14,6 @@ import { ProfileComponent } from './components/pages/profile/profile.component';
 export const routes: Routes =
     [
         { path: '', component: HomeComponent },
-        { path: 'posts/example', component: PostComponent },
         { path: 'management', component: ManagementComponent, canActivate: [authGuard] },
         { path: 'create-post', component: CreatePostComponent, canActivate: [authGuard] },
         { path: 'posts/:id', component: PostComponent },
