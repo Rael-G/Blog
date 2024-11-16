@@ -1,6 +1,6 @@
 export const environment = {
-    env: "dev",
-    baseApiUrl: "http://localhost:3000/api",
+    env: "prod",
+    baseApiUrl: "api",
     roles: {
         admin: 'admin',
         moderator: 'moderator',
