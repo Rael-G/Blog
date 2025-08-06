@@ -44,11 +44,14 @@ namespace Blog.WebApi
             userService.UpdateRoles(admin).Wait();
         }
 
-        public static void ConfigureCors(this IServiceCollection services)
+        public static void ConfigureCors(this IServiceCollection services, IConfiguration configuration)
         {
+            var allowedOrigins = configuration.GetSection("AllowedOrigins").Get<string[]>() ??
+            throw new Exception("Cors allowed origins are not defined in configuration.");
             services.AddCors(options => options.AddDefaultPolicy(builder =>
             {
-                builder.AllowAnyOrigin()
+                builder.WithOrigins(allowedOrigins)
+                    .AllowCredentials()
                     .AllowAnyHeader()
                     .AllowAnyMethod();
             }));

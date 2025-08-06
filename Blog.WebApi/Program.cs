@@ -10,7 +10,7 @@ builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.ConfigurePersistance(builder.Configuration);
 builder.Services.ConfigureApplication(builder.Configuration);
-builder.Services.ConfigureCors();
+builder.Services.ConfigureCors(builder.Configuration);
 builder.Services.ConfigureAuth();
 builder.Services.ConfigureSwagger();
 
