@@ -64,6 +64,16 @@ jobs:
             echo "🔏 Signing image: ${IMAGE}@${DIGEST}"
             cosign sign --yes "${IMAGE}@${DIGEST}"
           done
+      
+      - name: Set up Dokku registry
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ vars.DOKKU_HOST }}
+          username: ubuntu
+          key: ${{ secrets.DOKKU_SSH_PRIVATE_KEY }}
+          port: 22
+          script: |
+            dokku registry:login ${{ env.REGISTRY }} ${{ github.actor }} ${{ secrets.DOKKU_REGISTRY_PASSWORD }}
         
       - name: Deploy api image to Dokku
         uses: appleboy/ssh-action@master
@@ -129,6 +139,16 @@ jobs:
             echo "🔏 Signing image: ${IMAGE}@${DIGEST}"
             cosign sign --yes "${IMAGE}@${DIGEST}"
           done
+
+      - name: Set up Dokku registry
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ vars.DOKKU_HOST }}
+          username: ubuntu
+          key: ${{ secrets.DOKKU_SSH_PRIVATE_KEY }}
+          port: 22
+          script: |
+            dokku registry:login ${{ env.REGISTRY }} ${{ github.actor }} ${{ secrets.DOKKU_REGISTRY_PASSWORD }}
         
       - name: Deploy ui image to Dokku
         uses: appleboy/ssh-action@master
