@@ -1,0 +1,141 @@
+name: Deploy
+
+on:
+  workflow_run:
+    workflows: ["CI"]
+    types:
+      - completed
+
+env:
+  REGISTRY: ghcr.io
+
+jobs:
+  deploy-api:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install cosign
+        uses: sigstore/cosign-installer@v3.5.0
+        with:
+          cosign-release: 'v2.2.4'
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3.0.0
+
+      - name: Log into registry ${{ env.REGISTRY }}
+        uses: docker/login-action@v3.0.0
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract Docker metadata for api
+        id: meta-api
+        uses: docker/metadata-action@v5.0.0
+        with:
+          images: ${{ env.REGISTRY }}/${{ github.repository_owner }}/blog-api
+
+      - name: Build and push api Docker image
+        id: build-and-push-api
+        uses: docker/build-push-action@v5.0.0
+        with:
+          context: .
+          file: Blog.WebApi/Dockerfile
+          tags: ${{ steps.meta-api.outputs.tags }}
+          push: true
+          labels: ${{ steps.meta-api.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Sign the published api Docker image
+        env:
+          TAGS: ${{ steps.meta-api.outputs.tags }}
+          DIGEST: ${{ steps.build-and-push-api.outputs.digest }}
+        run: |
+          IFS=',' read -ra IMAGES <<< "${TAGS}"
+          for IMAGE in "${IMAGES[@]}"; do
+            echo "🔏 Signing image: ${IMAGE}@${DIGEST}"
+            cosign sign --yes "${IMAGE}@${DIGEST}"
+          done
+        
+      - name: Deploy api image to Dokku
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ vars.DOKKU_HOST }}
+          username: ubuntu
+          key: ${{ secrets.DOKKU_SSH_PRIVATE_KEY }}
+          port: 22
+          script: |
+            dokku git:from-image blog-api ${{ env.REGISTRY }}/${{ github.repository_owner }}/blog-api@${{ steps.build-and-push-api.outputs.digest }}
+
+  deploy-ui:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install cosign
+        uses: sigstore/cosign-installer@v3.5.0
+        with:
+          cosign-release: 'v2.2.4'
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3.0.0
+
+      - name: Log into registry ${{ env.REGISTRY }}
+        uses: docker/login-action@v3.0.0
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract Docker metadata for ui
+        id: meta-ui
+        uses: docker/metadata-action@v5.0.0
+        with:
+          images: ${{ env.REGISTRY }}/${{ github.repository_owner }}/blog-ui
+
+      - name: Build and push ui Docker image
+        id: build-and-push-ui
+        uses: docker/build-push-action@v5.0.0
+        with:
+          context: .
+          file: Blog.WebUi/Dockerfile
+          tags: ${{ steps.meta-ui.outputs.tags }}
+          push: true
+          labels: ${{ steps.meta-ui.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Sign the published ui Docker image
+        env:
+          TAGS: ${{ steps.meta-ui.outputs.tags }}
+          DIGEST: ${{ steps.build-and-push-ui.outputs.digest }}
+        run: |
+          IFS=',' read -ra IMAGES <<< "${TAGS}"
+          for IMAGE in "${IMAGES[@]}"; do
+            echo "🔏 Signing image: ${IMAGE}@${DIGEST}"
+            cosign sign --yes "${IMAGE}@${DIGEST}"
+          done
+        
+      - name: Deploy ui image to Dokku
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ vars.DOKKU_HOST }}
+          username: ubuntu
+          key: ${{ secrets.DOKKU_SSH_PRIVATE_KEY }}
+          port: 22
+          script: |
+            dokku git:from-image blog-ui ${{ env.REGISTRY }}/${{ github.repository_owner }}/blog-ui@${{ steps.build-and-push-ui.outputs.digest }}
