@@ -21,11 +21,10 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-
-    //Temp
-    app.InitializeDb();
-    app.SeedDb();
 }
+
+app.InitializeDb();
+app.SeedDb(builder.Configuration);
 
 app.UseCors();
 

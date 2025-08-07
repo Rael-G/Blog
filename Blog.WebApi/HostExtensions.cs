@@ -22,26 +22,32 @@ namespace Blog.WebApi
         }
 
         //Temp
-        public static void SeedDb(this WebApplication app)
+        public static void SeedDb(this WebApplication app, IConfiguration configuration)
         {
+            using var scope = app.Services.CreateScope();
+            var services = scope.ServiceProvider;
+            
+            var userService = services.GetRequiredService<IUserService>();
+            var context = services.GetRequiredService<ApplicationDbContext>();
+
+            var username = configuration["Seed:AdminUsername"] ?? throw new NullReferenceException("An admin username shoud be defined on configuration.");
+            var password = configuration["Seed:AdminPassword"] ?? throw new NullReferenceException("An admin password shoud be defined on configuration.");
+
             var admin = new UserDto()
             {
                 Id = Guid.NewGuid(),
-                UserName = "admin",
-                PasswordHash = "Aadmin1!",
-                RepeatPassword = "Aadmin1!",
+                UserName = username,
+                PasswordHash = password,
+                RepeatPassword = password,
                 Roles = [Roles.Admin, Roles.Moderator]
             };
 
-            using var scope = app.Services.CreateScope();
-            var services = scope.ServiceProvider;
-
-            var userService = services.GetRequiredService<IUserService>();
-            if (userService.GetByUserName(admin.UserName).Result != null)
-                return;
-
-            userService.Create(admin).Wait();
-            userService.UpdateRoles(admin).Wait();
+            if (!context.Users.Any())
+            {
+                userService.Create(admin).Wait();
+                userService.UpdateRoles(admin).Wait();
+                context.SaveChanges();
+            }
         }
 
         public static void ConfigureCors(this IServiceCollection services, IConfiguration configuration)
