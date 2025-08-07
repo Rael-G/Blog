@@ -7,6 +7,7 @@ export const addTokenToRequest = (req: HttpRequest<any>, token: string): HttpReq
     setHeaders: {
       Authorization: `Bearer ${token}`,
     },
+    withCredentials: true
   });
 };
 
